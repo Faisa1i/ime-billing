@@ -1,0 +1,10 @@
+{
+  "name": "I M ENTERPRISES Billing",
+  "short_name": "IME Billing",
+  "start_url": "./index.html",
+  "display": "standalone",
+  "background_color": "#eeeeee",
+  "theme_color": "#222222",
+  "orientation": "portrait",
+  "description": "Offline A5 Tally-style billing and GSTR-1 reporting"
+}
