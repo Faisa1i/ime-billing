@@ -1,151 +1,306 @@
 <!doctype html>
 <html lang="en">
 <head>
+
 <meta charset="utf-8">
-<meta name="viewport" content="width=device-width,initial-scale=1">
+
+<meta name="viewport"
+      content="width=device-width,initial-scale=1">
+
+<meta name="theme-color"
+      content="#222222">
+
+<link rel="manifest"
+      href="./manifest.webmanifest">
 
 <title>I M ENTERPRISES — A5 Tally Billing</title>
 
-<link rel="manifest" href="./manifest.webmanifest">
-<meta name="theme-color" content="#222222">
-<link rel="apple-touch-icon" href="./icon-192.png">
-
 <style>
-*{box-sizing:border-box}
-body{margin:0;background:#eee;font-family:Arial,sans-serif;color:#111}
-.app{max-width:1050px;margin:auto;padding:14px}
-.panel{background:#fff;border:1px solid #aaa;padding:14px;margin-bottom:14px}
-h2{margin:0 0 10px}
-.grid{display:grid;grid-template-columns:repeat(4,1fr);gap:9px}
-label{font-size:12px;font-weight:bold}
-input,select{width:100%;padding:8px;margin-top:3px;border:1px solid #999}
-.actions{display:flex;gap:7px;flex-wrap:wrap;margin-top:12px}
-button{padding:8px 12px;border:1px solid #777;background:#f5f5f5;font-weight:bold;cursor:pointer}
-.primary{background:#222;color:white}
 
-.wrap{display:flex;justify-content:center}
-
-.bill{
-width:148mm;
-min-height:210mm;
-background:white;
-padding:7mm 9mm;
-box-shadow:0 1px 8px #999
+*{
+    box-sizing:border-box
 }
 
-.center{text-align:center}
-.tax{font-size:12px;font-weight:bold}
-.company{font-size:16px;font-weight:bold}
-.addr{font-size:8px;line-height:1.35}
+body{
+    margin:0;
+    background:#eee;
+    font-family:Arial,sans-serif;
+    color:#111;
+}
 
-table{border-collapse:collapse;width:100%}
+.app{
+    max-width:1050px;
+    margin:auto;
+    padding:14px;
+}
+
+.panel{
+    background:#fff;
+    border:1px solid #aaa;
+    padding:14px;
+    margin-bottom:14px;
+}
+
+h2{
+    margin:0 0 10px;
+}
+
+.grid{
+    display:grid;
+    grid-template-columns:repeat(4,1fr);
+    gap:9px;
+}
+
+label{
+    font-size:12px;
+    font-weight:bold;
+}
+
+input,
+select{
+    width:100%;
+    padding:8px;
+    margin-top:3px;
+    border:1px solid #999;
+    background:#fff;
+}
+
+.actions{
+    display:flex;
+    gap:7px;
+    flex-wrap:wrap;
+    margin-top:12px;
+}
+
+button{
+    padding:8px 12px;
+    border:1px solid #777;
+    background:#f5f5f5;
+    font-weight:bold;
+    cursor:pointer;
+}
+
+.primary{
+    background:#222;
+    color:white;
+}
+
+.wrap{
+    display:flex;
+    justify-content:center;
+}
+
+.bill{
+    width:148mm;
+    min-height:210mm;
+    background:white;
+    padding:7mm 9mm;
+    box-shadow:0 1px 8px #999;
+}
+
+.center{
+    text-align:center;
+}
+
+.tax{
+    font-size:12px;
+    font-weight:bold;
+}
+
+.company{
+    font-size:16px;
+    font-weight:bold;
+}
+
+.addr{
+    font-size:8px;
+    line-height:1.35;
+}
+
+table{
+    border-collapse:collapse;
+    width:100%;
+}
 
 .meta{
-margin-top:7px;
-font-size:8px
+    margin-top:7px;
+    font-size:8px;
 }
 
 .meta td{
-border:1px solid #111;
-padding:4px;
-width:50%;
-vertical-align:top
+    border:1px solid #111;
+    padding:4px;
+    width:50%;
+    vertical-align:top;
 }
 
 .billtable{
-margin-top:6px;
-font-size:8px;
-table-layout:fixed
+    margin-top:6px;
+    font-size:8px;
+    table-layout:fixed;
 }
 
 .billtable th,
 .billtable td{
-border:1px solid #111;
-padding:4px;
-overflow-wrap:anywhere;
-vertical-align:middle
+    border:1px solid #111;
+    padding:4px;
+    overflow-wrap:anywhere;
+    word-break:break-word;
+    vertical-align:middle;
 }
 
-.billtable th{text-align:center}
+.billtable th{
+    text-align:center;
+}
 
-.sl{width:7%}
-.part{width:40%}
-.hsn{width:10%}
-.qty{width:8%}
-.rate{width:17%}
-.amt{width:18%}
+.sl{
+    width:7%;
+}
 
-.r{text-align:right}
-.c{text-align:center}
+.part{
+    width:40%;
+}
 
-.words,.decl{
-font-size:7.5px;
-margin-top:6px;
-line-height:1.35
+.hsn{
+    width:10%;
+}
+
+.qty{
+    width:8%;
+}
+
+.rate{
+    width:17%;
+}
+
+.amt{
+    width:18%;
+}
+
+.r{
+    text-align:right;
+}
+
+.c{
+    text-align:center;
+}
+
+.words,
+.decl{
+    font-size:7.5px;
+    margin-top:6px;
+    line-height:1.35;
 }
 
 .sign{
-display:grid;
-grid-template-columns:1fr 1fr;
-border:1px solid #111;
-margin-top:12mm;
-min-height:21mm;
-font-size:8px
+    display:grid;
+    grid-template-columns:1fr 1fr;
+    border:1px solid #111;
+    margin-top:12mm;
+    min-height:21mm;
+    font-size:8px;
 }
 
-.sign div{padding:5px}
+.sign div{
+    padding:5px;
+}
 
 .sign div+div{
-border-left:1px solid #111;
-text-align:right
+    border-left:1px solid #111;
+    text-align:right;
 }
 
-.history table{font-size:11px}
+.history table{
+    font-size:11px;
+}
 
 .history th,
 .history td{
-border:1px solid #aaa;
-padding:5px
+    border:1px solid #aaa;
+    padding:5px;
+}
+
+#reportPanel table{
+    table-layout:fixed;
+}
+
+#reportPanel th,
+#reportPanel td{
+    overflow-wrap:anywhere;
+    word-break:break-word;
 }
 
 @media(max-width:750px){
-.grid{grid-template-columns:1fr 1fr}
+
+    .grid{
+        grid-template-columns:1fr 1fr;
+    }
+
 }
 
 @media(max-width:500px){
-.grid{grid-template-columns:1fr}
-.app{padding:6px}
-.bill{
-width:100%;
-padding:5mm
-}
+
+    .grid{
+        grid-template-columns:1fr;
+    }
+
+    .app{
+        padding:6px;
+    }
+
+    .bill{
+        width:100%;
+        padding:5mm;
+    }
+
 }
 
 @media print{
-body{background:white}
-.panel,.history{display:none}
-.app{padding:0}
-.bill{
-box-shadow:none;
-margin:auto;
-width:148mm;
-min-height:210mm
+
+    body{
+        background:white;
+    }
+
+    .panel,
+    .history{
+        display:none !important;
+    }
+
+    .app{
+        padding:0;
+    }
+
+    .bill{
+        box-shadow:none;
+        margin:auto;
+        width:148mm;
+        min-height:210mm;
+    }
+
+    @page{
+        size:A5 portrait;
+        margin:0;
+    }
+
 }
-@page{
-size:A5 portrait;
-margin:0
-}
-}
+
 </style>
+
 </head>
 
 <body>
 
 <div class="app">
 
+<!-- =========================
+     BILLING CONTROL PANEL
+========================= -->
+
 <div class="panel">
 
-<h2>I M ENTERPRISES — A5 Tally Billing</h2>
+<h2>
+I M ENTERPRISES — A5 Tally Billing
+</h2>
 
 <div class="grid">
 
@@ -161,12 +316,14 @@ margin:0
 
 <div>
 <label>Buyer</label>
-<input id="buyer" value="Cash Sale (B2C)">
+<input id="buyer"
+       value="Cash Sale (B2C)">
 </div>
 
 <div>
 <label>Place of Supply</label>
-<input id="pos" value="Karnataka (29)">
+<input id="pos"
+       value="Karnataka (29)">
 </div>
 
 <div>
@@ -188,24 +345,39 @@ Baby Products
 
 <div>
 <label>GST Rate</label>
-<input id="gst" readonly>
+<input id="gst"
+       readonly>
 </div>
 
 <div>
-<label>Invoice Total — Inclusive GST (₹)</label>
-<input id="total" type="number" min="0" step=".01">
+<label>
+Invoice Total — Inclusive GST (₹)
+</label>
+
+<input id="total"
+       type="number"
+       min="0"
+       step=".01">
+
 </div>
 
 <div>
 <label>Quantity</label>
-<input id="qty" type="number" min="1" value="1">
+
+<input id="qty"
+       type="number"
+       min="1"
+       value="1">
+
 </div>
 
 </div>
+
 
 <div class="actions">
 
-<button class="primary" onclick="preview()">
+<button class="primary"
+        onclick="preview()">
 Preview / Calculate
 </button>
 
@@ -237,21 +409,24 @@ Backup Bills
 Restore Bills
 </button>
 
-<input
-id="restoreFile"
-type="file"
-accept=".json,application/json"
-hidden
-onchange="importJSON(event)"
->
+<input id="restoreFile"
+       type="file"
+       accept=".json,application/json"
+       hidden
+       onchange="importJSON(event)">
 
 <button onclick="clearAll()">
 Clear History
 </button>
 
 </div>
+
 </div>
 
+
+<!-- =========================
+     A5 BILL
+========================= -->
 
 <div class="wrap">
 
@@ -268,25 +443,39 @@ I M ENTERPRISES
 </div>
 
 <div class="addr">
-CTS No. 67, CR 53, PID 23427, Jamiya Masjid Road,<br>
-Opp. Mahtar Mahal Masjid, Vijayapura, Karnataka - 586101<br>
-<b>GSTIN: 29BPZPJ1392D1ZE</b>
-</div>
+
+CTS No. 67, CR 53, PID 23427, Jamiya Masjid Road,
+<br>
+
+Opp. Mahtar Mahal Masjid, Vijayapura,
+Karnataka - 586101
+
+<br>
+
+<b>
+GSTIN: 29BPZPJ1392D1ZE
+</b>
 
 </div>
 
+</div>
+
+
+<!-- BILL META -->
 
 <table class="meta">
 
 <tr>
 
 <td>
-<b>Invoice No.</b><br>
+<b>Invoice No.</b>
+<br>
 <span id="pno"></span>
 </td>
 
 <td>
-<b>Dated</b><br>
+<b>Dated</b>
+<br>
 <span id="pdate"></span>
 </td>
 
@@ -295,12 +484,14 @@ Opp. Mahtar Mahal Masjid, Vijayapura, Karnataka - 586101<br>
 <tr>
 
 <td>
-<b>Buyer</b><br>
+<b>Buyer</b>
+<br>
 <span id="pbuyer"></span>
 </td>
 
 <td>
-<b>Place of Supply</b><br>
+<b>Place of Supply</b>
+<br>
 <span id="ppos"></span>
 </td>
 
@@ -308,6 +499,8 @@ Opp. Mahtar Mahal Masjid, Vijayapura, Karnataka - 586101<br>
 
 </table>
 
+
+<!-- BILL TABLE -->
 
 <table class="billtable">
 
@@ -322,18 +515,39 @@ Opp. Mahtar Mahal Masjid, Vijayapura, Karnataka - 586101<br>
 
 </colgroup>
 
+
 <thead>
 
 <tr>
-<th>Sl</th>
-<th>Particulars</th>
-<th>HSN</th>
-<th>Qty</th>
-<th>Rate</th>
-<th>Amount</th>
+
+<th>
+Sl
+</th>
+
+<th>
+Particulars
+</th>
+
+<th>
+HSN
+</th>
+
+<th>
+Qty
+</th>
+
+<th>
+Rate
+</th>
+
+<th>
+Amount
+</th>
+
 </tr>
 
 </thead>
+
 
 <tbody>
 
@@ -347,24 +561,17 @@ Opp. Mahtar Mahal Masjid, Vijayapura, Karnataka - 586101<br>
 
 <td></td>
 
-<td class="c" id="pqty"></td>
-
-<td class="r" id="prate"></td>
-
-<td class="r" id="pamt"></td>
-
-</tr>
-
-
-<tr>
-
-<td colspan="4"></td>
-
-<td>
-<b>Taxable Value</b>
+<td class="c"
+    id="pqty">
 </td>
 
-<td class="r" id="ptax"></td>
+<td class="r"
+    id="prate">
+</td>
+
+<td class="r"
+    id="pamt">
+</td>
 
 </tr>
 
@@ -375,11 +582,13 @@ Opp. Mahtar Mahal Masjid, Vijayapura, Karnataka - 586101<br>
 
 <td>
 <b>
-CGST @ <span id="pcgr"></span>%
+Taxable Value
 </b>
 </td>
 
-<td class="r" id="pcgst"></td>
+<td class="r"
+    id="ptax">
+</td>
 
 </tr>
 
@@ -390,11 +599,14 @@ CGST @ <span id="pcgr"></span>%
 
 <td>
 <b>
-SGST @ <span id="psgr"></span>%
+CGST @
+<span id="pcgr"></span>%
 </b>
 </td>
 
-<td class="r" id="psgst"></td>
+<td class="r"
+    id="pcgst">
+</td>
 
 </tr>
 
@@ -404,11 +616,33 @@ SGST @ <span id="psgr"></span>%
 <td colspan="4"></td>
 
 <td>
-<b>Grand Total</b>
+<b>
+SGST @
+<span id="psgr"></span>%
+</b>
+</td>
+
+<td class="r"
+    id="psgst">
+</td>
+
+</tr>
+
+
+<tr>
+
+<td colspan="4"></td>
+
+<td>
+<b>
+Grand Total
+</b>
 </td>
 
 <td class="r">
+
 <b id="ptotal"></b>
+
 </td>
 
 </tr>
@@ -420,7 +654,10 @@ SGST @ <span id="psgr"></span>%
 
 <div class="words">
 
-<b>Amount in Words:</b>
+<b>
+Amount in Words:
+</b>
+
 <span id="pwords"></span>
 
 </div>
@@ -428,11 +665,14 @@ SGST @ <span id="psgr"></span>%
 
 <div class="decl">
 
-<b>Declaration:</b>
+<b>
+Declaration:
+</b>
 
 This invoice is issued for B2C retail sales.
-The product description shown represents the category of goods supplied.
-The applicable GST rate is correctly charged on the goods covered under the respective category.
+The product description shown represents the category
+of goods supplied. The applicable GST rate is correctly
+charged on the goods covered under the respective category.
 
 </div>
 
@@ -444,10 +684,17 @@ Customer Signature
 </div>
 
 <div>
-For <b>I M ENTERPRISES</b>
-<br><br><br>
+
+For
+<b>
+I M ENTERPRISES
+</b>
+
+<br>
+<br>
+<br>
+
 Authorized Signatory
-</div>
 
 </div>
 
@@ -455,19 +702,24 @@ Authorized Signatory
 
 </div>
 
+</div>
 
-<div
-class="panel"
-id="reportPanel"
-style="display:none"
->
 
-<b>GSTR-1 Report</b>
+<!-- =========================
+     GSTR-1 REPORT
+========================= -->
 
-<div
-id="gstrSummary"
-style="margin-top:8px"
-></div>
+<div class="panel"
+     id="reportPanel"
+     style="display:none">
+
+<b>
+GSTR-1 Report
+</b>
+
+<div id="gstrSummary"
+     style="margin-top:8px">
+</div>
 
 <div class="actions">
 
@@ -484,27 +736,33 @@ Close Report
 </div>
 
 
+<!-- =========================
+     HISTORY
+========================= -->
+
 <div class="panel history">
 
-<b>Saved Invoice Register</b>
+<b>
+Saved Invoice Register
+</b>
 
-<div
-style="display:flex;gap:8px;flex-wrap:wrap;margin:8px 0"
->
 
-<input
-id="searchBills"
-placeholder="Search invoice / product"
-oninput="render()"
-style="max-width:240px"
->
+<div style="
+display:flex;
+gap:8px;
+flex-wrap:wrap;
+margin:8px 0;
+">
 
-<input
-id="monthBills"
-type="month"
-onchange="render()"
-style="max-width:160px"
->
+<input id="searchBills"
+       placeholder="Search invoice / product"
+       oninput="render()"
+       style="max-width:240px">
+
+<input id="monthBills"
+       type="month"
+       onchange="render()"
+       style="max-width:160px">
 
 <button onclick="clearFilters()">
 Clear Filters
@@ -512,724 +770,1480 @@ Clear Filters
 
 </div>
 
-<div id="history"></div>
 
+<div id="history">
 </div>
 
 </div>
 
+</div>
+
+
+<!-- =========================
+     JAVASCRIPT
+========================= -->
 
 <script>
 
-const DB_NAME="IME_TALLY_BILLS_DB";
-const STORE="invoices";
-const DB_VERSION=1;
+const DB_NAME = "IME_TALLY_BILLS_DB";
 
-let bills=[];
+const STORE = "invoices";
 
+const DB_VERSION = 1;
 
-function openDB(){
+let bills = [];
 
-return new Promise((resolve,reject)=>{
-
-const req=indexedDB.open(
-DB_NAME,
-DB_VERSION
-);
-
-req.onupgradeneeded=e=>{
-
-const db=e.target.result;
-
-if(!db.objectStoreNames.contains(STORE)){
-
-db.createObjectStore(
-STORE,
-{keyPath:"no"}
-);
-
-}
-
-};
-
-req.onsuccess=e=>
-resolve(e.target.result);
-
-req.onerror=e=>
-reject(e.target.error);
-
-});
-
-}
+let dbReady = false;
 
 
-async function dbAll(){
+/* =========================
+   DATABASE
+========================= */
 
-const db=await openDB();
+function openDB() {
 
-return new Promise((resolve,reject)=>{
+    return new Promise((resolve, reject) => {
 
-const tx=db.transaction(
-STORE,
-"readonly"
-);
+        if (!window.indexedDB) {
 
-const s=tx.objectStore(STORE);
-const r=s.getAll();
+            reject(
+                new Error(
+                    "IndexedDB is not supported"
+                )
+            );
 
-r.onsuccess=()=>
-resolve(r.result||[]);
-
-r.onerror=()=>
-reject(r.error);
-
-});
-
-}
+            return;
+        }
 
 
-async function dbPut(x){
+        const req =
+            indexedDB.open(
+                DB_NAME,
+                DB_VERSION
+            );
 
-const db=await openDB();
 
-return new Promise((resolve,reject)=>{
+        req.onupgradeneeded =
+            function(e) {
 
-const tx=db.transaction(
-STORE,
-"readwrite"
-);
+                const db =
+                    e.target.result;
 
-tx.objectStore(STORE).put(x);
 
-tx.oncomplete=resolve;
+                if (
+                    !db.objectStoreNames
+                        .contains(STORE)
+                ) {
 
-tx.onerror=()=>
-reject(tx.error);
+                    db.createObjectStore(
+                        STORE,
+                        {
+                            keyPath:"no"
+                        }
+                    );
 
-});
+                }
+
+            };
+
+
+        req.onsuccess =
+            function(e) {
+
+                resolve(
+                    e.target.result
+                );
+
+            };
+
+
+        req.onerror =
+            function(e) {
+
+                reject(
+                    e.target.error
+                );
+
+            };
+
+    });
 
 }
 
 
-async function dbClear(){
+async function dbAll() {
 
-const db=await openDB();
-
-return new Promise((resolve,reject)=>{
-
-const tx=db.transaction(
-STORE,
-"readwrite"
-);
-
-tx.objectStore(STORE).clear();
-
-tx.oncomplete=resolve;
-
-tx.onerror=()=>
-reject(tx.error);
-
-});
-
-}
+    const db =
+        await openDB();
 
 
-async function initDB(){
+    return new Promise(
+        (resolve,reject) => {
 
-bills=await dbAll();
+            const tx =
+                db.transaction(
+                    STORE,
+                    "readonly"
+                );
 
-newBill();
+            const store =
+                tx.objectStore(STORE);
 
-render();
-
-}
-
-
-function fmt(n){
-
-return new Intl.NumberFormat(
-"en-IN",
-{
-minimumFractionDigits:2,
-maximumFractionDigits:2
-}
-).format(n);
-
-}
+            const request =
+                store.getAll();
 
 
-function dshow(v){
+            request.onsuccess =
+                function() {
 
-if(!v)return"";
+                    resolve(
+                        request.result || []
+                    );
 
-let[y,m,d]=v.split("-");
+                };
 
-return d+"-"+m+"-"+y;
+
+            request.onerror =
+                function() {
+
+                    reject(
+                        request.error
+                    );
+
+                };
+
+        }
+    );
 
 }
 
 
-function nextNo(){
+async function dbPut(data) {
 
-let d=new Date();
+    const db =
+        await openDB();
 
-let mon=[
-"JAN","FEB","MAR","APR","MAY","JUN",
-"JUL","AUG","SEP","OCT","NOV","DEC"
-][d.getMonth()];
 
-let pre=
-"IME/"+
-mon+
-String(d.getFullYear()).slice(-2)+
-"/";
+    return new Promise(
+        (resolve,reject) => {
 
-let mx=0;
+            const tx =
+                db.transaction(
+                    STORE,
+                    "readwrite"
+                );
 
-bills.forEach(x=>{
 
-if(
-x.no &&
-x.no.startsWith(pre)
-){
+            tx.objectStore(STORE)
+              .put(data);
 
-mx=Math.max(
-mx,
-+x.no.split("/").pop()||0
-);
+
+            tx.oncomplete =
+                function() {
+
+                    resolve();
+
+                };
+
+
+            tx.onerror =
+                function() {
+
+                    reject(
+                        tx.error
+                    );
+
+                };
+
+        }
+    );
 
 }
 
-});
 
-return(
-pre+
-String(mx+1).padStart(3,"0")
-);
+async function dbClear() {
+
+    const db =
+        await openDB();
+
+
+    return new Promise(
+        (resolve,reject) => {
+
+            const tx =
+                db.transaction(
+                    STORE,
+                    "readwrite"
+                );
+
+
+            tx.objectStore(STORE)
+              .clear();
+
+
+            tx.oncomplete =
+                function() {
+
+                    resolve();
+
+                };
+
+
+            tx.onerror =
+                function() {
+
+                    reject(
+                        tx.error
+                    );
+
+                };
+
+        }
+    );
 
 }
 
 
-const ones=[
-"",
-"One","Two","Three","Four","Five",
-"Six","Seven","Eight","Nine","Ten",
-"Eleven","Twelve","Thirteen","Fourteen",
-"Fifteen","Sixteen","Seventeen","Eighteen",
-"Nineteen"
+/* =========================
+   FORMAT
+========================= */
+
+function fmt(number) {
+
+    return new Intl.NumberFormat(
+        "en-IN",
+        {
+            minimumFractionDigits:2,
+            maximumFractionDigits:2
+        }
+    ).format(
+        Number(number) || 0
+    );
+
+}
+
+
+function dshow(value) {
+
+    if (!value)
+        return "";
+
+
+    const parts =
+        value.split("-");
+
+
+    if (parts.length !== 3)
+        return value;
+
+
+    return (
+        parts[2] +
+        "-" +
+        parts[1] +
+        "-" +
+        parts[0]
+    );
+
+}
+
+
+function todayISO() {
+
+    const d =
+        new Date();
+
+
+    d.setMinutes(
+        d.getMinutes() -
+        d.getTimezoneOffset()
+    );
+
+
+    return d
+        .toISOString()
+        .slice(0,10);
+
+}
+
+
+/* =========================
+   INVOICE NUMBER
+========================= */
+
+function nextNo() {
+
+    const now =
+        new Date();
+
+
+    const months = [
+
+        "JAN",
+        "FEB",
+        "MAR",
+        "APR",
+        "MAY",
+        "JUN",
+        "JUL",
+        "AUG",
+        "SEP",
+        "OCT",
+        "NOV",
+        "DEC"
+
+    ];
+
+
+    const month =
+        months[
+            now.getMonth()
+        ];
+
+
+    const year =
+        String(
+            now.getFullYear()
+        ).slice(-2);
+
+
+    const prefix =
+        "IME/" +
+        month +
+        year +
+        "/";
+
+
+    let highest = 0;
+
+
+    bills.forEach(
+        function(bill) {
+
+            if (
+                bill.no &&
+                String(bill.no)
+                    .startsWith(prefix)
+            ) {
+
+                const parts =
+                    String(
+                        bill.no
+                    ).split("/");
+
+
+                const number =
+                    parseInt(
+                        parts[
+                            parts.length - 1
+                        ],
+                        10
+                    );
+
+
+                if (
+                    !isNaN(number)
+                ) {
+
+                    highest =
+                        Math.max(
+                            highest,
+                            number
+                        );
+
+                }
+
+            }
+
+        }
+    );
+
+
+    return (
+        prefix +
+        String(
+            highest + 1
+        ).padStart(3,"0")
+    );
+
+}
+
+
+/* =========================
+   AMOUNT IN WORDS
+========================= */
+
+const ones = [
+
+    "",
+    "One",
+    "Two",
+    "Three",
+    "Four",
+    "Five",
+    "Six",
+    "Seven",
+    "Eight",
+    "Nine",
+    "Ten",
+    "Eleven",
+    "Twelve",
+    "Thirteen",
+    "Fourteen",
+    "Fifteen",
+    "Sixteen",
+    "Seventeen",
+    "Eighteen",
+    "Nineteen"
+
 ];
 
-const tens=[
-"","","Twenty","Thirty","Forty",
-"Fifty","Sixty","Seventy","Eighty","Ninety"
+
+const tens = [
+
+    "",
+    "",
+    "Twenty",
+    "Thirty",
+    "Forty",
+    "Fifty",
+    "Sixty",
+    "Seventy",
+    "Eighty",
+    "Ninety"
+
 ];
 
 
-function tw(n){
+function twoDigitWords(n) {
 
-return n<20
-?ones[n]
-:tens[Math.floor(n/10)] +
-(n%10?" "+ones[n%10]:"");
-
-}
+    n =
+        Number(n);
 
 
-function th(n){
+    if (n < 20) {
 
-return n>=100
-?ones[Math.floor(n/100)]+" Hundred"+
-(n%100?" "+tw(n%100):"")
-:tw(n);
+        return ones[n];
 
-}
+    }
 
 
-function words(n){
-
-n=Math.round(n);
-
-if(!n)
-return"Rupees Zero Only";
-
-let a=[];
-
-let c=Math.floor(n/1e7);
-n%=1e7;
-
-let l=Math.floor(n/1e5);
-n%=1e5;
-
-let t=Math.floor(n/1e3);
-n%=1e3;
-
-if(c)a.push(th(c)+" Crore");
-if(l)a.push(th(l)+" Lakh");
-if(t)a.push(th(t)+" Thousand");
-if(n)a.push(th(n));
-
-return"Rupees "+a.join(" ")+" Only";
+    return (
+        tens[
+            Math.floor(n / 10)
+        ] +
+        (
+            n % 10
+                ? " " + ones[n % 10]
+                : ""
+        )
+    );
 
 }
 
 
-function calc(){
+function threeDigitWords(n) {
 
-let total=
-+document.getElementById("total").value||0;
-
-let rate=
-+document.getElementById("product").value;
-
-let taxable=
-total/(1+rate/100);
-
-let taxTotal=
-total-taxable;
-
-let cgst=
-taxTotal/2;
-
-let sgst=
-taxTotal-cgst;
-
-return{
-total,
-rate,
-taxable,
-cgst,
-sgst
-};
-
-}
+    n =
+        Number(n);
 
 
-function preview(){
+    if (n >= 100) {
 
-let c=calc();
+        return (
 
-let product=
-document.getElementById("product").value==="5"
-?"Baby Products"
-:"Cleaning & Housekeeping Products";
+            ones[
+                Math.floor(n / 100)
+            ] +
 
-let qty=
-+document.getElementById("qty").value||1;
+            " Hundred" +
 
-let unitRate=
-c.taxable/qty;
+            (
+                n % 100
+                    ? " " +
+                      twoDigitWords(
+                          n % 100
+                      )
+                    : ""
+            )
 
+        );
 
-document.getElementById("gst").value=
-c.rate+"%";
-
-
-document.getElementById("pno").textContent=
-document.getElementById("no").value;
-
-
-document.getElementById("pdate").textContent=
-dshow(
-document.getElementById("date").value
-);
+    }
 
 
-document.getElementById("pbuyer").textContent=
-document.getElementById("buyer").value;
-
-
-document.getElementById("ppos").textContent=
-document.getElementById("pos").value;
-
-
-document.getElementById("pproduct").textContent=
-product;
-
-
-document.getElementById("pqty").textContent=
-qty;
-
-
-document.getElementById("prate").textContent=
-fmt(unitRate);
-
-
-document.getElementById("pamt").textContent=
-fmt(c.taxable);
-
-
-document.getElementById("ptax").textContent=
-fmt(c.taxable);
-
-
-document.getElementById("pcgr").textContent=
-c.rate/2;
-
-
-document.getElementById("psgr").textContent=
-c.rate/2;
-
-
-document.getElementById("pcgst").textContent=
-fmt(c.cgst);
-
-
-document.getElementById("psgst").textContent=
-fmt(c.sgst);
-
-
-document.getElementById("ptotal").textContent=
-fmt(c.total);
-
-
-document.getElementById("pwords").textContent=
-words(c.total);
+    return twoDigitWords(n);
 
 }
 
 
-function obj(){
+function amountInWords(amount) {
 
-let c=calc();
-
-return{
-
-no:document.getElementById("no").value,
-
-date:document.getElementById("date").value,
-
-buyer:document.getElementById("buyer").value,
-
-pos:document.getElementById("pos").value,
-
-product:document.getElementById("product").value,
-
-gst:c.rate,
-
-total:c.total,
-
-qty:
-+document.getElementById("qty").value||1
-
-};
-
-}
+    let n =
+        Math.round(
+            Number(amount) || 0
+        );
 
 
-async function save(){
+    if (n === 0) {
 
-let x=obj();
+        return "Rupees Zero Only";
 
-if(
-!x.no ||
-!x.date ||
-x.total<=0
-){
-
-return alert(
-"Enter invoice number, date and total."
-);
-
-}
-
-await dbPut(x);
-
-bills=await dbAll();
-
-render();
-
-alert(
-"Invoice saved permanently in this browser."
-);
-
-}
+    }
 
 
-async function load(no){
+    const parts = [];
 
-let x=
-bills.find(
-b=>b.no===no
-);
 
-if(!x)return;
+    const crore =
+        Math.floor(
+            n / 10000000
+        );
 
-document.getElementById("no").value=
-x.no;
+    n %= 10000000;
 
-document.getElementById("date").value=
-x.date;
 
-document.getElementById("buyer").value=
-x.buyer;
+    const lakh =
+        Math.floor(
+            n / 100000
+        );
 
-document.getElementById("pos").value=
-x.pos;
+    n %= 100000;
 
-document.getElementById("product").value=
-x.product;
 
-document.getElementById("gst").value=
-x.gst+"%";
+    const thousand =
+        Math.floor(
+            n / 1000
+        );
 
-document.getElementById("total").value=
-x.total;
+    n %= 1000;
 
-document.getElementById("qty").value=
-x.qty||1;
 
-preview();
+    if (crore) {
 
-scrollTo({
-top:0,
-behavior:"smooth"
-});
+        parts.push(
+            threeDigitWords(crore) +
+            " Crore"
+        );
+
+    }
+
+
+    if (lakh) {
+
+        parts.push(
+            threeDigitWords(lakh) +
+            " Lakh"
+        );
+
+    }
+
+
+    if (thousand) {
+
+        parts.push(
+            threeDigitWords(thousand) +
+            " Thousand"
+        );
+
+    }
+
+
+    if (n) {
+
+        parts.push(
+            threeDigitWords(n)
+        );
+
+    }
+
+
+    return (
+        "Rupees " +
+        parts.join(" ") +
+        " Only"
+    );
 
 }
 
 
-function newBill(){
+/* =========================
+   CALCULATION
+========================= */
 
-let z=new Date();
+function calculateInvoice() {
 
-z.setMinutes(
-z.getMinutes()-
-z.getTimezoneOffset()
-);
-
-document.getElementById("no").value=
-nextNo();
-
-document.getElementById("date").value=
-z.toISOString().slice(0,10);
-
-document.getElementById("buyer").value=
-"Cash Sale (B2C)";
-
-document.getElementById("pos").value=
-"Karnataka (29)";
-
-document.getElementById("product").value=
-"18";
-
-document.getElementById("gst").value=
-"18%";
-
-document.getElementById("total").value="";
-
-document.getElementById("qty").value=1;
-
-preview();
-
-}
+    const total =
+        Number(
+            document.getElementById(
+                "total"
+            ).value
+        ) || 0;
 
 
-function render(){
-
-let q=
-(
-document.getElementById("searchBills")?.value||""
-)
-.toLowerCase()
-.trim();
-
-let mon=
-document.getElementById("monthBills")?.value||"";
+    const rate =
+        Number(
+            document.getElementById(
+                "product"
+            ).value
+        ) || 0;
 
 
-let list=
-bills.filter(x=>{
-
-const product=
-x.product==="5"
-?"Baby Products"
-:"Cleaning & Housekeeping Products";
-
-return(
-(!q ||
-x.no.toLowerCase().includes(q) ||
-product.toLowerCase().includes(q)
-)
-&&
-(!mon ||
-x.date.startsWith(mon)
-)
-);
-
-});
+    const taxable =
+        total /
+        (1 + rate / 100);
 
 
-let el=
-document.getElementById("history");
+    const totalTax =
+        total - taxable;
 
 
-if(!list.length){
+    const cgst =
+        totalTax / 2;
 
-el.innerHTML=
-"<p>No matching invoices.</p>";
 
-return;
+    const sgst =
+        totalTax - cgst;
+
+
+    return {
+
+        total:total,
+
+        rate:rate,
+
+        taxable:taxable,
+
+        cgst:cgst,
+
+        sgst:sgst
+
+    };
 
 }
 
 
-let h=
-"<table>"+
-"<tr>"+
-"<th>Invoice</th>"+
-"<th>Date</th>"+
-"<th>Particulars</th>"+
-"<th>GST</th>"+
-"<th>Total</th>"+
-"<th></th>"+
-"</tr>";
+/* =========================
+   PREVIEW
+========================= */
+
+function preview() {
+
+    const invoice =
+        calculateInvoice();
 
 
-list
-.slice()
-.reverse()
-.forEach(x=>{
+    const productSelect =
+        document.getElementById(
+            "product"
+        );
 
-h+=
-`<tr>
-<td>${x.no}</td>
-<td>${dshow(x.date)}</td>
-<td>${
-x.product==="5"
-?"Baby Products"
-:"Cleaning & Housekeeping Products"
-}</td>
-<td>${x.gst}%</td>
-<td>₹${fmt(x.total)}</td>
+
+    const product =
+        productSelect.value === "5"
+
+            ? "Baby Products"
+
+            : "Cleaning & Housekeeping Products";
+
+
+    const qty =
+        Number(
+            document.getElementById(
+                "qty"
+            ).value
+        ) || 1;
+
+
+    const unitRate =
+        invoice.taxable / qty;
+
+
+    document.getElementById(
+        "gst"
+    ).value =
+        invoice.rate + "%";
+
+
+    document.getElementById(
+        "pno"
+    ).textContent =
+        document.getElementById(
+            "no"
+        ).value || "";
+
+
+    document.getElementById(
+        "pdate"
+    ).textContent =
+        dshow(
+            document.getElementById(
+                "date"
+            ).value
+        );
+
+
+    document.getElementById(
+        "pbuyer"
+    ).textContent =
+        document.getElementById(
+            "buyer"
+        ).value || "";
+
+
+    document.getElementById(
+        "ppos"
+    ).textContent =
+        document.getElementById(
+            "pos"
+        ).value || "";
+
+
+    document.getElementById(
+        "pproduct"
+    ).textContent =
+        product;
+
+
+    document.getElementById(
+        "pqty"
+    ).textContent =
+        qty;
+
+
+    document.getElementById(
+        "prate"
+    ).textContent =
+        fmt(unitRate);
+
+
+    document.getElementById(
+        "pamt"
+    ).textContent =
+        fmt(invoice.taxable);
+
+
+    document.getElementById(
+        "ptax"
+    ).textContent =
+        fmt(invoice.taxable);
+
+
+    document.getElementById(
+        "pcgr"
+    ).textContent =
+        invoice.rate / 2;
+
+
+    document.getElementById(
+        "psgr"
+    ).textContent =
+        invoice.rate / 2;
+
+
+    document.getElementById(
+        "pcgst"
+    ).textContent =
+        fmt(invoice.cgst);
+
+
+    document.getElementById(
+        "psgst"
+    ).textContent =
+        fmt(invoice.sgst);
+
+
+    document.getElementById(
+        "ptotal"
+    ).textContent =
+        fmt(invoice.total);
+
+
+    document.getElementById(
+        "pwords"
+    ).textContent =
+        amountInWords(
+            invoice.total
+        );
+
+}
+
+
+/* =========================
+   GET INVOICE DATA
+========================= */
+
+function getInvoiceObject() {
+
+    const invoice =
+        calculateInvoice();
+
+
+    return {
+
+        no:
+            document.getElementById(
+                "no"
+            ).value.trim(),
+
+        date:
+            document.getElementById(
+                "date"
+            ).value,
+
+        buyer:
+            document.getElementById(
+                "buyer"
+            ).value,
+
+        pos:
+            document.getElementById(
+                "pos"
+            ).value,
+
+        product:
+            document.getElementById(
+                "product"
+            ).value,
+
+        gst:
+            invoice.rate,
+
+        total:
+            invoice.total,
+
+        qty:
+            Number(
+                document.getElementById(
+                    "qty"
+                ).value
+            ) || 1
+
+    };
+
+}
+
+
+/* =========================
+   SAVE
+========================= */
+
+async function save() {
+
+    const data =
+        getInvoiceObject();
+
+
+    if (!data.no) {
+
+        alert(
+            "Enter invoice number."
+        );
+
+        document.getElementById(
+            "no"
+        ).focus();
+
+        return;
+
+    }
+
+
+    if (!data.date) {
+
+        alert(
+            "Select invoice date."
+        );
+
+        document.getElementById(
+            "date"
+        ).focus();
+
+        return;
+
+    }
+
+
+    if (data.total <= 0) {
+
+        alert(
+            "Enter invoice total."
+        );
+
+        document.getElementById(
+            "total"
+        ).focus();
+
+        return;
+
+    }
+
+
+    try {
+
+        await dbPut(data);
+
+
+        bills =
+            await dbAll();
+
+
+        render();
+
+
+        alert(
+            "Invoice " +
+            data.no +
+            " saved successfully."
+        );
+
+
+    } catch(error) {
+
+        console.error(error);
+
+
+        alert(
+            "Could not save invoice.\n\n" +
+            error.message
+        );
+
+    }
+
+}
+
+
+/* =========================
+   LOAD / EDIT
+========================= */
+
+async function load(no) {
+
+    const data =
+        bills.find(
+            bill =>
+                bill.no === no
+        );
+
+
+    if (!data)
+        return;
+
+
+    document.getElementById(
+        "no"
+    ).value =
+        data.no;
+
+
+    document.getElementById(
+        "date"
+    ).value =
+        data.date;
+
+
+    document.getElementById(
+        "buyer"
+    ).value =
+        data.buyer ||
+        "Cash Sale (B2C)";
+
+
+    document.getElementById(
+        "pos"
+    ).value =
+        data.pos ||
+        "Karnataka (29)";
+
+
+    document.getElementById(
+        "product"
+    ).value =
+        data.product;
+
+
+    document.getElementById(
+        "total"
+    ).value =
+        data.total;
+
+
+    document.getElementById(
+        "qty"
+    ).value =
+        data.qty || 1;
+
+
+    preview();
+
+
+    window.scrollTo({
+
+        top:0,
+
+        behavior:"smooth"
+
+    });
+
+}
+
+
+/* =========================
+   NEW INVOICE
+========================= */
+
+function newBill() {
+
+    const numberField =
+        document.getElementById(
+            "no"
+        );
+
+
+    const dateField =
+        document.getElementById(
+            "date"
+        );
+
+
+    if (!numberField)
+        return;
+
+
+    numberField.value =
+        nextNo();
+
+
+    dateField.value =
+        todayISO();
+
+
+    document.getElementById(
+        "buyer"
+    ).value =
+        "Cash Sale (B2C)";
+
+
+    document.getElementById(
+        "pos"
+    ).value =
+        "Karnataka (29)";
+
+
+    document.getElementById(
+        "product"
+    ).value =
+        "18";
+
+
+    document.getElementById(
+        "gst"
+    ).value =
+        "18%";
+
+
+    document.getElementById(
+        "total"
+    ).value =
+        "";
+
+
+    document.getElementById(
+        "qty"
+    ).value =
+        "1";
+
+
+    preview();
+
+}
+
+
+/* =========================
+   HISTORY
+========================= */
+
+function render() {
+
+    const search =
+        (
+            document.getElementById(
+                "searchBills"
+            )?.value || ""
+        )
+        .toLowerCase()
+        .trim();
+
+
+    const month =
+        document.getElementById(
+            "monthBills"
+        )?.value || "";
+
+
+    const filtered =
+        bills.filter(
+            function(bill) {
+
+                const product =
+                    bill.product === "5"
+
+                        ? "Baby Products"
+
+                        : "Cleaning & Housekeeping Products";
+
+
+                const searchMatch =
+                    !search ||
+
+                    String(bill.no)
+                        .toLowerCase()
+                        .includes(search) ||
+
+                    product
+                        .toLowerCase()
+                        .includes(search);
+
+
+                const monthMatch =
+                    !month ||
+
+                    String(bill.date)
+                        .startsWith(month);
+
+
+                return (
+                    searchMatch &&
+                    monthMatch
+                );
+
+            }
+        );
+
+
+    const history =
+        document.getElementById(
+            "history"
+        );
+
+
+    if (!filtered.length) {
+
+        history.innerHTML =
+            "<p>No matching invoices.</p>";
+
+        return;
+
+    }
+
+
+    let html = `
+
+<table>
+
+<tr>
+
+<th>Invoice</th>
+<th>Date</th>
+<th>Particulars</th>
+<th>GST</th>
+<th>Total</th>
+<th></th>
+
+</tr>
+
+`;
+
+
+    filtered
+        .slice()
+        .reverse()
+        .forEach(
+            function(bill) {
+
+                const product =
+                    bill.product === "5"
+
+                        ? "Baby Products"
+
+                        : "Cleaning & Housekeeping Products";
+
+
+                html += `
+
+<tr>
+
 <td>
-<button onclick="load('${x.no}')">
+${escapeHTML(bill.no)}
+</td>
+
+<td>
+${dshow(bill.date)}
+</td>
+
+<td>
+${escapeHTML(product)}
+</td>
+
+<td>
+${bill.gst}%
+</td>
+
+<td>
+₹${fmt(bill.total)}
+</td>
+
+<td>
+
+<button
+onclick="load('${escapeAttribute(bill.no)}')">
 Edit
 </button>
+
 </td>
-</tr>`;
 
-});
+</tr>
 
+`;
 
-el.innerHTML=
-h+
-"</table>";
-
-}
+            }
+        );
 
 
-function clearFilters(){
+    html += "</table>";
 
-document.getElementById(
-"searchBills"
-).value="";
 
-document.getElementById(
-"monthBills"
-).value="";
-
-render();
+    history.innerHTML =
+        html;
 
 }
 
 
-function showGSTR1(){
+/* =========================
+   SAFETY
+========================= */
 
-const list=
-bills
-.slice()
-.sort(
-(a,b)=>
-a.date.localeCompare(b.date)||
-a.no.localeCompare(b.no)
-);
+function escapeHTML(value) {
 
+    return String(value)
 
-const byRate={
-5:{
-count:0,
-taxable:0,
-cgst:0,
-sgst:0,
-total:0
-},
+        .replace(
+            /&/g,
+            "&amp;"
+        )
 
-18:{
-count:0,
-taxable:0,
-cgst:0,
-sgst:0,
-total:0
+        .replace(
+            /</g,
+            "&lt;"
+        )
+
+        .replace(
+            />/g,
+            "&gt;"
+        )
+
+        .replace(
+            /"/g,
+            "&quot;"
+        )
+
+        .replace(
+            /'/g,
+            "&#039;"
+        );
+
 }
-};
 
 
-list.forEach(x=>{
+function escapeAttribute(value) {
 
-const r=+x.gst;
+    return String(value)
 
-const t=+x.total;
+        .replace(
+            /\\/g,
+            "\\\\"
+        )
 
-const taxable=
-t/(1+r/100);
+        .replace(
+            /'/g,
+            "\\'"
+        );
 
-const taxTotal=
-t-taxable;
-
-const cgst=
-taxTotal/2;
-
-const sgst=
-taxTotal-cgst;
+}
 
 
-byRate[r].count++;
+/* =========================
+   FILTERS
+========================= */
 
-byRate[r].taxable+=taxable;
+function clearFilters() {
 
-byRate[r].cgst+=cgst;
-
-byRate[r].sgst+=sgst;
-
-byRate[r].total+=t;
-
-});
-
-
-const all={
-count:list.length,
-taxable:0,
-cgst:0,
-sgst:0,
-total:0
-};
+    const search =
+        document.getElementById(
+            "searchBills"
+        );
 
 
-[5,18].forEach(r=>{
-
-all.taxable+=
-byRate[r].taxable;
-
-all.cgst+=
-byRate[r].cgst;
-
-all.sgst+=
-byRate[r].sgst;
-
-all.total+=
-byRate[r].total;
-
-});
+    const month =
+        document.getElementById(
+            "monthBills"
+        );
 
 
-let h=
-`<table
+    if (search)
+        search.value = "";
+
+
+    if (month)
+        month.value = "";
+
+
+    render();
+
+}
+
+
+/* =========================
+   GSTR-1
+========================= */
+
+function showGSTR1() {
+
+    const list =
+        bills
+            .slice()
+            .sort(
+                function(a,b) {
+
+                    return (
+
+                        a.date.localeCompare(
+                            b.date
+                        ) ||
+
+                        a.no.localeCompare(
+                            b.no
+                        )
+
+                    );
+
+                }
+            );
+
+
+    const byRate = {
+
+        5:{
+            count:0,
+            taxable:0,
+            cgst:0,
+            sgst:0,
+            total:0
+        },
+
+        18:{
+            count:0,
+            taxable:0,
+            cgst:0,
+            sgst:0,
+            total:0
+        }
+
+    };
+
+
+    list.forEach(
+        function(bill) {
+
+            const rate =
+                Number(bill.gst);
+
+
+            const total =
+                Number(bill.total);
+
+
+            if (!byRate[rate])
+                return;
+
+
+            const taxable =
+                total /
+                (1 + rate / 100);
+
+
+            const tax =
+                total - taxable;
+
+
+            const cgst =
+                tax / 2;
+
+
+            const sgst =
+                tax - cgst;
+
+
+            byRate[rate].count++;
+
+            byRate[rate].taxable +=
+                taxable;
+
+            byRate[rate].cgst +=
+                cgst;
+
+            byRate[rate].sgst +=
+                sgst;
+
+            byRate[rate].total +=
+                total;
+
+        }
+    );
+
+
+    const all = {
+
+        count:list.length,
+
+        taxable:0,
+
+        cgst:0,
+
+        sgst:0,
+
+        total:0
+
+    };
+
+
+    [5,18].forEach(
+        function(rate) {
+
+            all.taxable +=
+                byRate[rate].taxable;
+
+            all.cgst +=
+                byRate[rate].cgst;
+
+            all.sgst +=
+                byRate[rate].sgst;
+
+            all.total +=
+                byRate[rate].total;
+
+        }
+    );
+
+
+    let html = `
+
+<table
 style="
 width:100%;
 border-collapse:collapse;
-font-size:11px
-"
->
+font-size:11px;
+">
 
 <tr>
 
@@ -1240,69 +2254,92 @@ font-size:11px
 <th>SGST ₹</th>
 <th>Total ₹</th>
 
-</tr>`;
+</tr>
+
+`;
 
 
-[5,18].forEach(r=>{
+    [5,18].forEach(
+        function(rate) {
 
-let x=byRate[r];
-
-h+=
-`<tr>
-
-<td>${r}%</td>
-
-<td>${x.count}</td>
-
-<td>${fmt(x.taxable)}</td>
-
-<td>${fmt(x.cgst)}</td>
-
-<td>${fmt(x.sgst)}</td>
-
-<td>${fmt(x.total)}</td>
-
-</tr>`;
-
-});
+            const row =
+                byRate[rate];
 
 
-h+=
-`<tr>
+            html += `
 
-<td><b>Total</b></td>
+<tr>
 
-<td><b>${all.count}</b></td>
+<td>${rate}%</td>
 
-<td><b>${fmt(all.taxable)}</b></td>
+<td>${row.count}</td>
 
-<td><b>${fmt(all.cgst)}</b></td>
+<td>${fmt(row.taxable)}</td>
 
-<td><b>${fmt(all.sgst)}</b></td>
+<td>${fmt(row.cgst)}</td>
 
-<td><b>${fmt(all.total)}</b></td>
+<td>${fmt(row.sgst)}</td>
+
+<td>${fmt(row.total)}</td>
 
 </tr>
 
-</table>`;
+`;
+
+        }
+    );
 
 
-h+=
-`<div
+    html += `
+
+<tr>
+
+<td>
+<b>Total</b>
+</td>
+
+<td>
+<b>${all.count}</b>
+</td>
+
+<td>
+<b>${fmt(all.taxable)}</b>
+</td>
+
+<td>
+<b>${fmt(all.cgst)}</b>
+</td>
+
+<td>
+<b>${fmt(all.sgst)}</b>
+</td>
+
+<td>
+<b>${fmt(all.total)}</b>
+</td>
+
+</tr>
+
+</table>
+
+`;
+
+
+    html += `
+
+<div
 style="
 margin-top:12px;
 max-height:360px;
-overflow:auto
-"
->
+overflow:auto;
+">
 
 <table
 style="
 width:100%;
 border-collapse:collapse;
-font-size:10px
-"
->
+font-size:10px;
+">
 
 <tr>
 
@@ -1315,334 +2352,638 @@ font-size:10px
 <th>SGST</th>
 <th>Total</th>
 
-</tr>`;
+</tr>
+
+`;
 
 
-list.forEach(x=>{
+    list.forEach(
+        function(bill) {
 
-let r=+x.gst;
-
-let t=+x.total;
-
-let taxable=
-t/(1+r/100);
-
-let taxTotal=
-t-taxable;
-
-let cgst=
-taxTotal/2;
-
-let sgst=
-taxTotal-cgst;
+            const rate =
+                Number(bill.gst);
 
 
-h+=
-`<tr>
-
-<td>${x.no}</td>
-
-<td>${dshow(x.date)}</td>
-
-<td>${
-x.product==="5"
-?"Baby Products"
-:"Cleaning & Housekeeping Products"
-}</td>
-
-<td>${r}%</td>
-
-<td>${fmt(taxable)}</td>
-
-<td>${fmt(cgst)}</td>
-
-<td>${fmt(sgst)}</td>
-
-<td>${fmt(t)}</td>
-
-</tr>`;
-
-});
+            const total =
+                Number(bill.total);
 
 
-h+="</table></div>";
+            const taxable =
+                total /
+                (1 + rate / 100);
 
 
-document.getElementById(
-"gstrSummary"
-).innerHTML=h;
+            const tax =
+                total - taxable;
 
 
-document.getElementById(
-"reportPanel"
-).style.display="block";
+            const cgst =
+                tax / 2;
 
 
-window.scrollTo({
-
-top:
-document.getElementById(
-"reportPanel"
-).offsetTop-10,
-
-behavior:"smooth"
-
-});
-
-}
+            const sgst =
+                tax - cgst;
 
 
-function closeGSTR1(){
+            const product =
+                bill.product === "5"
 
-document.getElementById(
-"reportPanel"
-).style.display="none";
+                    ? "Baby Products"
 
-}
-
-
-function exportCSV(){
-
-if(!bills.length)
-return alert("No invoices saved.");
+                    : "Cleaning & Housekeeping Products";
 
 
-let s=
-"Invoice No,Date,Particulars,GST Rate,Taxable Value,CGST,SGST,Invoice Total\n";
+            html += `
+
+<tr>
+
+<td>
+${escapeHTML(bill.no)}
+</td>
+
+<td>
+${dshow(bill.date)}
+</td>
+
+<td>
+${escapeHTML(product)}
+</td>
+
+<td>
+${rate}%
+</td>
+
+<td>
+${fmt(taxable)}
+</td>
+
+<td>
+${fmt(cgst)}
+</td>
+
+<td>
+${fmt(sgst)}
+</td>
+
+<td>
+${fmt(total)}
+</td>
+
+</tr>
+
+`;
+
+        }
+    );
 
 
-bills.forEach(x=>{
+    html += `
 
-let r=x.gst;
+</table>
 
-let t=x.total;
+</div>
 
-let taxable=
-t/(1+r/100);
-
-let taxTotal=
-t-taxable;
-
-let cgst=
-taxTotal/2;
-
-let sgst=
-taxTotal-cgst;
+`;
 
 
-s+=
-`"${x.no}","${dshow(x.date)}","${
-x.product==="5"
-?"Baby Products"
-:"Cleaning & Housekeeping Products"
-}",${x.gst},${taxable.toFixed(2)},${cgst.toFixed(2)},${sgst.toFixed(2)},${x.total.toFixed(2)}\n`;
-
-});
+    document.getElementById(
+        "gstrSummary"
+    ).innerHTML =
+        html;
 
 
-downloadFile(
-s,
-"IME_Invoice_Register.csv",
-"text/csv"
-);
+    document.getElementById(
+        "reportPanel"
+    ).style.display =
+        "block";
+
+
+    window.scrollTo({
+
+        top:
+            document.getElementById(
+                "reportPanel"
+            ).offsetTop - 10,
+
+        behavior:"smooth"
+
+    });
 
 }
 
 
-function backupJSON(){
+function closeGSTR1() {
 
-const payload={
-
-app:
-"I M ENTERPRISES Tally A5 Billing",
-
-version:1,
-
-exportedAt:
-new Date().toISOString(),
-
-invoices:bills
-
-};
-
-
-downloadFile(
-
-JSON.stringify(
-payload,
-null,
-2
-),
-
-"IME_Bills_Backup.json",
-
-"application/json"
-
-);
+    document.getElementById(
+        "reportPanel"
+    ).style.display =
+        "none";
 
 }
 
+
+/* =========================
+   CSV
+========================= */
+
+function exportCSV() {
+
+    if (!bills.length) {
+
+        alert(
+            "No invoices saved."
+        );
+
+        return;
+
+    }
+
+
+    let csv =
+        "Invoice No,Date,Particulars,GST Rate,Taxable Value,CGST,SGST,Invoice Total\n";
+
+
+    bills.forEach(
+        function(bill) {
+
+            const rate =
+                Number(bill.gst);
+
+
+            const total =
+                Number(bill.total);
+
+
+            const taxable =
+                total /
+                (1 + rate / 100);
+
+
+            const tax =
+                total - taxable;
+
+
+            const cgst =
+                tax / 2;
+
+
+            const sgst =
+                tax - cgst;
+
+
+            const product =
+                bill.product === "5"
+
+                    ? "Baby Products"
+
+                    : "Cleaning & Housekeeping Products";
+
+
+            csv +=
+
+                `"${bill.no}",` +
+
+                `"${dshow(bill.date)}",` +
+
+                `"${product}",` +
+
+                `${rate},` +
+
+                `${taxable.toFixed(2)},` +
+
+                `${cgst.toFixed(2)},` +
+
+                `${sgst.toFixed(2)},` +
+
+                `${total.toFixed(2)}\n`;
+
+        }
+    );
+
+
+    downloadFile(
+        csv,
+        "IME_Invoice_Register.csv",
+        "text/csv"
+    );
+
+}
+
+
+/* =========================
+   BACKUP
+========================= */
+
+function backupJSON() {
+
+    const backup = {
+
+        app:
+            "I M ENTERPRISES Tally A5 Billing",
+
+        version:1,
+
+        exportedAt:
+            new Date().toISOString(),
+
+        invoices:bills
+
+    };
+
+
+    downloadFile(
+
+        JSON.stringify(
+            backup,
+            null,
+            2
+        ),
+
+        "IME_Bills_Backup.json",
+
+        "application/json"
+
+    );
+
+}
+
+
+/* =========================
+   DOWNLOAD
+========================= */
 
 function downloadFile(
-content,
-name,
-type
-){
+    content,
+    filename,
+    type
+) {
 
-const a=
-document.createElement("a");
-
-a.href=
-URL.createObjectURL(
-new Blob(
-[content],
-{type}
-)
-);
-
-a.download=name;
-
-a.click();
+    const blob =
+        new Blob(
+            [content],
+            {
+                type:type
+            }
+        );
 
 
-setTimeout(
-()=>{
-URL.revokeObjectURL(
-a.href
-);
-},
-1000
-);
-
-}
+    const url =
+        URL.createObjectURL(blob);
 
 
-function restoreJSON(){
-
-document.getElementById(
-"restoreFile"
-).click();
-
-}
+    const link =
+        document.createElement("a");
 
 
-async function importJSON(e){
-
-const f=
-e.target.files[0];
-
-if(!f)return;
+    link.href =
+        url;
 
 
-try{
-
-const data=
-JSON.parse(
-await f.text()
-);
-
-const list=
-Array.isArray(data)
-?data
-:data.invoices;
+    link.download =
+        filename;
 
 
-if(!Array.isArray(list))
-throw new Error(
-"Invalid backup"
-);
+    document.body.appendChild(
+        link
+    );
 
 
-for(
-const x of list
-){
+    link.click();
 
-if(x.no)
-await dbPut(x);
+
+    link.remove();
+
+
+    setTimeout(
+        function() {
+
+            URL.revokeObjectURL(
+                url
+            );
+
+        },
+        1000
+    );
 
 }
 
 
-bills=
-await dbAll();
+/* =========================
+   RESTORE
+========================= */
 
-render();
+function restoreJSON() {
+
+    document.getElementById(
+        "restoreFile"
+    ).click();
+
+}
 
 
-alert(
-list.length+
-" bills restored."
+async function importJSON(event) {
+
+    const file =
+        event.target.files[0];
+
+
+    if (!file)
+        return;
+
+
+    try {
+
+        const text =
+            await file.text();
+
+
+        const data =
+            JSON.parse(text);
+
+
+        const list =
+            Array.isArray(data)
+
+                ? data
+
+                : data.invoices;
+
+
+        if (!Array.isArray(list)) {
+
+            throw new Error(
+                "Invalid backup file."
+            );
+
+        }
+
+
+        for (
+            const invoice of list
+        ) {
+
+            if (invoice.no) {
+
+                await dbPut(
+                    invoice
+                );
+
+            }
+
+        }
+
+
+        bills =
+            await dbAll();
+
+
+        render();
+
+
+        alert(
+            list.length +
+            " bills restored successfully."
+        );
+
+
+    } catch(error) {
+
+        console.error(error);
+
+
+        alert(
+            "Could not restore backup:\n\n" +
+            error.message
+        );
+
+    }
+
+
+    event.target.value = "";
+
+}
+
+
+/* =========================
+   CLEAR
+========================= */
+
+async function clearAll() {
+
+    const ok =
+        confirm(
+
+            "Delete ALL saved invoices from this browser?\n\n" +
+
+            "Make a backup first if needed."
+
+        );
+
+
+    if (!ok)
+        return;
+
+
+    try {
+
+        await dbClear();
+
+
+        bills = [];
+
+
+        render();
+
+
+        newBill();
+
+
+    } catch(error) {
+
+        alert(
+
+            "Could not clear invoices:\n\n" +
+
+            error.message
+
+        );
+
+    }
+
+}
+
+
+/* =========================
+   INITIALIZE
+========================= */
+
+async function initializeApp() {
+
+    /*
+       Create a bill immediately.
+       This guarantees Invoice No.,
+       Date and GST Rate are visible.
+    */
+
+    try {
+
+        newBill();
+
+    } catch(error) {
+
+        console.error(
+            "Initial bill error:",
+            error
+        );
+
+    }
+
+
+    /*
+       Load saved invoices.
+    */
+
+    try {
+
+        bills =
+            await dbAll();
+
+
+        dbReady = true;
+
+
+        /*
+           Recalculate the invoice number
+           after saved invoices are loaded.
+        */
+
+        newBill();
+
+
+        render();
+
+    } catch(error) {
+
+        dbReady = false;
+
+
+        console.error(
+            "Database loading failed:",
+            error
+        );
+
+
+        /*
+           App still works even if
+           IndexedDB has a problem.
+        */
+
+        render();
+
+    }
+
+}
+
+
+/* =========================
+   START APP
+========================= */
+
+document.addEventListener(
+    "DOMContentLoaded",
+    function() {
+
+
+        const product =
+            document.getElementById(
+                "product"
+            );
+
+
+        const total =
+            document.getElementById(
+                "total"
+            );
+
+
+        const qty =
+            document.getElementById(
+                "qty"
+            );
+
+
+        if (product) {
+
+            product.addEventListener(
+                "change",
+                preview
+            );
+
+        }
+
+
+        if (total) {
+
+            total.addEventListener(
+                "input",
+                preview
+            );
+
+        }
+
+
+        if (qty) {
+
+            qty.addEventListener(
+                "input",
+                preview
+            );
+
+        }
+
+
+        /*
+           Start application.
+        */
+
+        initializeApp();
+
+
+        /*
+           Register PWA Service Worker.
+        */
+
+        if (
+            "serviceWorker"
+            in navigator
+        ) {
+
+            navigator.serviceWorker
+                .register("./sw.js")
+                .then(
+                    function() {
+
+                        console.log(
+                            "IME Billing Service Worker registered."
+                        );
+
+                    }
+                )
+                .catch(
+                    function(error) {
+
+                        console.error(
+                            "Service Worker registration failed:",
+                            error
+                        );
+
+                    }
+                );
+
+        }
+
+    }
 );
-
-
-}catch(err){
-
-alert(
-"Could not restore this backup: "+
-err.message
-);
-
-}
-
-
-e.target.value="";
-
-}
-
-
-async function clearAll(){
-
-if(
-confirm(
-"Delete all saved invoices from this browser? Make a backup first if needed."
-)
-){
-
-await dbClear();
-
-bills=[];
-
-render();
-
-newBill();
-
-}
-
-}
-
-
-/* PWA */
-
-if(
-"serviceWorker" in navigator
-){
-
-window.addEventListener(
-"load",
-()=>{
-
-navigator.serviceWorker
-.register("./sw.js")
-.catch(
-err=>
-console.log(
-"Service worker registration failed:",
-err
-)
-);
-
-}
-);
-
-}
-
-
-document.getElementById(
-"product"
-).onchange=()=>preview();
-
-
-initDB();
 
 </script>
 
