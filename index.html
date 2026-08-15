@@ -1,0 +1,294 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>I M ENTERPRISES — A5 Tally Billing</title>
+<style>
+*{box-sizing:border-box}body{margin:0;background:#eee;font-family:Arial,sans-serif;color:#111}
+.app{max-width:1050px;margin:auto;padding:14px}.panel{background:#fff;border:1px solid #aaa;padding:14px;margin-bottom:14px}
+h2{margin:0 0 10px}.grid{display:grid;grid-template-columns:repeat(4,1fr);gap:9px}
+label{font-size:12px;font-weight:bold}input,select{width:100%;padding:8px;margin-top:3px;border:1px solid #999}
+.actions{display:flex;gap:7px;flex-wrap:wrap;margin-top:12px}button{padding:8px 12px;border:1px solid #777;background:#f5f5f5;font-weight:bold;cursor:pointer}
+.primary{background:#222;color:white}
+.wrap{display:flex;justify-content:center}.bill{width:148mm;min-height:210mm;background:white;padding:7mm 9mm;box-shadow:0 1px 8px #999}
+.center{text-align:center}.tax{font-size:12px;font-weight:bold}.company{font-size:16px;font-weight:bold}.addr{font-size:8px;line-height:1.35}
+table{border-collapse:collapse;width:100%}.meta{margin-top:7px;font-size:8px}.meta td{border:1px solid #111;padding:4px;width:50%;vertical-align:top}
+.billtable{margin-top:6px;font-size:8px;table-layout:fixed}.billtable th,.billtable td{border:1px solid #111;padding:4px;overflow-wrap:anywhere;vertical-align:middle}
+.billtable th{text-align:center}.sl{width:7%}.part{width:40%}.hsn{width:10%}.qty{width:8%}.rate{width:17%}.amt{width:18%}
+.r{text-align:right}.c{text-align:center}.words,.decl{font-size:7.5px;margin-top:6px;line-height:1.35}
+.sign{display:grid;grid-template-columns:1fr 1fr;border:1px solid #111;margin-top:12mm;min-height:21mm;font-size:8px}.sign div{padding:5px}.sign div+div{border-left:1px solid #111;text-align:right}
+.history table{font-size:11px}.history th,.history td{border:1px solid #aaa;padding:5px}
+@media(max-width:750px){.grid{grid-template-columns:1fr 1fr}}@media(max-width:500px){.grid{grid-template-columns:1fr}.app{padding:6px}.bill{width:100%;padding:5mm}}
+@media print{body{background:white}.panel,.history{display:none}.app{padding:0}.bill{box-shadow:none;margin:auto;width:148mm;min-height:210mm}@page{size:A5 portrait;margin:0}}
+</style>
+</head>
+<body>
+<div class="app">
+<div class="panel">
+<h2>I M ENTERPRISES — A5 Tally Billing</h2>
+<div class="grid">
+<div><label>Invoice No.</label><input id="no"></div>
+<div><label>Invoice Date</label><input id="date" type="date"></div>
+<div><label>Buyer</label><input id="buyer" value="Cash Sale (B2C)"></div>
+<div><label>Place of Supply</label><input id="pos" value="Karnataka (29)"></div>
+<div><label>Particulars</label><select id="product"><option value="18">Cleaning & Housekeeping Products</option><option value="5">Baby Products</option></select></div>
+<div><label>GST Rate</label><input id="gst" readonly></div>
+<div><label>Invoice Total — Inclusive GST (₹)</label><input id="total" type="number" min="0" step=".01"></div>
+<div><label>Quantity</label><input id="qty" type="number" min="1" value="1"></div>
+</div>
+<div class="actions">
+<button class="primary" onclick="preview()">Preview / Calculate</button>
+<button onclick="save()">Save Invoice</button><button onclick="window.print()">Print / Save PDF</button>
+<button onclick="newBill()">New Invoice</button><button onclick="exportCSV()">Export CSV</button>
+<button onclick="showGSTR1()">GSTR-1 Report</button>
+<button onclick="backupJSON()">Backup Bills</button>
+<button onclick="restoreJSON()">Restore Bills</button>
+<input id="restoreFile" type="file" accept=".json,application/json" hidden onchange="importJSON(event)">
+<button onclick="clearAll()">Clear History</button>
+</div>
+</div>
+
+<div class="wrap"><div class="bill">
+<div class="center"><div class="tax">TAX INVOICE</div><div class="company">I M ENTERPRISES</div>
+<div class="addr">CTS No. 67, CR 53, PID 23427, Jamiya Masjid Road,<br>Opp. Mahtar Mahal Masjid, Vijayapura, Karnataka - 586101<br><b>GSTIN: 29BPZPJ1392D1ZE</b></div></div>
+
+<table class="meta"><tr><td><b>Invoice No.</b><br><span id="pno"></span></td><td><b>Dated</b><br><span id="pdate"></span></td></tr>
+<tr><td><b>Buyer</b><br><span id="pbuyer"></span></td><td><b>Place of Supply</b><br><span id="ppos"></span></td></tr></table>
+
+<table class="billtable"><colgroup><col class="sl"><col class="part"><col class="hsn"><col class="qty"><col class="rate"><col class="amt"></colgroup>
+<thead><tr><th>Sl</th><th>Particulars</th><th>HSN</th><th>Qty</th><th>Rate</th><th>Amount</th></tr></thead>
+<tbody>
+<tr><td class="c">1</td><td id="pproduct"></td><td></td><td class="c" id="pqty"></td><td class="r" id="prate"></td><td class="r" id="pamt"></td></tr>
+<tr><td colspan="4"></td><td><b>Taxable Value</b></td><td class="r" id="ptax"></td></tr>
+<tr><td colspan="4"></td><td><b>CGST @ <span id="pcgr"></span>%</b></td><td class="r" id="pcgst"></td></tr>
+<tr><td colspan="4"></td><td><b>SGST @ <span id="psgr"></span>%</b></td><td class="r" id="psgst"></td></tr>
+<tr><td colspan="4"></td><td><b>Grand Total</b></td><td class="r"><b id="ptotal"></b></td></tr>
+</tbody></table>
+
+<div class="words"><b>Amount in Words:</b> <span id="pwords"></span></div>
+<div class="decl"><b>Declaration:</b> This invoice is issued for B2C retail sales. The product description shown represents the category of goods supplied. The applicable GST rate is correctly charged on the goods covered under the respective category.</div>
+<div class="sign"><div>Customer Signature</div><div>For <b>I M ENTERPRISES</b><br><br><br>Authorized Signatory</div></div>
+</div></div>
+
+<div class="panel" id="reportPanel" style="display:none">
+<b>GSTR-1 Report</b>
+<div id="gstrSummary" style="margin-top:8px"></div>
+<div class="actions"><button onclick="window.print()">Print / Save Report PDF</button><button onclick="closeGSTR1()">Close Report</button></div>
+</div>
+
+<div class="panel history">
+<b>Saved Invoice Register</b>
+<div style="display:flex;gap:8px;flex-wrap:wrap;margin:8px 0">
+<input id="searchBills" placeholder="Search invoice / product" oninput="render()" style="max-width:240px">
+<input id="monthBills" type="month" onchange="render()" style="max-width:160px">
+<button onclick="clearFilters()">Clear Filters</button>
+</div>
+<div id="history"></div>
+</div>
+</div>
+
+<script>
+const DB_NAME="IME_TALLY_BILLS_DB", STORE="invoices", DB_VERSION=1;
+let bills=[];
+
+function openDB(){
+ return new Promise((resolve,reject)=>{
+  const req=indexedDB.open(DB_NAME,DB_VERSION);
+  req.onupgradeneeded=e=>{
+   const db=e.target.result;
+   if(!db.objectStoreNames.contains(STORE)){
+    db.createObjectStore(STORE,{keyPath:"no"});
+   }
+  };
+  req.onsuccess=e=>resolve(e.target.result);
+  req.onerror=e=>reject(e.target.error);
+ });
+}
+async function dbAll(){
+ const db=await openDB();
+ return new Promise((resolve,reject)=>{
+  const tx=db.transaction(STORE,"readonly"), s=tx.objectStore(STORE), r=s.getAll();
+  r.onsuccess=()=>resolve(r.result||[]);
+  r.onerror=()=>reject(r.error);
+ });
+}
+async function dbPut(x){
+ const db=await openDB();
+ return new Promise((resolve,reject)=>{
+  const tx=db.transaction(STORE,"readwrite");
+  tx.objectStore(STORE).put(x);
+  tx.oncomplete=resolve; tx.onerror=()=>reject(tx.error);
+ });
+}
+async function dbClear(){
+ const db=await openDB();
+ return new Promise((resolve,reject)=>{
+  const tx=db.transaction(STORE,"readwrite");
+  tx.objectStore(STORE).clear();
+  tx.oncomplete=resolve; tx.onerror=()=>reject(tx.error);
+ });
+}
+async function dbDelete(no){
+ const db=await openDB();
+ return new Promise((resolve,reject)=>{
+  const tx=db.transaction(STORE,"readwrite");
+  tx.objectStore(STORE).delete(no);
+  tx.oncomplete=resolve; tx.onerror=()=>reject(tx.error);
+ });
+}
+async function initDB(){
+ bills=await dbAll();
+ newBill();
+ render();
+}
+function fmt(n){return new Intl.NumberFormat("en-IN",{minimumFractionDigits:2,maximumFractionDigits:2}).format(n)}
+function dshow(v){if(!v)return"";let [y,m,d]=v.split("-");return d+"-"+m+"-"+y}
+function nextNo(){
+ let d=new Date(),mon=["JAN","FEB","MAR","APR","MAY","JUN","JUL","AUG","SEP","OCT","NOV","DEC"][d.getMonth()];
+ let pre="IME/"+mon+String(d.getFullYear()).slice(-2)+"/",mx=0;
+ bills.forEach(x=>{if(x.no&&x.no.startsWith(pre))mx=Math.max(mx,+x.no.split("/").pop()||0)});
+ return pre+String(mx+1).padStart(3,"0");
+}
+const ones=["","One","Two","Three","Four","Five","Six","Seven","Eight","Nine","Ten","Eleven","Twelve","Thirteen","Fourteen","Fifteen","Sixteen","Seventeen","Eighteen","Nineteen"];
+const tens=["","","Twenty","Thirty","Forty","Fifty","Sixty","Seventy","Eighty","Ninety"];
+function tw(n){return n<20?ones[n]:tens[Math.floor(n/10)]+(n%10?" "+ones[n%10]:"")}
+function th(n){return n>=100?ones[Math.floor(n/100)]+" Hundred"+(n%100?" "+tw(n%100):""):tw(n)}
+function words(n){
+ n=Math.round(n);if(!n)return"Rupees Zero Only";
+ let a=[],c=Math.floor(n/1e7);n%=1e7,l=Math.floor(n/1e5);n%=1e5,t=Math.floor(n/1e3);n%=1e3;
+ if(c)a.push(th(c)+" Crore");if(l)a.push(th(l)+" Lakh");if(t)a.push(th(t)+" Thousand");if(n)a.push(th(n));
+ return"Rupees "+a.join(" ")+" Only";
+}
+function calc(){
+ let total=+document.getElementById("total").value||0,rate=+document.getElementById("product").value,
+ tax=total/(1+rate/100),tt=total-tax,cg=tt/2,sg=tt-cg;
+ return{total,rate,tax,cg,sg};
+}
+function preview(){
+ let c=calc(),prod=document.getElementById("product").value==="5"?"Baby Products":"Cleaning & Housekeeping Products";
+ document.getElementById("gst").value=c.rate+"%";
+ document.getElementById("pno").textContent=document.getElementById("no").value;
+ document.getElementById("pdate").textContent=dshow(document.getElementById("date").value);
+ document.getElementById("pbuyer").textContent=document.getElementById("buyer").value;
+ document.getElementById("ppos").textContent=document.getElementById("pos").value;
+ document.getElementById("pproduct").textContent=prod;
+ document.getElementById("pqty").textContent=document.getElementById("qty").value;
+ document.getElementById("prate").textContent=fmt(c.tax);
+ document.getElementById("pamt").textContent=fmt(c.tax);
+ document.getElementById("ptax").textContent=fmt(c.tax);
+ document.getElementById("pcgr").textContent=c.rate/2;
+ document.getElementById("psgr").textContent=c.rate/2;
+ document.getElementById("pcgst").textContent=fmt(c.cg);
+ document.getElementById("psgst").textContent=fmt(c.sg);
+ document.getElementById("ptotal").textContent=fmt(c.total);
+ document.getElementById("pwords").textContent=words(c.total);
+}
+function obj(){
+ let c=calc();
+ return{no:document.getElementById("no").value,date:document.getElementById("date").value,
+ buyer:document.getElementById("buyer").value,pos:document.getElementById("pos").value,
+ product:document.getElementById("product").value,gst:c.rate,total:c.total,qty:+document.getElementById("qty").value||1};
+}
+async function save(){
+ let x=obj();
+ if(!x.no||!x.date||x.total<=0)return alert("Enter invoice number, date and total.");
+ await dbPut(x);
+ bills=await dbAll(); render(); alert("Invoice saved permanently in this browser.");
+}
+async function load(no){
+ let x=bills.find(b=>b.no===no);if(!x)return;
+ document.getElementById("no").value=x.no;document.getElementById("date").value=x.date;
+ document.getElementById("buyer").value=x.buyer;document.getElementById("pos").value=x.pos;
+ document.getElementById("product").value=x.product;document.getElementById("gst").value=x.gst+"%";
+ document.getElementById("total").value=x.total;document.getElementById("qty").value=x.qty||1;
+ preview();scrollTo({top:0,behavior:"smooth"});
+}
+function newBill(){
+ let z=new Date();z.setMinutes(z.getMinutes()-z.getTimezoneOffset());
+ document.getElementById("no").value=nextNo();document.getElementById("date").value=z.toISOString().slice(0,10);
+ document.getElementById("buyer").value="Cash Sale (B2C)";document.getElementById("pos").value="Karnataka (29)";
+ document.getElementById("product").value="18";document.getElementById("gst").value="18%";
+ document.getElementById("total").value="";document.getElementById("qty").value=1;preview();
+}
+function render(){
+ let q=(document.getElementById("searchBills")?.value||"").toLowerCase().trim();
+ let mon=document.getElementById("monthBills")?.value||"";
+ let list=bills.filter(x=>{
+  const prod=x.product==="5"?"Baby Products":"Cleaning & Housekeeping Products";
+  return (!q || x.no.toLowerCase().includes(q) || prod.toLowerCase().includes(q)) &&
+         (!mon || x.date.startsWith(mon));
+ });
+ let el=document.getElementById("history");
+ if(!list.length){el.innerHTML="<p>No matching invoices.</p>";return}
+ let h="<table><tr><th>Invoice</th><th>Date</th><th>Particulars</th><th>GST</th><th>Total</th><th></th></tr>";
+ list.slice().reverse().forEach(x=>{
+  h+=`<tr><td>${x.no}</td><td>${dshow(x.date)}</td><td>${x.product==="5"?"Baby Products":"Cleaning & Housekeeping Products"}</td><td>${x.gst}%</td><td>₹${fmt(x.total)}</td><td><button onclick="load('${x.no}')">Edit</button></td></tr>`;
+ });
+ el.innerHTML=h+"</table>";
+}
+function clearFilters(){
+ document.getElementById("searchBills").value="";
+ document.getElementById("monthBills").value="";
+ render();
+}
+function showGSTR1(){
+ const list=bills.slice().sort((a,b)=>a.date.localeCompare(b.date)||a.no.localeCompare(b.no));
+ const byRate={5:{count:0,taxable:0,cgst:0,sgst:0,total:0},18:{count:0,taxable:0,cgst:0,sgst:0,total:0}};
+ list.forEach(x=>{
+  const r=+x.gst,t=+x.total,tx=t/(1+r/100),tt=t-tx,cg=tt/2,sg=tt-cg;
+  byRate[r].count++;byRate[r].taxable+=tx;byRate[r].cgst+=cg;byRate[r].sgst+=sg;byRate[r].total+=t;
+ });
+ const all={count:list.length,taxable:0,cgst:0,sgst:0,total:0};
+ [5,18].forEach(r=>{all.taxable+=byRate[r].taxable;all.cgst+=byRate[r].cgst;all.sgst+=byRate[r].sgst;all.total+=byRate[r].total});
+ let h=`<table style="width:100%;border-collapse:collapse;font-size:11px">
+ <tr><th style="border:1px solid #aaa;padding:5px">GST</th><th style="border:1px solid #aaa;padding:5px">Invoices</th><th style="border:1px solid #aaa;padding:5px">Taxable ₹</th><th style="border:1px solid #aaa;padding:5px">CGST ₹</th><th style="border:1px solid #aaa;padding:5px">SGST ₹</th><th style="border:1px solid #aaa;padding:5px">Total ₹</th></tr>`;
+ [5,18].forEach(r=>{let x=byRate[r];h+=`<tr><td style="border:1px solid #aaa;padding:5px">${r}%</td><td style="border:1px solid #aaa;padding:5px">${x.count}</td><td style="border:1px solid #aaa;padding:5px">${fmt(x.taxable)}</td><td style="border:1px solid #aaa;padding:5px">${fmt(x.cgst)}</td><td style="border:1px solid #aaa;padding:5px">${fmt(x.sgst)}</td><td style="border:1px solid #aaa;padding:5px">${fmt(x.total)}</td></tr>`});
+ h+=`<tr><td style="border:1px solid #aaa;padding:5px"><b>Total</b></td><td style="border:1px solid #aaa;padding:5px"><b>${all.count}</b></td><td style="border:1px solid #aaa;padding:5px"><b>${fmt(all.taxable)}</b></td><td style="border:1px solid #aaa;padding:5px"><b>${fmt(all.cgst)}</b></td><td style="border:1px solid #aaa;padding:5px"><b>${fmt(all.sgst)}</b></td><td style="border:1px solid #aaa;padding:5px"><b>${fmt(all.total)}</b></td></tr></table>`;
+ h+=`<div style="margin-top:12px;max-height:360px;overflow:auto"><table style="width:100%;border-collapse:collapse;font-size:10px">
+ <tr><th style="border:1px solid #aaa;padding:4px">Invoice</th><th style="border:1px solid #aaa;padding:4px">Date</th><th style="border:1px solid #aaa;padding:4px">Particulars</th><th style="border:1px solid #aaa;padding:4px">GST</th><th style="border:1px solid #aaa;padding:4px">Taxable</th><th style="border:1px solid #aaa;padding:4px">CGST</th><th style="border:1px solid #aaa;padding:4px">SGST</th><th style="border:1px solid #aaa;padding:4px">Total</th></tr>`;
+ list.forEach(x=>{let r=+x.gst,t=+x.total,tx=t/(1+r/100),tt=t-tx,cg=tt/2,sg=tt-cg;h+=`<tr><td style="border:1px solid #aaa;padding:4px">${x.no}</td><td style="border:1px solid #aaa;padding:4px">${dshow(x.date)}</td><td style="border:1px solid #aaa;padding:4px">${x.product==="5"?"Baby Products":"Cleaning & Housekeeping Products"}</td><td style="border:1px solid #aaa;padding:4px">${r}%</td><td style="border:1px solid #aaa;padding:4px">${fmt(tx)}</td><td style="border:1px solid #aaa;padding:4px">${fmt(cg)}</td><td style="border:1px solid #aaa;padding:4px">${fmt(sg)}</td><td style="border:1px solid #aaa;padding:4px">${fmt(t)}</td></tr>`});
+ h+="</table></div>";
+ document.getElementById("gstrSummary").innerHTML=h;
+ document.getElementById("reportPanel").style.display="block";
+ window.scrollTo({top:document.getElementById("reportPanel").offsetTop-10,behavior:"smooth"});
+}
+function closeGSTR1(){document.getElementById("reportPanel").style.display="none"}
+function exportCSV(){
+ if(!bills.length)return alert("No invoices saved.");
+ let s="Invoice No,Date,Particulars,GST Rate,Taxable Value,CGST,SGST,Invoice Total\n";
+ bills.forEach(x=>{
+  let r=x.gst,t=x.total,tx=t/(1+r/100),tt=t-tx,cg=tt/2;
+  s+=`"${x.no}","${dshow(x.date)}","${x.product==="5"?"Baby Products":"Cleaning & Housekeeping Products"}",${x.gst},${tx.toFixed(2)},${cg.toFixed(2)},${(tt-cg).toFixed(2)},${x.total.toFixed(2)}\n`;
+ });
+ downloadFile(s,"IME_Invoice_Register.csv","text/csv");
+}
+function backupJSON(){
+ const payload={app:"I M ENTERPRISES Tally A5 Billing",version:1,exportedAt:new Date().toISOString(),invoices:bills};
+ downloadFile(JSON.stringify(payload,null,2),"IME_Bills_Backup.json","application/json");
+}
+function downloadFile(content,name,type){
+ const a=document.createElement("a");
+ a.href=URL.createObjectURL(new Blob([content],{type}));
+ a.download=name;a.click();setTimeout(()=>URL.revokeObjectURL(a.href),1000);
+}
+function restoreJSON(){document.getElementById("restoreFile").click()}
+async function importJSON(e){
+ const f=e.target.files[0];if(!f)return;
+ try{
+  const data=JSON.parse(await f.text()), list=Array.isArray(data)?data:data.invoices;
+  if(!Array.isArray(list))throw new Error("Invalid backup");
+  for(const x of list){if(x.no)await dbPut(x)}
+  bills=await dbAll();render();alert(list.length+" bills restored.");
+ }catch(err){alert("Could not restore this backup: "+err.message)}
+ e.target.value="";
+}
+async function clearAll(){
+ if(confirm("Delete all saved invoices from this browser? Make a backup first if needed.")){
+  await dbClear();bills=[];render();newBill();
+ }
+}
+document.getElementById("product").onchange=()=>preview();
+initDB();
+</script>
+</body></html>
