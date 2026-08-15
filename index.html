@@ -6,7 +6,6 @@
 
 <title>I M ENTERPRISES — A5 Tally Billing</title>
 
-<!-- PWA -->
 <link rel="manifest" href="./manifest.webmanifest">
 <meta name="theme-color" content="#222222">
 <link rel="apple-touch-icon" href="./icon-192.png">
@@ -25,12 +24,13 @@ button{padding:8px 12px;border:1px solid #777;background:#f5f5f5;font-weight:bol
 .primary{background:#222;color:white}
 
 .wrap{display:flex;justify-content:center}
+
 .bill{
- width:148mm;
- min-height:210mm;
- background:white;
- padding:7mm 9mm;
- box-shadow:0 1px 8px #999
+width:148mm;
+min-height:210mm;
+background:white;
+padding:7mm 9mm;
+box-shadow:0 1px 8px #999
 }
 
 .center{text-align:center}
@@ -39,26 +39,31 @@ button{padding:8px 12px;border:1px solid #777;background:#f5f5f5;font-weight:bol
 .addr{font-size:8px;line-height:1.35}
 
 table{border-collapse:collapse;width:100%}
-.meta{margin-top:7px;font-size:8px}
+
+.meta{
+margin-top:7px;
+font-size:8px
+}
+
 .meta td{
- border:1px solid #111;
- padding:4px;
- width:50%;
- vertical-align:top
+border:1px solid #111;
+padding:4px;
+width:50%;
+vertical-align:top
 }
 
 .billtable{
- margin-top:6px;
- font-size:8px;
- table-layout:fixed
+margin-top:6px;
+font-size:8px;
+table-layout:fixed
 }
 
 .billtable th,
 .billtable td{
- border:1px solid #111;
- padding:4px;
- overflow-wrap:anywhere;
- vertical-align:middle
+border:1px solid #111;
+padding:4px;
+overflow-wrap:anywhere;
+vertical-align:middle
 }
 
 .billtable th{text-align:center}
@@ -74,59 +79,62 @@ table{border-collapse:collapse;width:100%}
 .c{text-align:center}
 
 .words,.decl{
- font-size:7.5px;
- margin-top:6px;
- line-height:1.35
+font-size:7.5px;
+margin-top:6px;
+line-height:1.35
 }
 
 .sign{
- display:grid;
- grid-template-columns:1fr 1fr;
- border:1px solid #111;
- margin-top:12mm;
- min-height:21mm;
- font-size:8px
+display:grid;
+grid-template-columns:1fr 1fr;
+border:1px solid #111;
+margin-top:12mm;
+min-height:21mm;
+font-size:8px
 }
 
 .sign div{padding:5px}
+
 .sign div+div{
- border-left:1px solid #111;
- text-align:right
+border-left:1px solid #111;
+text-align:right
 }
 
 .history table{font-size:11px}
-.history th,.history td{
- border:1px solid #aaa;
- padding:5px
+
+.history th,
+.history td{
+border:1px solid #aaa;
+padding:5px
 }
 
 @media(max-width:750px){
- .grid{grid-template-columns:1fr 1fr}
+.grid{grid-template-columns:1fr 1fr}
 }
 
 @media(max-width:500px){
- .grid{grid-template-columns:1fr}
- .app{padding:6px}
- .bill{
-  width:100%;
-  padding:5mm
- }
+.grid{grid-template-columns:1fr}
+.app{padding:6px}
+.bill{
+width:100%;
+padding:5mm
+}
 }
 
 @media print{
- body{background:white}
- .panel,.history{display:none}
- .app{padding:0}
- .bill{
-  box-shadow:none;
-  margin:auto;
-  width:148mm;
-  min-height:210mm
- }
- @page{
-  size:A5 portrait;
-  margin:0
- }
+body{background:white}
+.panel,.history{display:none}
+.app{padding:0}
+.bill{
+box-shadow:none;
+margin:auto;
+width:148mm;
+min-height:210mm
+}
+@page{
+size:A5 portrait;
+margin:0
+}
 }
 </style>
 </head>
@@ -163,10 +171,19 @@ table{border-collapse:collapse;width:100%}
 
 <div>
 <label>Particulars</label>
+
 <select id="product">
-<option value="18">Cleaning & Housekeeping Products</option>
-<option value="5">Baby Products</option>
+
+<option value="18">
+Cleaning & Housekeeping Products
+</option>
+
+<option value="5">
+Baby Products
+</option>
+
 </select>
+
 </div>
 
 <div>
@@ -221,11 +238,11 @@ Restore Bills
 </button>
 
 <input
- id="restoreFile"
- type="file"
- accept=".json,application/json"
- hidden
- onchange="importJSON(event)"
+id="restoreFile"
+type="file"
+accept=".json,application/json"
+hidden
+onchange="importJSON(event)"
 >
 
 <button onclick="clearAll()">
@@ -440,16 +457,16 @@ Authorized Signatory
 
 
 <div
- class="panel"
- id="reportPanel"
- style="display:none"
+class="panel"
+id="reportPanel"
+style="display:none"
 >
 
 <b>GSTR-1 Report</b>
 
 <div
- id="gstrSummary"
- style="margin-top:8px"
+id="gstrSummary"
+style="margin-top:8px"
 ></div>
 
 <div class="actions">
@@ -472,21 +489,21 @@ Close Report
 <b>Saved Invoice Register</b>
 
 <div
- style="display:flex;gap:8px;flex-wrap:wrap;margin:8px 0"
+style="display:flex;gap:8px;flex-wrap:wrap;margin:8px 0"
 >
 
 <input
- id="searchBills"
- placeholder="Search invoice / product"
- oninput="render()"
- style="max-width:240px"
+id="searchBills"
+placeholder="Search invoice / product"
+oninput="render()"
+style="max-width:240px"
 >
 
 <input
- id="monthBills"
- type="month"
- onchange="render()"
- style="max-width:160px"
+id="monthBills"
+type="month"
+onchange="render()"
+style="max-width:160px"
 >
 
 <button onclick="clearFilters()">
@@ -513,999 +530,1115 @@ let bills=[];
 
 function openDB(){
 
- return new Promise((resolve,reject)=>{
+return new Promise((resolve,reject)=>{
 
-  const req=indexedDB.open(
-   DB_NAME,
-   DB_VERSION
-  );
+const req=indexedDB.open(
+DB_NAME,
+DB_VERSION
+);
 
-  req.onupgradeneeded=e=>{
+req.onupgradeneeded=e=>{
 
-   const db=e.target.result;
+const db=e.target.result;
 
-   if(!db.objectStoreNames.contains(STORE)){
+if(!db.objectStoreNames.contains(STORE)){
 
-    db.createObjectStore(
-     STORE,
-     {keyPath:"no"}
-    );
+db.createObjectStore(
+STORE,
+{keyPath:"no"}
+);
 
-   }
+}
 
-  };
+};
 
-  req.onsuccess=e=>
-   resolve(e.target.result);
+req.onsuccess=e=>
+resolve(e.target.result);
 
-  req.onerror=e=>
-   reject(e.target.error);
+req.onerror=e=>
+reject(e.target.error);
 
- });
+});
 
 }
 
 
 async function dbAll(){
 
- const db=await openDB();
+const db=await openDB();
 
- return new Promise((resolve,reject)=>{
+return new Promise((resolve,reject)=>{
 
-  const tx=db.transaction(
-   STORE,
-   "readonly"
-  );
+const tx=db.transaction(
+STORE,
+"readonly"
+);
 
-  const s=tx.objectStore(STORE);
-  const r=s.getAll();
+const s=tx.objectStore(STORE);
+const r=s.getAll();
 
-  r.onsuccess=()=>
-   resolve(r.result||[]);
+r.onsuccess=()=>
+resolve(r.result||[]);
 
-  r.onerror=()=>
-   reject(r.error);
+r.onerror=()=>
+reject(r.error);
 
- });
+});
 
 }
 
 
 async function dbPut(x){
 
- const db=await openDB();
+const db=await openDB();
 
- return new Promise((resolve,reject)=>{
+return new Promise((resolve,reject)=>{
 
-  const tx=db.transaction(
-   STORE,
-   "readwrite"
-  );
+const tx=db.transaction(
+STORE,
+"readwrite"
+);
 
-  tx.objectStore(STORE).put(x);
+tx.objectStore(STORE).put(x);
 
-  tx.oncomplete=resolve;
-  tx.onerror=()=>
-   reject(tx.error);
+tx.oncomplete=resolve;
 
- });
+tx.onerror=()=>
+reject(tx.error);
+
+});
 
 }
 
 
 async function dbClear(){
 
- const db=await openDB();
+const db=await openDB();
 
- return new Promise((resolve,reject)=>{
+return new Promise((resolve,reject)=>{
 
-  const tx=db.transaction(
-   STORE,
-   "readwrite"
-  );
+const tx=db.transaction(
+STORE,
+"readwrite"
+);
 
-  tx.objectStore(STORE).clear();
+tx.objectStore(STORE).clear();
 
-  tx.oncomplete=resolve;
-  tx.onerror=()=>
-   reject(tx.error);
+tx.oncomplete=resolve;
 
- });
+tx.onerror=()=>
+reject(tx.error);
+
+});
+
+}
+
+
+async function initDB(){
+
+bills=await dbAll();
+
+newBill();
+
+render();
 
 }
 
 
 function fmt(n){
 
- return new Intl.NumberFormat(
-  "en-IN",
-  {
-   minimumFractionDigits:2,
-   maximumFractionDigits:2
-  }
- ).format(n);
+return new Intl.NumberFormat(
+"en-IN",
+{
+minimumFractionDigits:2,
+maximumFractionDigits:2
+}
+).format(n);
 
 }
 
 
 function dshow(v){
 
- if(!v)return"";
+if(!v)return"";
 
- let[y,m,d]=v.split("-");
+let[y,m,d]=v.split("-");
 
- return d+"-"+m+"-"+y;
+return d+"-"+m+"-"+y;
 
 }
 
 
 function nextNo(){
 
- let d=new Date();
+let d=new Date();
 
- let mon=[
-  "JAN","FEB","MAR","APR","MAY","JUN",
-  "JUL","AUG","SEP","OCT","NOV","DEC"
- ][d.getMonth()];
+let mon=[
+"JAN","FEB","MAR","APR","MAY","JUN",
+"JUL","AUG","SEP","OCT","NOV","DEC"
+][d.getMonth()];
 
- let pre=
-  "IME/"+
-  mon+
-  String(d.getFullYear()).slice(-2)+
-  "/";
+let pre=
+"IME/"+
+mon+
+String(d.getFullYear()).slice(-2)+
+"/";
 
- let mx=0;
+let mx=0;
 
- bills.forEach(x=>{
+bills.forEach(x=>{
 
-  if(
-   x.no &&
-   x.no.startsWith(pre)
-  ){
+if(
+x.no &&
+x.no.startsWith(pre)
+){
 
-   mx=Math.max(
-    mx,
-    +x.no.split("/").pop()||0
-   );
+mx=Math.max(
+mx,
++x.no.split("/").pop()||0
+);
 
-  }
+}
 
- });
+});
 
- return(
-  pre+
-  String(mx+1).padStart(3,"0")
- );
+return(
+pre+
+String(mx+1).padStart(3,"0")
+);
 
 }
 
 
 const ones=[
- "",
- "One","Two","Three","Four","Five",
- "Six","Seven","Eight","Nine","Ten",
- "Eleven","Twelve","Thirteen","Fourteen",
- "Fifteen","Sixteen","Seventeen","Eighteen",
- "Nineteen"
+"",
+"One","Two","Three","Four","Five",
+"Six","Seven","Eight","Nine","Ten",
+"Eleven","Twelve","Thirteen","Fourteen",
+"Fifteen","Sixteen","Seventeen","Eighteen",
+"Nineteen"
 ];
 
 const tens=[
- "","","Twenty","Thirty","Forty",
- "Fifty","Sixty","Seventy","Eighty","Ninety"
+"","","Twenty","Thirty","Forty",
+"Fifty","Sixty","Seventy","Eighty","Ninety"
 ];
 
 
 function tw(n){
 
- return n<20
-  ?ones[n]
-  :tens[Math.floor(n/10)] +
-   (n%10?" "+ones[n%10]:"");
+return n<20
+?ones[n]
+:tens[Math.floor(n/10)] +
+(n%10?" "+ones[n%10]:"");
 
 }
 
 
 function th(n){
 
- return n>=100
-  ?ones[Math.floor(n/100)]+" Hundred"+
-   (n%100?" "+tw(n%100):"")
-  :tw(n);
+return n>=100
+?ones[Math.floor(n/100)]+" Hundred"+
+(n%100?" "+tw(n%100):"")
+:tw(n);
 
 }
 
 
 function words(n){
 
- n=Math.round(n);
+n=Math.round(n);
 
- if(!n)
-  return"Rupees Zero Only";
+if(!n)
+return"Rupees Zero Only";
 
- let a=[];
+let a=[];
 
- let c=Math.floor(n/1e7);
- n%=1e7;
+let c=Math.floor(n/1e7);
+n%=1e7;
 
- let l=Math.floor(n/1e5);
- n%=1e5;
+let l=Math.floor(n/1e5);
+n%=1e5;
 
- let t=Math.floor(n/1e3);
- n%=1e3;
+let t=Math.floor(n/1e3);
+n%=1e3;
 
- if(c)a.push(th(c)+" Crore");
- if(l)a.push(th(l)+" Lakh");
- if(t)a.push(th(t)+" Thousand");
- if(n)a.push(th(n));
+if(c)a.push(th(c)+" Crore");
+if(l)a.push(th(l)+" Lakh");
+if(t)a.push(th(t)+" Thousand");
+if(n)a.push(th(n));
 
- return"Rupees "+a.join(" ")+" Only";
+return"Rupees "+a.join(" ")+" Only";
 
 }
 
 
 function calc(){
 
- let total=
-  +document.getElementById("total").value||0;
+let total=
++document.getElementById("total").value||0;
 
- let rate=
-  +document.getElementById("product").value;
+let rate=
++document.getElementById("product").value;
 
- let tax=
-  total/(1+rate/100);
+let taxable=
+total/(1+rate/100);
 
- let tt=
-  total-tax;
+let taxTotal=
+total-taxable;
 
- let cg=
-  tt/2;
+let cgst=
+taxTotal/2;
 
- let sg=
-  tt-cg;
+let sgst=
+taxTotal-cgst;
 
- return{
-  total,
-  rate,
-  tax,
-  cg,
-  sg
- };
+return{
+total,
+rate,
+taxable,
+cgst,
+sgst
+};
 
 }
 
 
 function preview(){
 
- let c=calc();
+let c=calc();
 
- let prod=
-  document.getElementById("product").value==="5"
-  ?"Baby Products"
-  :"Cleaning & Housekeeping Products";
+let product=
+document.getElementById("product").value==="5"
+?"Baby Products"
+:"Cleaning & Housekeeping Products";
 
- document.getElementById("gst").value=
-  c.rate+"%";
+let qty=
++document.getElementById("qty").value||1;
 
- document.getElementById("pno").textContent=
-  document.getElementById("no").value;
+let unitRate=
+c.taxable/qty;
 
- document.getElementById("pdate").textContent=
-  dshow(document.getElementById("date").value);
 
- document.getElementById("pbuyer").textContent=
-  document.getElementById("buyer").value;
+document.getElementById("gst").value=
+c.rate+"%";
 
- document.getElementById("ppos").textContent=
-  document.getElementById("pos").value;
 
- document.getElementById("pproduct").textContent=
-  prod;
+document.getElementById("pno").textContent=
+document.getElementById("no").value;
 
- document.getElementById("pqty").textContent=
-  document.getElementById("qty").value;
 
- document.getElementById("prate").textContent=
-  fmt(c.tax);
+document.getElementById("pdate").textContent=
+dshow(
+document.getElementById("date").value
+);
 
- document.getElementById("pamt").textContent=
-  fmt(c.tax);
 
- document.getElementById("ptax").textContent=
-  fmt(c.tax);
+document.getElementById("pbuyer").textContent=
+document.getElementById("buyer").value;
 
- document.getElementById("pcgr").textContent=
-  c.rate/2;
 
- document.getElementById("psgr").textContent=
-  c.rate/2;
+document.getElementById("ppos").textContent=
+document.getElementById("pos").value;
 
- document.getElementById("pcgst").textContent=
-  fmt(c.cg);
 
- document.getElementById("psgst").textContent=
-  fmt(c.sg);
+document.getElementById("pproduct").textContent=
+product;
 
- document.getElementById("ptotal").textContent=
-  fmt(c.total);
 
- document.getElementById("pwords").textContent=
-  words(c.total);
+document.getElementById("pqty").textContent=
+qty;
+
+
+document.getElementById("prate").textContent=
+fmt(unitRate);
+
+
+document.getElementById("pamt").textContent=
+fmt(c.taxable);
+
+
+document.getElementById("ptax").textContent=
+fmt(c.taxable);
+
+
+document.getElementById("pcgr").textContent=
+c.rate/2;
+
+
+document.getElementById("psgr").textContent=
+c.rate/2;
+
+
+document.getElementById("pcgst").textContent=
+fmt(c.cgst);
+
+
+document.getElementById("psgst").textContent=
+fmt(c.sgst);
+
+
+document.getElementById("ptotal").textContent=
+fmt(c.total);
+
+
+document.getElementById("pwords").textContent=
+words(c.total);
 
 }
 
 
 function obj(){
 
- let c=calc();
+let c=calc();
 
- return{
+return{
 
-  no:document.getElementById("no").value,
+no:document.getElementById("no").value,
 
-  date:document.getElementById("date").value,
+date:document.getElementById("date").value,
 
-  buyer:document.getElementById("buyer").value,
+buyer:document.getElementById("buyer").value,
 
-  pos:document.getElementById("pos").value,
+pos:document.getElementById("pos").value,
 
-  product:document.getElementById("product").value,
+product:document.getElementById("product").value,
 
-  gst:c.rate,
+gst:c.rate,
 
-  total:c.total,
+total:c.total,
 
-  qty:
-   +document.getElementById("qty").value||1
+qty:
++document.getElementById("qty").value||1
 
- };
+};
 
 }
 
 
 async function save(){
 
- let x=obj();
+let x=obj();
 
- if(
-  !x.no ||
-  !x.date ||
-  x.total<=0
- ){
+if(
+!x.no ||
+!x.date ||
+x.total<=0
+){
 
-  return alert(
-   "Enter invoice number, date and total."
-  );
+return alert(
+"Enter invoice number, date and total."
+);
 
- }
+}
 
- await dbPut(x);
+await dbPut(x);
 
- bills=await dbAll();
+bills=await dbAll();
 
- render();
+render();
 
- alert(
-  "Invoice saved permanently in this browser."
- );
+alert(
+"Invoice saved permanently in this browser."
+);
 
 }
 
 
 async function load(no){
 
- let x=
-  bills.find(
-   b=>b.no===no
-  );
+let x=
+bills.find(
+b=>b.no===no
+);
 
- if(!x)return;
+if(!x)return;
 
- document.getElementById("no").value=
-  x.no;
+document.getElementById("no").value=
+x.no;
 
- document.getElementById("date").value=
-  x.date;
+document.getElementById("date").value=
+x.date;
 
- document.getElementById("buyer").value=
-  x.buyer;
+document.getElementById("buyer").value=
+x.buyer;
 
- document.getElementById("pos").value=
-  x.pos;
+document.getElementById("pos").value=
+x.pos;
 
- document.getElementById("product").value=
-  x.product;
+document.getElementById("product").value=
+x.product;
 
- document.getElementById("gst").value=
-  x.gst+"%";
+document.getElementById("gst").value=
+x.gst+"%";
 
- document.getElementById("total").value=
-  x.total;
+document.getElementById("total").value=
+x.total;
 
- document.getElementById("qty").value=
-  x.qty||1;
+document.getElementById("qty").value=
+x.qty||1;
 
- preview();
+preview();
 
- scrollTo({
-  top:0,
-  behavior:"smooth"
- });
+scrollTo({
+top:0,
+behavior:"smooth"
+});
 
 }
 
 
 function newBill(){
 
- let z=new Date();
+let z=new Date();
 
- z.setMinutes(
-  z.getMinutes()-
-  z.getTimezoneOffset()
- );
+z.setMinutes(
+z.getMinutes()-
+z.getTimezoneOffset()
+);
 
- document.getElementById("no").value=
-  nextNo();
+document.getElementById("no").value=
+nextNo();
 
- document.getElementById("date").value=
-  z.toISOString().slice(0,10);
+document.getElementById("date").value=
+z.toISOString().slice(0,10);
 
- document.getElementById("buyer").value=
-  "Cash Sale (B2C)";
+document.getElementById("buyer").value=
+"Cash Sale (B2C)";
 
- document.getElementById("pos").value=
-  "Karnataka (29)";
+document.getElementById("pos").value=
+"Karnataka (29)";
 
- document.getElementById("product").value=
-  "18";
+document.getElementById("product").value=
+"18";
 
- document.getElementById("gst").value=
-  "18%";
+document.getElementById("gst").value=
+"18%";
 
- document.getElementById("total").value="";
+document.getElementById("total").value="";
 
- document.getElementById("qty").value=1;
+document.getElementById("qty").value=1;
 
- preview();
+preview();
 
 }
 
 
 function render(){
 
- let q=
-  (
-   document.getElementById("searchBills")?.value||""
-  )
-  .toLowerCase()
-  .trim();
+let q=
+(
+document.getElementById("searchBills")?.value||""
+)
+.toLowerCase()
+.trim();
 
- let mon=
-  document.getElementById("monthBills")?.value||"";
+let mon=
+document.getElementById("monthBills")?.value||"";
 
- let list=
-  bills.filter(x=>{
 
-   const prod=
-    x.product==="5"
-    ?"Baby Products"
-    :"Cleaning & Housekeeping Products";
+let list=
+bills.filter(x=>{
 
-   return(
-    (!q ||
-     x.no.toLowerCase().includes(q) ||
-     prod.toLowerCase().includes(q)
-    ) &&
-    (!mon ||
-     x.date.startsWith(mon)
-    )
-   );
+const product=
+x.product==="5"
+?"Baby Products"
+:"Cleaning & Housekeeping Products";
 
-  });
+return(
+(!q ||
+x.no.toLowerCase().includes(q) ||
+product.toLowerCase().includes(q)
+)
+&&
+(!mon ||
+x.date.startsWith(mon)
+)
+);
 
- let el=
-  document.getElementById("history");
+});
 
- if(!list.length){
 
-  el.innerHTML=
-   "<p>No matching invoices.</p>";
+let el=
+document.getElementById("history");
 
-  return;
 
- }
+if(!list.length){
 
- let h=
-  "<table>"+
-  "<tr>"+
-  "<th>Invoice</th>"+
-  "<th>Date</th>"+
-  "<th>Particulars</th>"+
-  "<th>GST</th>"+
-  "<th>Total</th>"+
-  "<th></th>"+
-  "</tr>";
+el.innerHTML=
+"<p>No matching invoices.</p>";
 
- list
-  .slice()
-  .reverse()
-  .forEach(x=>{
+return;
 
-   h+=
-    `<tr>
-     <td>${x.no}</td>
-     <td>${dshow(x.date)}</td>
-     <td>${
-      x.product==="5"
-      ?"Baby Products"
-      :"Cleaning & Housekeeping Products"
-     }</td>
-     <td>${x.gst}%</td>
-     <td>₹${fmt(x.total)}</td>
-     <td>
-      <button onclick="load('${x.no}')">
-       Edit
-      </button>
-     </td>
-    </tr>`;
+}
 
-  });
 
- el.innerHTML=
-  h+
-  "</table>";
+let h=
+"<table>"+
+"<tr>"+
+"<th>Invoice</th>"+
+"<th>Date</th>"+
+"<th>Particulars</th>"+
+"<th>GST</th>"+
+"<th>Total</th>"+
+"<th></th>"+
+"</tr>";
+
+
+list
+.slice()
+.reverse()
+.forEach(x=>{
+
+h+=
+`<tr>
+<td>${x.no}</td>
+<td>${dshow(x.date)}</td>
+<td>${
+x.product==="5"
+?"Baby Products"
+:"Cleaning & Housekeeping Products"
+}</td>
+<td>${x.gst}%</td>
+<td>₹${fmt(x.total)}</td>
+<td>
+<button onclick="load('${x.no}')">
+Edit
+</button>
+</td>
+</tr>`;
+
+});
+
+
+el.innerHTML=
+h+
+"</table>";
 
 }
 
 
 function clearFilters(){
 
- document.getElementById(
-  "searchBills"
- ).value="";
+document.getElementById(
+"searchBills"
+).value="";
 
- document.getElementById(
-  "monthBills"
- ).value="";
+document.getElementById(
+"monthBills"
+).value="";
 
- render();
+render();
 
 }
 
 
 function showGSTR1(){
 
- const list=
-  bills
-  .slice()
-  .sort(
-   (a,b)=>
-    a.date.localeCompare(b.date)||
-    a.no.localeCompare(b.no)
-  );
-
- const byRate={
-  5:{
-   count:0,
-   taxable:0,
-   cgst:0,
-   sgst:0,
-   total:0
-  },
-  18:{
-   count:0,
-   taxable:0,
-   cgst:0,
-   sgst:0,
-   total:0
-  }
- };
-
- list.forEach(x=>{
-
-  const r=+x.gst;
-  const t=+x.total;
-  const tx=
-   t/(1+r/100);
-
-  const tt=t-tx;
-
-  const cg=tt/2;
-  const sg=tt-cg;
-
-  byRate[r].count++;
-  byRate[r].taxable+=tx;
-  byRate[r].cgst+=cg;
-  byRate[r].sgst+=sg;
-  byRate[r].total+=t;
-
- });
+const list=
+bills
+.slice()
+.sort(
+(a,b)=>
+a.date.localeCompare(b.date)||
+a.no.localeCompare(b.no)
+);
 
 
- const all={
-  count:list.length,
-  taxable:0,
-  cgst:0,
-  sgst:0,
-  total:0
- };
+const byRate={
+5:{
+count:0,
+taxable:0,
+cgst:0,
+sgst:0,
+total:0
+},
+
+18:{
+count:0,
+taxable:0,
+cgst:0,
+sgst:0,
+total:0
+}
+};
 
 
- [5,18].forEach(r=>{
+list.forEach(x=>{
 
-  all.taxable+=
-   byRate[r].taxable;
+const r=+x.gst;
 
-  all.cgst+=
-   byRate[r].cgst;
+const t=+x.total;
 
-  all.sgst+=
-   byRate[r].sgst;
+const taxable=
+t/(1+r/100);
 
-  all.total+=
-   byRate[r].total;
+const taxTotal=
+t-taxable;
 
- });
+const cgst=
+taxTotal/2;
 
-
- let h=
-  `<table
-   style="
-    width:100%;
-    border-collapse:collapse;
-    font-size:11px
-   "
-  >
-  <tr>
-   <th>GST</th>
-   <th>Invoices</th>
-   <th>Taxable ₹</th>
-   <th>CGST ₹</th>
-   <th>SGST ₹</th>
-   <th>Total ₹</th>
-  </tr>`;
+const sgst=
+taxTotal-cgst;
 
 
- [5,18].forEach(r=>{
+byRate[r].count++;
 
-  let x=byRate[r];
+byRate[r].taxable+=taxable;
 
-  h+=
-   `<tr>
-    <td>${r}%</td>
-    <td>${x.count}</td>
-    <td>${fmt(x.taxable)}</td>
-    <td>${fmt(x.cgst)}</td>
-    <td>${fmt(x.sgst)}</td>
-    <td>${fmt(x.total)}</td>
-   </tr>`;
+byRate[r].cgst+=cgst;
 
- });
+byRate[r].sgst+=sgst;
+
+byRate[r].total+=t;
+
+});
 
 
- h+=
-  `<tr>
-   <td><b>Total</b></td>
-   <td><b>${all.count}</b></td>
-   <td><b>${fmt(all.taxable)}</b></td>
-   <td><b>${fmt(all.cgst)}</b></td>
-   <td><b>${fmt(all.sgst)}</b></td>
-   <td><b>${fmt(all.total)}</b></td>
-  </tr>
-  </table>`;
+const all={
+count:list.length,
+taxable:0,
+cgst:0,
+sgst:0,
+total:0
+};
 
 
- h+=
-  `<div
-   style="
-    margin-top:12px;
-    max-height:360px;
-    overflow:auto
-   "
-  >
-  <table
-   style="
-    width:100%;
-    border-collapse:collapse;
-    font-size:10px
-   "
-  >
-  <tr>
-   <th>Invoice</th>
-   <th>Date</th>
-   <th>Particulars</th>
-   <th>GST</th>
-   <th>Taxable</th>
-   <th>CGST</th>
-   <th>SGST</th>
-   <th>Total</th>
-  </tr>`;
+[5,18].forEach(r=>{
+
+all.taxable+=
+byRate[r].taxable;
+
+all.cgst+=
+byRate[r].cgst;
+
+all.sgst+=
+byRate[r].sgst;
+
+all.total+=
+byRate[r].total;
+
+});
 
 
- list.forEach(x=>{
+let h=
+`<table
+style="
+width:100%;
+border-collapse:collapse;
+font-size:11px
+"
+>
 
-  let r=+x.gst;
+<tr>
 
-  let t=+x.total;
+<th>GST</th>
+<th>Invoices</th>
+<th>Taxable ₹</th>
+<th>CGST ₹</th>
+<th>SGST ₹</th>
+<th>Total ₹</th>
 
-  let tx=
-   t/(1+r/100);
-
-  let tt=t-tx;
-
-  let cg=tt/2;
-
-  let sg=tt-cg;
-
-  h+=
-   `<tr>
-    <td>${x.no}</td>
-    <td>${dshow(x.date)}</td>
-    <td>${
-     x.product==="5"
-     ?"Baby Products"
-     :"Cleaning & Housekeeping Products"
-    }</td>
-    <td>${r}%</td>
-    <td>${fmt(tx)}</td>
-    <td>${fmt(cg)}</td>
-    <td>${fmt(sg)}</td>
-    <td>${fmt(t)}</td>
-   </tr>`;
-
- });
+</tr>`;
 
 
- h+="</table></div>";
+[5,18].forEach(r=>{
 
- document.getElementById(
-  "gstrSummary"
- ).innerHTML=h;
+let x=byRate[r];
 
- document.getElementById(
-  "reportPanel"
- ).style.display="block";
+h+=
+`<tr>
 
- window.scrollTo({
-  top:
-   document.getElementById(
-    "reportPanel"
-   ).offsetTop-10,
-  behavior:"smooth"
- });
+<td>${r}%</td>
+
+<td>${x.count}</td>
+
+<td>${fmt(x.taxable)}</td>
+
+<td>${fmt(x.cgst)}</td>
+
+<td>${fmt(x.sgst)}</td>
+
+<td>${fmt(x.total)}</td>
+
+</tr>`;
+
+});
+
+
+h+=
+`<tr>
+
+<td><b>Total</b></td>
+
+<td><b>${all.count}</b></td>
+
+<td><b>${fmt(all.taxable)}</b></td>
+
+<td><b>${fmt(all.cgst)}</b></td>
+
+<td><b>${fmt(all.sgst)}</b></td>
+
+<td><b>${fmt(all.total)}</b></td>
+
+</tr>
+
+</table>`;
+
+
+h+=
+`<div
+style="
+margin-top:12px;
+max-height:360px;
+overflow:auto
+"
+>
+
+<table
+style="
+width:100%;
+border-collapse:collapse;
+font-size:10px
+"
+>
+
+<tr>
+
+<th>Invoice</th>
+<th>Date</th>
+<th>Particulars</th>
+<th>GST</th>
+<th>Taxable</th>
+<th>CGST</th>
+<th>SGST</th>
+<th>Total</th>
+
+</tr>`;
+
+
+list.forEach(x=>{
+
+let r=+x.gst;
+
+let t=+x.total;
+
+let taxable=
+t/(1+r/100);
+
+let taxTotal=
+t-taxable;
+
+let cgst=
+taxTotal/2;
+
+let sgst=
+taxTotal-cgst;
+
+
+h+=
+`<tr>
+
+<td>${x.no}</td>
+
+<td>${dshow(x.date)}</td>
+
+<td>${
+x.product==="5"
+?"Baby Products"
+:"Cleaning & Housekeeping Products"
+}</td>
+
+<td>${r}%</td>
+
+<td>${fmt(taxable)}</td>
+
+<td>${fmt(cgst)}</td>
+
+<td>${fmt(sgst)}</td>
+
+<td>${fmt(t)}</td>
+
+</tr>`;
+
+});
+
+
+h+="</table></div>";
+
+
+document.getElementById(
+"gstrSummary"
+).innerHTML=h;
+
+
+document.getElementById(
+"reportPanel"
+).style.display="block";
+
+
+window.scrollTo({
+
+top:
+document.getElementById(
+"reportPanel"
+).offsetTop-10,
+
+behavior:"smooth"
+
+});
 
 }
 
 
 function closeGSTR1(){
 
- document.getElementById(
-  "reportPanel"
- ).style.display="none";
+document.getElementById(
+"reportPanel"
+).style.display="none";
 
 }
 
 
 function exportCSV(){
 
- if(!bills.length)
-  return alert("No invoices saved.");
+if(!bills.length)
+return alert("No invoices saved.");
 
- let s=
-  "Invoice No,Date,Particulars,GST Rate,Taxable Value,CGST,SGST,Invoice Total\n";
 
- bills.forEach(x=>{
+let s=
+"Invoice No,Date,Particulars,GST Rate,Taxable Value,CGST,SGST,Invoice Total\n";
 
-  let r=x.gst;
 
-  let t=x.total;
+bills.forEach(x=>{
 
-  let tx=
-   t/(1+r/100);
+let r=x.gst;
 
-  let tt=t-tx;
+let t=x.total;
 
-  let cg=tt/2;
+let taxable=
+t/(1+r/100);
 
-  s+=
-   `"${x.no}",
-"${dshow(x.date)}",
-"${x.product==="5"
- ?"Baby Products"
- :"Cleaning & Housekeeping Products"}",
-${x.gst},
-${tx.toFixed(2)},
-${cg.toFixed(2)},
-${(tt-cg).toFixed(2)},
-${x.total.toFixed(2)}
-\n`;
+let taxTotal=
+t-taxable;
 
- });
+let cgst=
+taxTotal/2;
 
- downloadFile(
-  s,
-  "IME_Invoice_Register.csv",
-  "text/csv"
- );
+let sgst=
+taxTotal-cgst;
+
+
+s+=
+`"${x.no}","${dshow(x.date)}","${
+x.product==="5"
+?"Baby Products"
+:"Cleaning & Housekeeping Products"
+}",${x.gst},${taxable.toFixed(2)},${cgst.toFixed(2)},${sgst.toFixed(2)},${x.total.toFixed(2)}\n`;
+
+});
+
+
+downloadFile(
+s,
+"IME_Invoice_Register.csv",
+"text/csv"
+);
 
 }
 
 
 function backupJSON(){
 
- const payload={
-  app:
-   "I M ENTERPRISES Tally A5 Billing",
+const payload={
 
-  version:1,
+app:
+"I M ENTERPRISES Tally A5 Billing",
 
-  exportedAt:
-   new Date().toISOString(),
+version:1,
 
-  invoices:bills
+exportedAt:
+new Date().toISOString(),
 
- };
+invoices:bills
 
- downloadFile(
-  JSON.stringify(
-   payload,
-   null,
-   2
-  ),
-  "IME_Bills_Backup.json",
-  "application/json"
- );
+};
+
+
+downloadFile(
+
+JSON.stringify(
+payload,
+null,
+2
+),
+
+"IME_Bills_Backup.json",
+
+"application/json"
+
+);
 
 }
 
 
 function downloadFile(
- content,
- name,
- type
+content,
+name,
+type
 ){
 
- const a=
-  document.createElement("a");
+const a=
+document.createElement("a");
 
- a.href=
-  URL.createObjectURL(
-   new Blob(
-    [content],
-    {type}
-   )
-  );
+a.href=
+URL.createObjectURL(
+new Blob(
+[content],
+{type}
+)
+);
 
- a.download=name;
+a.download=name;
 
- a.click();
+a.click();
 
- setTimeout(
-  ()=>{
-   URL.revokeObjectURL(
-    a.href
-   );
-  },
-  1000
- );
+
+setTimeout(
+()=>{
+URL.revokeObjectURL(
+a.href
+);
+},
+1000
+);
 
 }
 
 
 function restoreJSON(){
 
- document.getElementById(
-  "restoreFile"
- ).click();
+document.getElementById(
+"restoreFile"
+).click();
 
 }
 
 
 async function importJSON(e){
 
- const f=
-  e.target.files[0];
+const f=
+e.target.files[0];
 
- if(!f)return;
+if(!f)return;
 
- try{
 
-  const data=
-   JSON.parse(
-    await f.text()
-   );
+try{
 
-  const list=
-   Array.isArray(data)
-   ?data
-   :data.invoices;
+const data=
+JSON.parse(
+await f.text()
+);
 
-  if(!Array.isArray(list))
-   throw new Error(
-    "Invalid backup"
-   );
+const list=
+Array.isArray(data)
+?data
+:data.invoices;
 
-  for(
-   const x of list
-  ){
 
-   if(x.no)
-    await dbPut(x);
+if(!Array.isArray(list))
+throw new Error(
+"Invalid backup"
+);
 
-  }
 
-  bills=
-   await dbAll();
+for(
+const x of list
+){
 
-  render();
+if(x.no)
+await dbPut(x);
 
-  alert(
-   list.length+
-   " bills restored."
-  );
+}
 
- }catch(err){
 
-  alert(
-   "Could not restore this backup: "+
-   err.message
-  );
+bills=
+await dbAll();
 
- }
+render();
 
- e.target.value="";
+
+alert(
+list.length+
+" bills restored."
+);
+
+
+}catch(err){
+
+alert(
+"Could not restore this backup: "+
+err.message
+);
+
+}
+
+
+e.target.value="";
 
 }
 
 
 async function clearAll(){
 
- if(
-  confirm(
-   "Delete all saved invoices from this browser? Make a backup first if needed."
-  )
- ){
+if(
+confirm(
+"Delete all saved invoices from this browser? Make a backup first if needed."
+)
+){
 
-  await dbClear();
+await dbClear();
 
-  bills=[];
+bills=[];
 
-  render();
+render();
 
-  newBill();
+newBill();
 
- }
+}
 
 }
 
 
-/* PWA SERVICE WORKER */
+/* PWA */
 
 if(
- "serviceWorker" in navigator
+"serviceWorker" in navigator
 ){
 
- window.addEventListener(
-  "load",
-  ()=>{
+window.addEventListener(
+"load",
+()=>{
 
-   navigator.serviceWorker
-    .register("./sw.js")
-    .catch(
-     err=>
-      console.log(
-       "Service worker registration failed:",
-       err
-      )
-    );
+navigator.serviceWorker
+.register("./sw.js")
+.catch(
+err=>
+console.log(
+"Service worker registration failed:",
+err
+)
+);
 
-  }
- );
+}
+);
 
 }
 
 
 document.getElementById(
- "product"
+"product"
 ).onchange=()=>preview();
 
 
@@ -1514,4 +1647,4 @@ initDB();
 </script>
 
 </body>
-        </html>
+</html>
