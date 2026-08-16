@@ -1,400 +1,314 @@
 <!doctype html>
 <html lang="en">
 <head>
-
 <meta charset="utf-8">
-
-<meta name="viewport"
-      content="width=device-width,initial-scale=1">
-
-<meta name="theme-color"
-      content="#222222">
-
-<link rel="manifest"
-      href="./manifest.webmanifest">
-
+<meta name="viewport" content="width=device-width,initial-scale=1">
 <title>I M ENTERPRISES — A5 Tally Billing</title>
-
 <style>
-
-*{
-    box-sizing:border-box
-}
-
-body{
-    margin:0;
-    background:#eee;
-    font-family:Arial,sans-serif;
-    color:#111;
-}
-
-.app{
-    max-width:1050px;
-    margin:auto;
-    padding:14px;
-}
-
-.panel{
-    background:#fff;
-    border:1px solid #aaa;
-    padding:14px;
-    margin-bottom:14px;
-}
-
-h2{
-    margin:0 0 10px;
-}
-
-.grid{
-    display:grid;
-    grid-template-columns:repeat(4,1fr);
-    gap:9px;
-}
-
-label{
-    font-size:12px;
-    font-weight:bold;
-}
-
-input,
-select{
-    width:100%;
-    padding:8px;
-    margin-top:3px;
-    border:1px solid #999;
-    background:#fff;
-}
-
-.actions{
-    display:flex;
-    gap:7px;
-    flex-wrap:wrap;
-    margin-top:12px;
-}
-
-button{
-    padding:8px 12px;
-    border:1px solid #777;
-    background:#f5f5f5;
-    font-weight:bold;
-    cursor:pointer;
-}
-
-.primary{
-    background:#222;
-    color:white;
-}
-
-.wrap{
-    display:flex;
-    justify-content:center;
-}
-
+*{box-sizing:border-box}
+body{margin:0;background:#eee;font-family:Arial,sans-serif;color:#111}
+.app{max-width:1100px;margin:auto;padding:12px}
+.panel{background:#fff;border:1px solid #aaa;padding:14px;margin-bottom:14px}
+h2{margin:0 0 10px}
+.grid{display:grid;grid-template-columns:repeat(4,1fr);gap:9px}
+label{font-size:12px;font-weight:bold}
+input,select{width:100%;padding:8px;margin-top:3px;border:1px solid #999}
+.actions{display:flex;gap:7px;flex-wrap:wrap;margin-top:10px}
+button{padding:8px 12px;border:1px solid #777;background:#f5f5f5;font-weight:bold;cursor:pointer}
+.primary{background:#222;color:#fff}
+.danger{background:#fee}
+.note{font-size:12px;line-height:1.45;background:#f7f7f7;border:1px solid #ddd;padding:9px}
+.ruleRow{display:grid;grid-template-columns:100px 100px 90px 1fr 60px 45px;gap:6px;margin:7px 0}
+.ruleRow input{margin:0}
+.status{font-size:12px;margin-top:8px;font-weight:bold}
+.tablewrap{overflow:auto}
+.r{text-align:right}
+.c{text-align:center}
 .bill{
-    width:148mm;
-    min-height:210mm;
-    background:white;
-    padding:7mm 9mm;
-    box-shadow:0 1px 8px #999;
+ width:148mm;
+ min-height:210mm;
+ background:#fff;
+ margin:auto;
+ padding:7mm 9mm;
+ box-shadow:0 1px 8px #999
 }
-
-.center{
-    text-align:center;
-}
-
-.tax{
-    font-size:12px;
-    font-weight:bold;
-}
-
-.company{
-    font-size:16px;
-    font-weight:bold;
-}
-
-.addr{
-    font-size:8px;
-    line-height:1.35;
-}
-
-table{
-    border-collapse:collapse;
-    width:100%;
-}
-
+.center{text-align:center}
+.tax{font-size:12px;font-weight:bold}
+.company{font-size:16px;font-weight:bold}
+.addr{font-size:8px;line-height:1.35}
 .meta{
-    margin-top:7px;
-    font-size:8px;
+ margin-top:7px;
+ font-size:8px;
+ width:100%;
+ border-collapse:collapse
 }
-
 .meta td{
-    border:1px solid #111;
-    padding:4px;
-    width:50%;
-    vertical-align:top;
+ border:1px solid #111;
+ padding:4px;
+ width:50%;
+ vertical-align:top
 }
-
-.billtable{
-    margin-top:6px;
-    font-size:8px;
-    table-layout:fixed;
+.bt{
+ margin-top:6px;
+ font-size:8px;
+ table-layout:fixed;
+ width:100%;
+ border-collapse:collapse
 }
-
-.billtable th,
-.billtable td{
-    border:1px solid #111;
-    padding:4px;
-    overflow-wrap:anywhere;
-    word-break:break-word;
-    vertical-align:middle;
+.bt th,.bt td{
+ border:1px solid #111;
+ padding:4px;
+ overflow-wrap:anywhere;
+ vertical-align:middle
 }
-
-.billtable th{
-    text-align:center;
+.bt th{text-align:center}
+.sl{width:7%}
+.partcol{width:40%}
+.hsn{width:10%}
+.qtycol{width:8%}
+.rate{width:17%}
+.amt{width:18%}
+.words,.decl{
+ font-size:7.5px;
+ margin-top:6px;
+ line-height:1.35
 }
-
-.sl{
-    width:7%;
-}
-
-.part{
-    width:40%;
-}
-
-.hsn{
-    width:10%;
-}
-
-.qty{
-    width:8%;
-}
-
-.rate{
-    width:17%;
-}
-
-.amt{
-    width:18%;
-}
-
-.r{
-    text-align:right;
-}
-
-.c{
-    text-align:center;
-}
-
-.words,
-.decl{
-    font-size:7.5px;
-    margin-top:6px;
-    line-height:1.35;
-}
-
 .sign{
-    display:grid;
-    grid-template-columns:1fr 1fr;
-    border:1px solid #111;
-    margin-top:12mm;
-    min-height:21mm;
-    font-size:8px;
+ display:grid;
+ grid-template-columns:1fr 1fr;
+ border:1px solid #111;
+ margin-top:12mm;
+ min-height:21mm;
+ font-size:8px
 }
-
-.sign div{
-    padding:5px;
-}
-
+.sign div{padding:5px}
 .sign div+div{
-    border-left:1px solid #111;
-    text-align:right;
+ border-left:1px solid #111;
+ text-align:right
 }
-
-.history table{
-    font-size:11px;
+.regrow{
+ border-bottom:1px solid #ccc;
+ padding:8px;
+ display:flex;
+ gap:7px;
+ align-items:center;
+ flex-wrap:wrap
 }
-
-.history th,
-.history td{
-    border:1px solid #aaa;
-    padding:5px;
+.reginfo{
+ flex:1;
+ min-width:240px
 }
-
-#reportPanel table{
-    table-layout:fixed;
+table{
+ border-collapse:collapse;
+ width:100%;
+ font-size:11px
 }
-
-#reportPanel th,
-#reportPanel td{
-    overflow-wrap:anywhere;
-    word-break:break-word;
+th,td{
+ border:1px solid #aaa;
+ padding:5px
 }
-
 @media(max-width:750px){
-
-    .grid{
-        grid-template-columns:1fr 1fr;
-    }
-
+ .grid{grid-template-columns:1fr 1fr}
+ .ruleRow{grid-template-columns:1fr 1fr}
 }
-
 @media(max-width:500px){
-
-    .grid{
-        grid-template-columns:1fr;
-    }
-
-    .app{
-        padding:6px;
-    }
-
-    .bill{
-        width:100%;
-        padding:5mm;
-    }
-
+ .grid{grid-template-columns:1fr}
+ .app{padding:6px}
+ .bill{width:100%;padding:5mm}
 }
-
 @media print{
-
-    body{
-        background:white;
-    }
-
-    .panel,
-    .history{
-        display:none !important;
-    }
-
-    .app{
-        padding:0;
-    }
-
-    .bill{
-        box-shadow:none;
-        margin:auto;
-        width:148mm;
-        min-height:210mm;
-    }
-
-    @page{
-        size:A5 portrait;
-        margin:0;
-    }
-
+ body{background:#fff}
+ .noPrint{display:none!important}
+ .app{padding:0}
+ .bill{
+  box-shadow:none;
+  margin:auto;
+  width:148mm;
+  min-height:210mm
+ }
+ @page{size:A5 portrait;margin:0}
 }
-
 </style>
-
 </head>
 
 <body>
-
 <div class="app">
 
-<!-- =========================
-     BILLING CONTROL PANEL
-========================= -->
+<!-- ================= RULES ================= -->
 
-<div class="panel">
+<div class="panel noPrint">
 
-<h2>
-I M ENTERPRISES — A5 Tally Billing
-</h2>
+<h2>⚙️ Editable Credit → GST Rules</h2>
+
+<div class="note">
+Credits below the ignore limit are skipped.
+The default rule is ₹10–₹300 at 18% for Cleaning & Housekeeping Products
+and above ₹300 at 5% for Baby Products.
+</div>
+
+<div class="grid" style="margin-top:9px">
+
+<div>
+<label>Ignore credits below ₹</label>
+<input id="ignoreBelow" type="number" min="0" step=".01">
+</div>
+
+<div>
+<label>Place of Supply</label>
+<input id="setPos" value="Karnataka (29)">
+</div>
+
+<div>
+<label>Buyer</label>
+<input id="setBuyer" value="Cash Sale (B2C)">
+</div>
+
+<div>
+<label>Invoice Prefix</label>
+<input id="setPrefix" value="IME">
+</div>
+
+</div>
+
+<div id="rulesEditor" style="margin-top:10px"></div>
+
+<div class="actions">
+<button onclick="addRule()">+ Add Range</button>
+<button class="primary" onclick="saveRules()">Save Rules</button>
+<button onclick="resetRules()">Reset Defaults</button>
+</div>
+
+<div id="ruleStatus" class="status"></div>
+
+</div>
+
+<!-- ================= PHONEPE IMPORT ================= -->
+
+<div class="panel noPrint">
+
+<h2>📄 Import PhonePe Statement → Create Bills</h2>
+
+<div class="note">
+Upload the PhonePe CSV statement.
+The app reads the actual PhonePe columns:
+Date, Time, Transaction Details, Transaction ID, UTR,
+Transaction Type, Credit/debit instrument and Amount.
+
+<br><br>
+
+Only <b>CREDIT</b> transactions are considered.
+The transaction date becomes the invoice date and its month controls the invoice number.
+</div>
+
+<div class="actions">
+
+<input
+ id="statementFile"
+ type="file"
+ accept=".csv,text/csv">
+
+<button
+ class="primary"
+ onclick="readStatement()">
+Read Statement
+</button>
+
+<button onclick="selectCredits(true)">
+Select All Valid
+</button>
+
+<button onclick="selectCredits(false)">
+Deselect All
+</button>
+
+</div>
+
+<div id="importStatus" class="status"></div>
+
+<div
+ id="importPreview"
+ class="tablewrap"
+ style="margin-top:9px">
+</div>
+
+</div>
+
+<!-- ================= BILLING FORM ================= -->
+
+<div class="panel noPrint">
+
+<h2>I M ENTERPRISES — A5 Tally Billing</h2>
 
 <div class="grid">
 
 <div>
 <label>Invoice No.</label>
-<input id="no">
+<input id="invoiceNo">
 </div>
 
 <div>
 <label>Invoice Date</label>
-<input id="date" type="date">
+<input id="invoiceDate" type="date">
 </div>
 
 <div>
 <label>Buyer</label>
-<input id="buyer"
-       value="Cash Sale (B2C)">
+<input id="buyer">
 </div>
 
 <div>
 <label>Place of Supply</label>
-<input id="pos"
-       value="Karnataka (29)">
+<input id="pos">
 </div>
 
 <div>
 <label>Particulars</label>
-
-<select id="product">
-
-<option value="18">
-Cleaning & Housekeeping Products
-</option>
-
-<option value="5">
-Baby Products
-</option>
-
-</select>
-
+<select id="product"></select>
 </div>
 
 <div>
 <label>GST Rate</label>
-<input id="gst"
-       readonly>
+<input id="gst" readonly>
 </div>
 
 <div>
-<label>
-Invoice Total — Inclusive GST (₹)
-</label>
-
-<input id="total"
-       type="number"
-       min="0"
-       step=".01">
-
+<label>Invoice Total — Inclusive GST (₹)</label>
+<input
+ id="invoiceTotal"
+ type="number"
+ min="0"
+ step=".01">
 </div>
 
 <div>
 <label>Quantity</label>
-
-<input id="qty"
-       type="number"
-       min="1"
-       value="1">
-
+<input
+ id="qty"
+ type="number"
+ min="1"
+ value="1">
 </div>
 
 </div>
-
 
 <div class="actions">
 
-<button class="primary"
-        onclick="preview()">
+<button
+ class="primary"
+ onclick="previewBill()">
 Preview / Calculate
 </button>
 
-<button onclick="save()">
-Save Invoice
+<button onclick="saveBill()">
+Save / Update Invoice
 </button>
 
-<button onclick="window.print()">
+<button onclick="printCurrent()">
 Print / Save PDF
 </button>
 
 <button onclick="newBill()">
 New Invoice
-</button>
-
-<button onclick="exportCSV()">
-Export CSV
 </button>
 
 <button onclick="showGSTR1()">
@@ -405,28 +319,11 @@ GSTR-1 Report
 Backup Bills
 </button>
 
-<button onclick="restoreJSON()">
-Restore Bills
-</button>
-
-<input id="restoreFile"
-       type="file"
-       accept=".json,application/json"
-       hidden
-       onchange="importJSON(event)">
-
-<button onclick="clearAll()">
-Clear History
-</button>
-
 </div>
 
 </div>
 
-
-<!-- =========================
-     A5 BILL
-========================= -->
+<!-- ================= PRINT BILL ================= -->
 
 <div class="wrap">
 
@@ -443,111 +340,64 @@ I M ENTERPRISES
 </div>
 
 <div class="addr">
-
-CTS No. 67, CR 53, PID 23427, Jamiya Masjid Road,
-<br>
-
-Opp. Mahtar Mahal Masjid, Vijayapura,
-Karnataka - 586101
-
-<br>
-
-<b>
-GSTIN: 29BPZPJ1392D1ZE
-</b>
-
+CTS No. 67, CR 53, PID 23427, Jamiya Masjid Road,<br>
+Opp. Mahtar Mahal Masjid, Vijayapura, Karnataka - 586101<br>
+<b>GSTIN: 29BPZPJ1392D1ZE</b>
 </div>
 
 </div>
-
-
-<!-- BILL META -->
 
 <table class="meta">
 
 <tr>
-
 <td>
-<b>Invoice No.</b>
-<br>
+<b>Invoice No.</b><br>
 <span id="pno"></span>
 </td>
 
 <td>
-<b>Dated</b>
-<br>
+<b>Dated</b><br>
 <span id="pdate"></span>
 </td>
-
 </tr>
 
 <tr>
-
 <td>
-<b>Buyer</b>
-<br>
+<b>Buyer</b><br>
 <span id="pbuyer"></span>
 </td>
 
 <td>
-<b>Place of Supply</b>
-<br>
+<b>Place of Supply</b><br>
 <span id="ppos"></span>
 </td>
-
 </tr>
 
 </table>
 
-
-<!-- BILL TABLE -->
-
-<table class="billtable">
+<table class="bt">
 
 <colgroup>
-
 <col class="sl">
-<col class="part">
+<col class="partcol">
 <col class="hsn">
-<col class="qty">
+<col class="qtycol">
 <col class="rate">
 <col class="amt">
-
 </colgroup>
-
 
 <thead>
 
 <tr>
-
-<th>
-Sl
-</th>
-
-<th>
-Particulars
-</th>
-
-<th>
-HSN
-</th>
-
-<th>
-Qty
-</th>
-
-<th>
-Rate
-</th>
-
-<th>
-Amount
-</th>
-
+<th>Sl</th>
+<th>Particulars</th>
+<th>HSN</th>
+<th>Qty</th>
+<th>Rate</th>
+<th>Amount</th>
 </tr>
 
 </thead>
-
 
 <tbody>
 
@@ -561,37 +411,37 @@ Amount
 
 <td></td>
 
-<td class="c"
-    id="pqty">
+<td
+ class="c"
+ id="pqty">
 </td>
 
-<td class="r"
-    id="prate">
+<td
+ class="r"
+ id="prate">
 </td>
 
-<td class="r"
-    id="pamt">
+<td
+ class="r"
+ id="pamt">
 </td>
 
 </tr>
-
 
 <tr>
 
 <td colspan="4"></td>
 
 <td>
-<b>
-Taxable Value
-</b>
+<b>Taxable Value</b>
 </td>
 
-<td class="r"
-    id="ptax">
+<td
+ class="r"
+ id="ptax">
 </td>
 
 </tr>
-
 
 <tr>
 
@@ -604,12 +454,12 @@ CGST @
 </b>
 </td>
 
-<td class="r"
-    id="pcgst">
+<td
+ class="r"
+ id="pcgst">
 </td>
 
 </tr>
-
 
 <tr>
 
@@ -622,27 +472,23 @@ SGST @
 </b>
 </td>
 
-<td class="r"
-    id="psgst">
+<td
+ class="r"
+ id="psgst">
 </td>
 
 </tr>
-
 
 <tr>
 
 <td colspan="4"></td>
 
 <td>
-<b>
-Grand Total
-</b>
+<b>Grand Total</b>
 </td>
 
 <td class="r">
-
 <b id="ptotal"></b>
-
 </td>
 
 </tr>
@@ -651,31 +497,16 @@ Grand Total
 
 </table>
 
-
 <div class="words">
-
-<b>
-Amount in Words:
-</b>
-
+<b>Amount in Words:</b>
 <span id="pwords"></span>
-
 </div>
-
 
 <div class="decl">
-
-<b>
-Declaration:
-</b>
-
+<b>Declaration:</b>
 This invoice is issued for B2C retail sales.
-The product description shown represents the category
-of goods supplied. The applicable GST rate is correctly
-charged on the goods covered under the respective category.
-
+HSN is left blank as configured.
 </div>
-
 
 <div class="sign">
 
@@ -684,18 +515,9 @@ Customer Signature
 </div>
 
 <div>
-
-For
-<b>
-I M ENTERPRISES
-</b>
-
-<br>
-<br>
-<br>
-
+For <b>I M ENTERPRISES</b>
+<br><br><br>
 Authorized Signatory
-
 </div>
 
 </div>
@@ -704,22 +526,18 @@ Authorized Signatory
 
 </div>
 
+<!-- ================= GSTR1 ================= -->
 
-<!-- =========================
-     GSTR-1 REPORT
-========================= -->
+<div
+ class="panel noPrint"
+ id="reportPanel"
+ style="display:none">
 
-<div class="panel"
-     id="reportPanel"
-     style="display:none">
+<h2>
+GSTR-1 Working
+</h2>
 
-<b>
-GSTR-1 Report
-</b>
-
-<div id="gstrSummary"
-     style="margin-top:8px">
-</div>
+<div id="gstrSummary"></div>
 
 <div class="actions">
 
@@ -728,41 +546,35 @@ Print / Save Report PDF
 </button>
 
 <button onclick="closeGSTR1()">
-Close Report
+Close
 </button>
 
 </div>
 
 </div>
 
+<!-- ================= SAVED REGISTER ================= -->
 
-<!-- =========================
-     HISTORY
-========================= -->
+<div class="panel noPrint">
 
-<div class="panel history">
-
-<b>
+<h2>
 Saved Invoice Register
-</b>
+</h2>
 
+<div
+ style="display:flex;gap:8px;flex-wrap:wrap;margin-bottom:9px">
 
-<div style="
-display:flex;
-gap:8px;
-flex-wrap:wrap;
-margin:8px 0;
-">
+<input
+ id="searchBills"
+ placeholder="Search invoice / particulars"
+ oninput="renderRegister()"
+ style="max-width:260px">
 
-<input id="searchBills"
-       placeholder="Search invoice / product"
-       oninput="render()"
-       style="max-width:240px">
-
-<input id="monthBills"
-       type="month"
-       onchange="render()"
-       style="max-width:160px">
+<input
+ id="monthBills"
+ type="month"
+ onchange="renderRegister()"
+ style="max-width:160px">
 
 <button onclick="clearFilters()">
 Clear Filters
@@ -770,2220 +582,2088 @@ Clear Filters
 
 </div>
 
+<div
+ class="actions"
+ style="margin-bottom:9px">
 
-<div id="history">
+<button onclick="selectAllSaved(true)">
+☑ Select All
+</button>
+
+<button onclick="selectAllSaved(false)">
+☐ Deselect All
+</button>
+
+<button
+ class="danger"
+ onclick="deleteSelectedBills()">
+🗑 Delete Selected
+</button>
+
+</div>
+
+<div id="savedRegister"></div>
+
 </div>
 
 </div>
-
-</div>
-
-
-<!-- =========================
-     JAVASCRIPT
-========================= -->
 
 <script>
 
-const DB_NAME = "IME_TALLY_BILLS_DB";
-
-const STORE = "invoices";
-
-const DB_VERSION = 1;
-
-let bills = [];
-
-let dbReady = false;
-
-
-/* =========================
+/* =========================================================
    DATABASE
-========================= */
+========================================================= */
 
-function openDB() {
+const DB_NAME="IME_TALLY_BILLS_DB";
+const STORE="invoices";
+const DB_VERSION=3;
 
-    return new Promise((resolve, reject) => {
+let bills=[];
+let importedCredits=[];
+let rules=[];
+let editingNo=null;
 
-        if (!window.indexedDB) {
+const DEFAULT_RULES=[
 
-            reject(
-                new Error(
-                    "IndexedDB is not supported"
-                )
-            );
+ {
+  min:10,
+  max:300,
+  gst:18,
+  part:"Cleaning & Housekeeping Products",
+  enabled:true
+ },
 
-            return;
-        }
+ {
+  min:300.01,
+  max:"",
+  gst:5,
+  part:"Baby Products",
+  enabled:true
+ }
 
+];
 
-        const req =
-            indexedDB.open(
-                DB_NAME,
-                DB_VERSION
-            );
+/* =========================================================
+   INDEXED DB
+========================================================= */
 
+function openDB(){
 
-        req.onupgradeneeded =
-            function(e) {
+ return new Promise((resolve,reject)=>{
 
-                const db =
-                    e.target.result;
+  const req=
+   indexedDB.open(
+    DB_NAME,
+    DB_VERSION
+   );
 
+  req.onupgradeneeded=e=>{
 
-                if (
-                    !db.objectStoreNames
-                        .contains(STORE)
-                ) {
+   const db=e.target.result;
 
-                    db.createObjectStore(
-                        STORE,
-                        {
-                            keyPath:"no"
-                        }
-                    );
+   if(
+    !db.objectStoreNames.contains(STORE)
+   ){
 
-                }
-
-            };
-
-
-        req.onsuccess =
-            function(e) {
-
-                resolve(
-                    e.target.result
-                );
-
-            };
-
-
-        req.onerror =
-            function(e) {
-
-                reject(
-                    e.target.error
-                );
-
-            };
-
-    });
-
-}
-
-
-async function dbAll() {
-
-    const db =
-        await openDB();
-
-
-    return new Promise(
-        (resolve,reject) => {
-
-            const tx =
-                db.transaction(
-                    STORE,
-                    "readonly"
-                );
-
-            const store =
-                tx.objectStore(STORE);
-
-            const request =
-                store.getAll();
-
-
-            request.onsuccess =
-                function() {
-
-                    resolve(
-                        request.result || []
-                    );
-
-                };
-
-
-            request.onerror =
-                function() {
-
-                    reject(
-                        request.error
-                    );
-
-                };
-
-        }
+    db.createObjectStore(
+     STORE,
+     {keyPath:"no"}
     );
 
-}
+   }
 
+  };
 
-async function dbPut(data) {
+  req.onsuccess=e=>
+   resolve(e.target.result);
 
-    const db =
-        await openDB();
+  req.onerror=e=>
+   reject(e.target.error);
 
-
-    return new Promise(
-        (resolve,reject) => {
-
-            const tx =
-                db.transaction(
-                    STORE,
-                    "readwrite"
-                );
-
-
-            tx.objectStore(STORE)
-              .put(data);
-
-
-            tx.oncomplete =
-                function() {
-
-                    resolve();
-
-                };
-
-
-            tx.onerror =
-                function() {
-
-                    reject(
-                        tx.error
-                    );
-
-                };
-
-        }
-    );
+ });
 
 }
 
+async function dbAll(){
 
-async function dbClear() {
+ const db=await openDB();
 
-    const db =
-        await openDB();
+ return new Promise((resolve,reject)=>{
 
+  const r=
+   db
+   .transaction(STORE,"readonly")
+   .objectStore(STORE)
+   .getAll();
 
-    return new Promise(
-        (resolve,reject) => {
+  r.onsuccess=()=>
+   resolve(r.result||[]);
 
-            const tx =
-                db.transaction(
-                    STORE,
-                    "readwrite"
-                );
+  r.onerror=()=>
+   reject(r.error);
 
-
-            tx.objectStore(STORE)
-              .clear();
-
-
-            tx.oncomplete =
-                function() {
-
-                    resolve();
-
-                };
-
-
-            tx.onerror =
-                function() {
-
-                    reject(
-                        tx.error
-                    );
-
-                };
-
-        }
-    );
+ });
 
 }
 
+async function dbPut(x){
 
-/* =========================
-   FORMAT
-========================= */
+ const db=await openDB();
 
-function fmt(number) {
+ return new Promise((resolve,reject)=>{
 
-    return new Intl.NumberFormat(
-        "en-IN",
-        {
-            minimumFractionDigits:2,
-            maximumFractionDigits:2
-        }
-    ).format(
-        Number(number) || 0
-    );
+  const tx=
+   db.transaction(
+    STORE,
+    "readwrite"
+   );
 
-}
+  tx
+   .objectStore(STORE)
+   .put(x);
 
+  tx.oncomplete=resolve;
 
-function dshow(value) {
+  tx.onerror=()=>
+   reject(tx.error);
 
-    if (!value)
-        return "";
-
-
-    const parts =
-        value.split("-");
-
-
-    if (parts.length !== 3)
-        return value;
-
-
-    return (
-        parts[2] +
-        "-" +
-        parts[1] +
-        "-" +
-        parts[0]
-    );
+ });
 
 }
 
+/* =========================================================
+   HELPERS
+========================================================= */
 
-function todayISO() {
+const esc=s=>
+ String(s??"")
+ .replace(/&/g,"&amp;")
+ .replace(/</g,"&lt;")
+ .replace(/>/g,"&gt;")
+ .replace(/"/g,"&quot;");
 
-    const d =
-        new Date();
+function money(n){
 
-
-    d.setMinutes(
-        d.getMinutes() -
-        d.getTimezoneOffset()
-    );
-
-
-    return d
-        .toISOString()
-        .slice(0,10);
+ return new Intl.NumberFormat(
+  "en-IN",
+  {
+   minimumFractionDigits:2,
+   maximumFractionDigits:2
+  }
+ ).format(+n||0);
 
 }
 
+function localDate(){
 
-/* =========================
+ let d=new Date();
+
+ d.setMinutes(
+  d.getMinutes()-
+  d.getTimezoneOffset()
+ );
+
+ return d
+  .toISOString()
+  .slice(0,10);
+
+}
+
+function displayDate(v){
+
+ let m=
+  String(v||"")
+  .match(
+   /^(\d{4})-(\d{2})-(\d{2})$/
+  );
+
+ return m
+  ?m[3]+"-"+m[2]+"-"+m[1]
+  :String(v||"");
+
+}
+
+/* =========================================================
+   STATEMENT DATE CONVERTER
+   Supports PhonePe:
+   Jul 30, 2026
+========================================================= */
+
+function statementDate(raw){
+
+ let v=
+  String(raw||"").trim();
+
+ let m;
+
+ m=
+  v.match(
+   /^(\d{1,2})[\/-](\d{1,2})[\/-](\d{4})$/
+  );
+
+ if(m){
+
+  return `${m[3]}-${m[2].padStart(2,"0")}-${m[1].padStart(2,"0")}`;
+
+ }
+
+ m=
+  v.match(
+   /^(\d{4})[\/-](\d{1,2})[\/-](\d{1,2})$/
+  );
+
+ if(m){
+
+  return `${m[1]}-${m[2].padStart(2,"0")}-${m[3].padStart(2,"0")}`;
+
+ }
+
+ /*
+  PhonePe format:
+  Jul 30, 2026
+ */
+
+ m=
+  v.match(
+   /^([A-Za-z]{3,9})\s+(\d{1,2}),\s*(\d{4})$/
+  );
+
+ if(m){
+
+  const months={
+   jan:1,
+   feb:2,
+   mar:3,
+   apr:4,
+   may:5,
+   jun:6,
+   jul:7,
+   aug:8,
+   sep:9,
+   oct:10,
+   nov:11,
+   dec:12
+  };
+
+  const mo=
+   months[
+    m[1]
+    .slice(0,3)
+    .toLowerCase()
+   ];
+
+  if(mo){
+
+   return `${m[3]}-${String(mo).padStart(2,"0")}-${m[2].padStart(2,"0")}`;
+
+  }
+
+ }
+
+ return "";
+
+}
+
+/* =========================================================
    INVOICE NUMBER
-========================= */
+========================================================= */
 
-function nextNo() {
+function monthPrefix(date){
 
-    const now =
-        new Date();
+ const m=
+  String(date)
+  .match(
+   /^(\d{4})-(\d{2})-(\d{2})$/
+  );
 
+ if(!m){
 
-    const months = [
+  return (
+   localStorage.imePrefix||
+   "IME"
+  )+"/";
 
-        "JAN",
-        "FEB",
-        "MAR",
-        "APR",
-        "MAY",
-        "JUN",
-        "JUL",
-        "AUG",
-        "SEP",
-        "OCT",
-        "NOV",
-        "DEC"
+ }
 
-    ];
+ const months=[
+  "JAN","FEB","MAR","APR",
+  "MAY","JUN","JUL","AUG",
+  "SEP","OCT","NOV","DEC"
+ ];
 
-
-    const month =
-        months[
-            now.getMonth()
-        ];
-
-
-    const year =
-        String(
-            now.getFullYear()
-        ).slice(-2);
-
-
-    const prefix =
-        "IME/" +
-        month +
-        year +
-        "/";
-
-
-    let highest = 0;
-
-
-    bills.forEach(
-        function(bill) {
-
-            if (
-                bill.no &&
-                String(bill.no)
-                    .startsWith(prefix)
-            ) {
-
-                const parts =
-                    String(
-                        bill.no
-                    ).split("/");
-
-
-                const number =
-                    parseInt(
-                        parts[
-                            parts.length - 1
-                        ],
-                        10
-                    );
-
-
-                if (
-                    !isNaN(number)
-                ) {
-
-                    highest =
-                        Math.max(
-                            highest,
-                            number
-                        );
-
-                }
-
-            }
-
-        }
-    );
-
-
-    return (
-        prefix +
-        String(
-            highest + 1
-        ).padStart(3,"0")
-    );
+ return (
+  localStorage.imePrefix||
+  "IME"
+ )+
+ "/"+
+ months[+m[2]-1]+
+ m[1].slice(-2)+
+ "/";
 
 }
 
+function nextInvoiceNo(date){
 
-/* =========================
-   AMOUNT IN WORDS
-========================= */
+ const prefix=
+  monthPrefix(date);
 
-const ones = [
+ let max=0;
 
-    "",
-    "One",
-    "Two",
-    "Three",
-    "Four",
-    "Five",
-    "Six",
-    "Seven",
-    "Eight",
-    "Nine",
-    "Ten",
-    "Eleven",
-    "Twelve",
-    "Thirteen",
-    "Fourteen",
-    "Fifteen",
-    "Sixteen",
-    "Seventeen",
-    "Eighteen",
-    "Nineteen"
+ bills.forEach(x=>{
 
-];
+  if(
+   x.no &&
+   x.no.startsWith(prefix)
+  ){
 
-
-const tens = [
-
-    "",
-    "",
-    "Twenty",
-    "Thirty",
-    "Forty",
-    "Fifty",
-    "Sixty",
-    "Seventy",
-    "Eighty",
-    "Ninety"
-
-];
-
-
-function twoDigitWords(n) {
-
-    n =
-        Number(n);
-
-
-    if (n < 20) {
-
-        return ones[n];
-
-    }
-
-
-    return (
-        tens[
-            Math.floor(n / 10)
-        ] +
-        (
-            n % 10
-                ? " " + ones[n % 10]
-                : ""
-        )
+   max=
+    Math.max(
+     max,
+     Number(
+      x.no
+      .split("/")
+      .pop()
+     )||0
     );
 
-}
+  }
 
+ });
 
-function threeDigitWords(n) {
-
-    n =
-        Number(n);
-
-
-    if (n >= 100) {
-
-        return (
-
-            ones[
-                Math.floor(n / 100)
-            ] +
-
-            " Hundred" +
-
-            (
-                n % 100
-                    ? " " +
-                      twoDigitWords(
-                          n % 100
-                      )
-                    : ""
-            )
-
-        );
-
-    }
-
-
-    return twoDigitWords(n);
+ return (
+  prefix+
+  String(max+1).padStart(3,"0")
+ );
 
 }
 
+/* =========================================================
+   RULES
+========================================================= */
 
-function amountInWords(amount) {
+function loadRules(){
 
-    let n =
-        Math.round(
-            Number(amount) || 0
-        );
+ rules=
+  JSON.parse(
+   localStorage.imeRules||
+   "null"
+  )||
+  DEFAULT_RULES.map(
+   x=>({...x})
+  );
 
+ ignoreBelow.value=
+  localStorage.imeIgnore??"10";
 
-    if (n === 0) {
+ setPos.value=
+  localStorage.imePos||
+  "Karnataka (29)";
 
-        return "Rupees Zero Only";
+ setBuyer.value=
+  localStorage.imeBuyer||
+  "Cash Sale (B2C)";
 
-    }
+ setPrefix.value=
+  localStorage.imePrefix||
+  "IME";
 
+ renderRules();
 
-    const parts = [];
-
-
-    const crore =
-        Math.floor(
-            n / 10000000
-        );
-
-    n %= 10000000;
-
-
-    const lakh =
-        Math.floor(
-            n / 100000
-        );
-
-    n %= 100000;
-
-
-    const thousand =
-        Math.floor(
-            n / 1000
-        );
-
-    n %= 1000;
-
-
-    if (crore) {
-
-        parts.push(
-            threeDigitWords(crore) +
-            " Crore"
-        );
-
-    }
-
-
-    if (lakh) {
-
-        parts.push(
-            threeDigitWords(lakh) +
-            " Lakh"
-        );
-
-    }
-
-
-    if (thousand) {
-
-        parts.push(
-            threeDigitWords(thousand) +
-            " Thousand"
-        );
-
-    }
-
-
-    if (n) {
-
-        parts.push(
-            threeDigitWords(n)
-        );
-
-    }
-
-
-    return (
-        "Rupees " +
-        parts.join(" ") +
-        " Only"
-    );
+ renderProductOptions();
 
 }
 
+function renderRules(){
 
-/* =========================
+ rulesEditor.innerHTML="";
+
+ rules.forEach((r,i)=>
+
+  rulesEditor.innerHTML+=`
+
+  <div class="ruleRow">
+
+   <input
+    type="number"
+    step=".01"
+    value="${r.min}"
+    onchange="rules[${i}].min=this.value">
+
+   <input
+    type="number"
+    step=".01"
+    value="${r.max}"
+    placeholder="No limit"
+    onchange="rules[${i}].max=this.value">
+
+   <input
+    type="number"
+    step=".01"
+    value="${r.gst}"
+    onchange="rules[${i}].gst=this.value">
+
+   <input
+    value="${esc(r.part)}"
+    onchange="rules[${i}].part=this.value">
+
+   <input
+    type="checkbox"
+    ${r.enabled!==false?"checked":""}
+    onchange="rules[${i}].enabled=this.checked">
+
+   <button
+    onclick="
+     rules.splice(${i},1);
+     renderRules();
+     renderProductOptions();
+    ">
+    ×
+   </button>
+
+  </div>
+
+ `);
+
+}
+
+function addRule(){
+
+ rules.push({
+
+  min:0,
+  max:"",
+  gst:18,
+  part:"New Category",
+  enabled:true
+
+ });
+
+ renderRules();
+
+ renderProductOptions();
+
+}
+
+function saveRules(){
+
+ rules=
+  rules.map(r=>({
+
+   min:+r.min||0,
+
+   max:
+    r.max===""||
+    r.max==null
+     ?""
+     :+r.max,
+
+   gst:+r.gst||0,
+
+   part:
+    String(r.part||""),
+
+   enabled:
+    r.enabled!==false
+
+  }))
+  .sort(
+   (a,b)=>a.min-b.min
+  );
+
+ localStorage.imeRules=
+  JSON.stringify(rules);
+
+ localStorage.imeIgnore=
+  +ignoreBelow.value||0;
+
+ localStorage.imePos=
+  setPos.value;
+
+ localStorage.imeBuyer=
+  setBuyer.value;
+
+ localStorage.imePrefix=
+  setPrefix.value||
+  "IME";
+
+ renderRules();
+
+ renderProductOptions();
+
+ newBill();
+
+ ruleStatus.textContent=
+  "Rules saved successfully.";
+
+}
+
+function resetRules(){
+
+ if(
+  confirm(
+   "Reset the credit rules to ₹10–₹300 at 18% and above ₹300 at 5%?"
+  )
+ ){
+
+  localStorage.removeItem(
+   "imeRules"
+  );
+
+  loadRules();
+
+ }
+
+}
+
+function findRule(amount){
+
+ const ignore=
+  +(localStorage.imeIgnore??10);
+
+ if(amount<ignore)
+  return null;
+
+ return rules.find(r=>
+  r.enabled!==false &&
+  amount>=+r.min &&
+  (
+   r.max===""||
+   amount<=+r.max
+  )
+ )||null;
+
+}
+
+function renderProductOptions(){
+
+ const old=
+  product.value;
+
+ product.innerHTML="";
+
+ rules
+ .filter(
+  r=>r.enabled!==false
+ )
+ .forEach((r,i)=>{
+
+  const o=
+   document.createElement(
+    "option"
+   );
+
+  o.value=i;
+
+  o.textContent=
+   r.part+
+   " — "+
+   r.gst+
+   "%";
+
+  product.appendChild(o);
+
+ });
+
+ if(
+  [...product.options]
+  .some(o=>o.value===old)
+ ){
+
+  product.value=old;
+
+ }
+
+ gst.value=
+  product.options.length
+   ?rules[+product.value].gst+"%"
+   :"";
+
+}
+
+/* =========================================================
    CALCULATION
-========================= */
+========================================================= */
 
-function calculateInvoice() {
+function calc(){
 
-    const total =
-        Number(
-            document.getElementById(
-                "total"
-            ).value
-        ) || 0;
+ const total=
+  +invoiceTotal.value||0;
 
+ const r=
+  rules[+product.value]||
+  {
+   gst:0,
+   part:""
+  };
 
-    const rate =
-        Number(
-            document.getElementById(
-                "product"
-            ).value
-        ) || 0;
+ const taxable=
+  r.gst
+   ?total/(1+r.gst/100)
+   :total;
 
+ const tax=
+  total-taxable;
 
-    const taxable =
-        total /
-        (1 + rate / 100);
+ return{
 
+  total,
+  r,
+  taxable,
+  cgst:tax/2,
+  sgst:tax/2
 
-    const totalTax =
-        total - taxable;
-
-
-    const cgst =
-        totalTax / 2;
-
-
-    const sgst =
-        totalTax - cgst;
-
-
-    return {
-
-        total:total,
-
-        rate:rate,
-
-        taxable:taxable,
-
-        cgst:cgst,
-
-        sgst:sgst
-
-    };
+ };
 
 }
 
+/* =========================================================
+   WORDS
+========================================================= */
 
-/* =========================
+function numberWords(n){
+
+ n=Math.round(n);
+
+ if(!n)
+  return "Rupees Zero Only";
+
+ const o=[
+  "",
+  "One",
+  "Two",
+  "Three",
+  "Four",
+  "Five",
+  "Six",
+  "Seven",
+  "Eight",
+  "Nine",
+  "Ten",
+  "Eleven",
+  "Twelve",
+  "Thirteen",
+  "Fourteen",
+  "Fifteen",
+  "Sixteen",
+  "Seventeen",
+  "Eighteen",
+  "Nineteen"
+ ];
+
+ const t=[
+  "",
+  "",
+  "Twenty",
+  "Thirty",
+  "Forty",
+  "Fifty",
+  "Sixty",
+  "Seventy",
+  "Eighty",
+  "Ninety"
+ ];
+
+ const two=x=>
+  x<20
+   ?o[x]
+   :t[Math.floor(x/10)] +
+    (x%10
+     ?" "+o[x%10]
+     :"");
+
+ const three=x=>
+  x>=100
+   ?o[Math.floor(x/100)]+" Hundred"+
+    (x%100
+     ?" "+two(x%100)
+     :"")
+   :two(x);
+
+ let a=[];
+
+ let c=
+  Math.floor(n/1e7);
+
+ n%=1e7;
+
+ let l=
+  Math.floor(n/1e5);
+
+ n%=1e5;
+
+ let k=
+  Math.floor(n/1e3);
+
+ n%=1e3;
+
+ if(c)
+  a.push(
+   three(c)+" Crore"
+  );
+
+ if(l)
+  a.push(
+   three(l)+" Lakh"
+  );
+
+ if(k)
+  a.push(
+   three(k)+" Thousand"
+  );
+
+ if(n)
+  a.push(
+   three(n)
+  );
+
+ return(
+  "Rupees "+
+  a.join(" ")+
+  " Only"
+ );
+
+}
+
+/* =========================================================
    PREVIEW
-========================= */
+========================================================= */
 
-function preview() {
+function previewBill(){
 
-    const invoice =
-        calculateInvoice();
+ const x=
+  calc();
 
+ gst.value=
+  (x.r.gst||0)+
+  "%";
 
-    const productSelect =
-        document.getElementById(
-            "product"
-        );
+ pno.textContent=
+  invoiceNo.value;
 
+ pdate.textContent=
+  displayDate(
+   invoiceDate.value
+  );
 
-    const product =
-        productSelect.value === "5"
+ pbuyer.textContent=
+  buyer.value;
 
-            ? "Baby Products"
+ ppos.textContent=
+  pos.value;
 
-            : "Cleaning & Housekeeping Products";
+ pproduct.textContent=
+  x.r.part||"";
 
+ pqty.textContent=
+  qty.value;
 
-    const qty =
-        Number(
-            document.getElementById(
-                "qty"
-            ).value
-        ) || 1;
+ prate.textContent=
+  money(x.taxable);
 
+ pamt.textContent=
+  money(x.taxable);
 
-    const unitRate =
-        invoice.taxable / qty;
+ ptax.textContent=
+  money(x.taxable);
 
+ pcgr.textContent=
+  (x.r.gst||0)/2;
 
-    document.getElementById(
-        "gst"
-    ).value =
-        invoice.rate + "%";
+ psgr.textContent=
+  (x.r.gst||0)/2;
 
+ pcgst.textContent=
+  money(x.cgst);
 
-    document.getElementById(
-        "pno"
-    ).textContent =
-        document.getElementById(
-            "no"
-        ).value || "";
+ psgst.textContent=
+  money(x.sgst);
 
+ ptotal.textContent=
+  money(x.total);
 
-    document.getElementById(
-        "pdate"
-    ).textContent =
-        dshow(
-            document.getElementById(
-                "date"
-            ).value
-        );
-
-
-    document.getElementById(
-        "pbuyer"
-    ).textContent =
-        document.getElementById(
-            "buyer"
-        ).value || "";
-
-
-    document.getElementById(
-        "ppos"
-    ).textContent =
-        document.getElementById(
-            "pos"
-        ).value || "";
-
-
-    document.getElementById(
-        "pproduct"
-    ).textContent =
-        product;
-
-
-    document.getElementById(
-        "pqty"
-    ).textContent =
-        qty;
-
-
-    document.getElementById(
-        "prate"
-    ).textContent =
-        fmt(unitRate);
-
-
-    document.getElementById(
-        "pamt"
-    ).textContent =
-        fmt(invoice.taxable);
-
-
-    document.getElementById(
-        "ptax"
-    ).textContent =
-        fmt(invoice.taxable);
-
-
-    document.getElementById(
-        "pcgr"
-    ).textContent =
-        invoice.rate / 2;
-
-
-    document.getElementById(
-        "psgr"
-    ).textContent =
-        invoice.rate / 2;
-
-
-    document.getElementById(
-        "pcgst"
-    ).textContent =
-        fmt(invoice.cgst);
-
-
-    document.getElementById(
-        "psgst"
-    ).textContent =
-        fmt(invoice.sgst);
-
-
-    document.getElementById(
-        "ptotal"
-    ).textContent =
-        fmt(invoice.total);
-
-
-    document.getElementById(
-        "pwords"
-    ).textContent =
-        amountInWords(
-            invoice.total
-        );
+ pwords.textContent=
+  numberWords(x.total);
 
 }
 
+/* =========================================================
+   SAVE / UPDATE
+========================================================= */
 
-/* =========================
-   GET INVOICE DATA
-========================= */
+async function saveBill(){
 
-function getInvoiceObject() {
+ const x=
+  calc();
 
-    const invoice =
-        calculateInvoice();
+ const noValue=
+  invoiceNo.value;
 
+ if(
+  !noValue||
+  !invoiceDate.value||
+  x.total<=0
+ ){
 
-    return {
+  return alert(
+   "Enter invoice number, date and total."
+  );
 
-        no:
-            document.getElementById(
-                "no"
-            ).value.trim(),
+ }
 
-        date:
-            document.getElementById(
-                "date"
-            ).value,
+ const old=
+  bills.find(
+   b=>b.no===noValue
+  );
 
-        buyer:
-            document.getElementById(
-                "buyer"
-            ).value,
+ const bill={
 
-        pos:
-            document.getElementById(
-                "pos"
-            ).value,
+  ...(old||{}),
 
-        product:
-            document.getElementById(
-                "product"
-            ).value,
+  no:noValue,
 
-        gst:
-            invoice.rate,
+  date:
+   invoiceDate.value,
 
-        total:
-            invoice.total,
+  buyer:
+   buyer.value,
 
-        qty:
-            Number(
-                document.getElementById(
-                    "qty"
-                ).value
-            ) || 1
+  pos:
+   pos.value,
 
-    };
+  product:
+   x.r.part,
+
+  gst:
+   x.r.gst,
+
+  total:
+   x.total,
+
+  qty:
+   +qty.value||1
+
+ };
+
+ await dbPut(bill);
+
+ bills=
+  await dbAll();
+
+ editingNo=
+  noValue;
+
+ renderRegister();
+
+ alert(
+  old
+   ?"Invoice updated."
+   :"Invoice saved."
+ );
 
 }
 
+/* =========================================================
+   NEW BILL
+========================================================= */
 
-/* =========================
-   SAVE
-========================= */
+function newBill(){
 
-async function save() {
+ editingNo=null;
 
-    const data =
-        getInvoiceObject();
+ const d=
+  localDate();
 
+ invoiceNo.value=
+  nextInvoiceNo(d);
 
-    if (!data.no) {
+ invoiceDate.value=
+  d;
 
-        alert(
-            "Enter invoice number."
-        );
+ buyer.value=
+  localStorage.imeBuyer||
+  "Cash Sale (B2C)";
 
-        document.getElementById(
-            "no"
-        ).focus();
+ pos.value=
+  localStorage.imePos||
+  "Karnataka (29)";
 
-        return;
+ invoiceTotal.value="";
+
+ qty.value=1;
+
+ if(
+  product.options.length
+ ){
+
+  product.selectedIndex=0;
+
+ }
+
+ previewBill();
+
+}
+
+/* =========================================================
+   EDIT BILL
+========================================================= */
+
+function editBill(noValue){
+
+ const x=
+  bills.find(
+   b=>b.no===noValue
+  );
+
+ if(!x)
+  return alert(
+   "Invoice not found."
+  );
+
+ editingNo=
+  noValue;
+
+ invoiceNo.value=
+  x.no;
+
+ invoiceDate.value=
+  x.date;
+
+ buyer.value=
+  x.buyer||
+  "Cash Sale (B2C)";
+
+ pos.value=
+  x.pos||
+  "Karnataka (29)";
+
+ invoiceTotal.value=
+  x.total;
+
+ qty.value=
+  x.qty||1;
+
+ const idx=
+  rules.findIndex(
+   r=>
+    r.part===x.product &&
+    +r.gst===+x.gst
+  );
+
+ if(idx>=0)
+  product.value=idx;
+
+ previewBill();
+
+ window.scrollTo({
+  top:0,
+  behavior:"smooth"
+ });
+
+}
+
+function printSavedBill(noValue){
+
+ editBill(noValue);
+
+ setTimeout(
+  ()=>window.print(),
+  200
+ );
+
+}
+
+function printCurrent(){
+
+ previewBill();
+
+ window.print();
+
+}
+
+/* =========================================================
+   SAVED REGISTER
+========================================================= */
+
+function renderRegister(){
+
+ const q=
+  (searchBills.value||"")
+  .toLowerCase()
+  .trim();
+
+ const mon=
+  monthBills.value||"";
+
+ const list=
+  bills.filter(x=>
+
+   (
+    !q||
+    String(x.no)
+     .toLowerCase()
+     .includes(q)||
+    String(x.product||"")
+     .toLowerCase()
+     .includes(q)
+   )
+
+   &&
+
+   (
+    !mon||
+    String(x.date)
+     .startsWith(mon)
+   )
+
+  );
+
+ if(!list.length){
+
+  savedRegister.innerHTML=
+   "<p>No matching invoices.</p>";
+
+  return;
+
+ }
+
+ savedRegister.innerHTML=
+  list
+  .slice()
+  .reverse()
+  .map(x=>`
+
+   <div class="regrow">
+
+    <input
+     type="checkbox"
+     ${x._selected?"checked":""}
+     onchange="
+      toggleSaved(
+       '${esc(x.no)}',
+       this.checked
+      )
+     ">
+
+    <div class="reginfo">
+
+     <b>
+      ${esc(x.no)}
+     </b>
+
+     —
+     ${displayDate(x.date)}
+
+     —
+     ${esc(x.product)}
+
+     —
+     ${x.gst}%
+
+     —
+     ₹${money(x.total)}
+
+     ${
+      x.source==="Statement Import"
+       ?"— <small>Imported</small>"
+       :""
+     }
+
+    </div>
+
+    <button
+     onclick="
+      editBill(
+       '${esc(x.no)}'
+      )
+     ">
+     Edit
+    </button>
+
+    <button
+     onclick="
+      printSavedBill(
+       '${esc(x.no)}'
+      )
+     ">
+     Print / PDF
+    </button>
+
+   </div>
+
+  `)
+  .join("");
+
+}
+
+function toggleSaved(
+ noValue,
+ checked
+){
+
+ const x=
+  bills.find(
+   b=>b.no===noValue
+  );
+
+ if(x)
+  x._selected=
+   checked;
+
+}
+
+function selectAllSaved(value){
+
+ bills.forEach(
+  x=>x._selected=value
+ );
+
+ renderRegister();
+
+}
+
+async function deleteSelectedBills(){
+
+ const selected=
+  bills.filter(
+   x=>x._selected
+  );
+
+ if(!selected.length){
+
+  return alert(
+   "Select at least one invoice to delete."
+  );
+
+ }
+
+ if(
+  !confirm(
+   "Delete "+
+   selected.length+
+   " selected invoice(s)? This cannot be undone."
+  )
+ ){
+
+  return;
+
+ }
+
+ const db=
+  await openDB();
+
+ await new Promise(
+  (resolve,reject)=>{
+
+   const tx=
+    db.transaction(
+     STORE,
+     "readwrite"
+    );
+
+   const st=
+    tx.objectStore(STORE);
+
+   selected.forEach(
+    x=>st.delete(x.no)
+   );
+
+   tx.oncomplete=
+    resolve;
+
+   tx.onerror=
+    ()=>reject(tx.error);
+
+  }
+ );
+
+ bills=
+  await dbAll();
+
+ editingNo=null;
+
+ renderRegister();
+
+ newBill();
+
+ alert(
+  selected.length+
+  " invoice(s) deleted."
+ );
+
+}
+
+function clearFilters(){
+
+ searchBills.value="";
+
+ monthBills.value="";
+
+ renderRegister();
+
+}
+
+/* =========================================================
+   ROBUST CSV PARSER
+========================================================= */
+
+function parseCSV(text){
+
+ text=
+  String(text||"")
+  .replace(/^\uFEFF/,"");
+
+ const rows=[];
+
+ let row=[];
+ let field="";
+ let quoted=false;
+
+ for(
+  let i=0;
+  i<text.length;
+  i++
+ ){
+
+  const c=
+   text[i];
+
+  const n=
+   text[i+1];
+
+  if(c==='"'){
+
+   if(
+    quoted &&
+    n==='"'
+   ){
+
+    field+='"';
+
+    i++;
+
+   }else{
+
+    quoted=
+     !quoted;
+
+   }
+
+  }
+
+  else if(
+   c==="," &&
+   !quoted
+  ){
+
+   row.push(field);
+
+   field="";
+
+  }
+
+  else if(
+   (
+    c==="\n"||
+    c==="\r"
+   ) &&
+   !quoted
+  ){
+
+   if(
+    c==="\r" &&
+    n==="\n"
+   ){
+
+    i++;
+
+   }
+
+   row.push(field);
+
+   if(
+    row.some(
+     v=>
+      String(v).trim()!==""
+    )
+   ){
+
+    rows.push(row);
+
+   }
+
+   row=[];
+
+   field="";
+
+  }
+
+  else{
+
+   field+=c;
+
+  }
+
+ }
+
+ if(
+  field!==""||
+  row.length
+ ){
+
+  row.push(field);
+
+  if(
+   row.some(
+    v=>
+     String(v).trim()!==""
+   )
+  ){
+
+   rows.push(row);
+
+  }
+
+ }
+
+ return rows;
+
+}
+
+function parseAmount(v){
+
+ const n=
+  parseFloat(
+   String(v??"")
+   .replace(/[₹,\s]/g,"")
+   .replace(/[()]/g,"")
+  );
+
+ return isNaN(n)
+  ?NaN
+  :n;
+
+}
+
+/* =========================================================
+   PHONEPE STATEMENT READER
+========================================================= */
+
+function readStatementRows(data){
+
+ if(!data.length){
+
+  throw Error(
+   "CSV is empty."
+  );
+
+ }
+
+ /*
+  Find exact PhonePe header.
+ */
+
+ let hi=
+  data.findIndex(
+   row=>
+    row.some(
+     c=>
+      String(c||"")
+      .replace(/^\uFEFF/,"")
+      .trim()
+      .toLowerCase()
+      ===
+      "transaction type"
+    )
+  );
+
+ if(hi<0){
+
+  throw Error(
+   "Could not find the PhonePe transaction header."
+  );
+
+ }
+
+ const h=
+  data[hi].map(
+   v=>
+    String(v||"")
+    .replace(/^\uFEFF/,"")
+    .trim()
+    .toLowerCase()
+  );
+
+ const di=
+  h.findIndex(
+   v=>
+    v==="date"||
+    v.includes(
+     "transaction date"
+    )
+  );
+
+ const ti=
+  h.findIndex(
+   v=>
+    v==="time"||
+    v.includes(
+     "transaction time"
+    )
+  );
+
+ const detailsI=
+  h.findIndex(
+   v=>
+    v.includes(
+     "transaction details"
+    )||
+    v.includes(
+     "description"
+    )||
+    v.includes(
+     "narration"
+    )||
+    v.includes(
+     "remarks"
+    )
+  );
+
+ const idI=
+  h.findIndex(
+   v=>
+    v.includes(
+     "transaction id"
+    )
+  );
+
+ const utrI=
+  h.findIndex(
+   v=>
+    v==="utr"||
+    v.includes("rrn")||
+    v.includes("reference")
+  );
+
+ const typeI=
+  h.findIndex(
+   v=>
+    v==="transaction type"||
+    v==="type"
+  );
+
+ const amountI=
+  h.findIndex(
+   v=>
+    v==="amount"||
+    v.includes(
+     "transaction amount"
+    )
+  );
+
+ if(
+  di<0||
+  typeI<0||
+  amountI<0
+ ){
+
+  throw Error(
+   "PhonePe header detected, but Date / Transaction Type / Amount columns are missing."
+  );
+
+ }
+
+ const out=[];
+
+ for(
+  let i=hi+1;
+  i<data.length;
+  i++
+ ){
+
+  const r=
+   data[i];
+
+  const type=
+   String(
+    r[typeI]||""
+   )
+   .trim()
+   .toUpperCase();
+
+  const amount=
+   parseAmount(
+    r[amountI]
+   );
+
+  /*
+   ONLY CREDIT TRANSACTIONS
+  */
+
+  if(
+   (
+    type==="CREDIT"||
+    type==="CR"
+   )&&
+   !isNaN(amount)&&
+   amount>0
+  ){
+
+   out.push({
+
+    date:
+     r[di]||"",
+
+    time:
+     ti>=0
+      ?r[ti]||""
+      :"",
+
+    details:
+     detailsI>=0
+      ?r[detailsI]||""
+      :"",
+
+    amount,
+
+    id:
+     idI>=0
+      ?r[idI]||""
+      :"",
+
+    utr:
+     utrI>=0
+      ?r[utrI]||""
+      :""
+
+   });
+
+  }
+
+ }
+
+ return out;
+
+}
+
+/* =========================================================
+   READ PHONEPE CSV
+========================================================= */
+
+async function readStatement(){
+
+ const file=
+  statementFile.files[0];
+
+ if(!file){
+
+  return alert(
+   "Choose the PhonePe CSV statement first."
+  );
+
+ }
+
+ try{
+
+  const text=
+   await file.text();
+
+  const data=
+   parseCSV(text);
+
+  const rows=
+   readStatementRows(data);
+
+  importedCredits=
+   rows.map(
+    (x,i)=>{
+
+     const date=
+      statementDate(
+       x.date
+      );
+
+     const rule=
+      findRule(
+       x.amount
+      );
+
+     return{
+
+      ...x,
+
+      date,
+
+      key:i,
+
+      rule,
+
+      selected:
+       !!rule
+
+     };
 
     }
+   );
 
+  if(
+   !importedCredits.length
+  ){
 
-    if (!data.date) {
+   throw Error(
+    "No CREDIT transactions were found in this PhonePe CSV."
+   );
 
-        alert(
-            "Select invoice date."
-        );
+  }
 
-        document.getElementById(
-            "date"
-        ).focus();
+  renderImportPreview();
 
-        return;
+ }
+ catch(e){
 
-    }
+  importStatus.textContent=
+   "Import failed: "+
+   e.message;
 
+  alert(
+   "Could not read statement: "+
+   e.message
+  );
 
-    if (data.total <= 0) {
-
-        alert(
-            "Enter invoice total."
-        );
-
-        document.getElementById(
-            "total"
-        ).focus();
-
-        return;
-
-    }
-
-
-    try {
-
-        await dbPut(data);
-
-
-        bills =
-            await dbAll();
-
-
-        render();
-
-
-        alert(
-            "Invoice " +
-            data.no +
-            " saved successfully."
-        );
-
-
-    } catch(error) {
-
-        console.error(error);
-
-
-        alert(
-            "Could not save invoice.\n\n" +
-            error.message
-        );
-
-    }
+ }
 
 }
 
+/* =========================================================
+   IMPORT PREVIEW
+========================================================= */
 
-/* =========================
-   LOAD / EDIT
-========================= */
+function renderImportPreview(){
 
-async function load(no) {
+ if(
+  !importedCredits.length
+ ){
 
-    const data =
-        bills.find(
-            bill =>
-                bill.no === no
-        );
+  importPreview.innerHTML=
+   "<p>No credit transactions found.</p>";
 
+  return;
 
-    if (!data)
-        return;
+ }
 
+ importPreview.innerHTML=`
 
-    document.getElementById(
-        "no"
-    ).value =
-        data.no;
+ <table>
 
+ <tr>
 
-    document.getElementById(
-        "date"
-    ).value =
-        data.date;
+  <th>Select</th>
+  <th>Date</th>
+  <th>Details</th>
+  <th>Amount</th>
+  <th>GST</th>
+  <th>Particulars</th>
 
+ </tr>
 
-    document.getElementById(
-        "buyer"
-    ).value =
-        data.buyer ||
-        "Cash Sale (B2C)";
+ ${
+  importedCredits
+  .map(
+   (x,i)=>`
 
+   <tr>
 
-    document.getElementById(
-        "pos"
-    ).value =
-        data.pos ||
-        "Karnataka (29)";
+    <td class="c">
 
+     <input
+      type="checkbox"
+      ${
+       x.selected
+        ?"checked"
+        :""
+      }
+      onchange="
+       importedCredits[${i}]
+       .selected=this.checked
+      ">
 
-    document.getElementById(
-        "product"
-    ).value =
-        data.product;
+    </td>
 
+    <td>
+     ${esc(x.date)}
+    </td>
 
-    document.getElementById(
-        "total"
-    ).value =
-        data.total;
+    <td>
+     ${esc(x.details)}
+    </td>
 
+    <td class="r">
+     ₹${money(x.amount)}
+    </td>
 
-    document.getElementById(
-        "qty"
-    ).value =
-        data.qty || 1;
+    <td>
+     ${
+      x.rule
+       ?x.rule.gst+"%"
+       :"No matching rule"
+     }
+    </td>
 
+    <td>
+     ${
+      x.rule
+       ?esc(x.rule.part)
+       :"—"
+     }
+    </td>
 
-    preview();
+   </tr>
 
+  `
+  )
+  .join("")
+ }
 
-    window.scrollTo({
+ </table>
 
-        top:0,
+ <div class="actions">
 
-        behavior:"smooth"
+ <button
+  class="primary"
+  onclick="
+   createBillsFromImport()
+  ">
 
-    });
+  Create Bills from Selected Credits
 
-}
+ </button>
 
+ </div>
 
-/* =========================
-   NEW INVOICE
-========================= */
+ `;
 
-function newBill() {
-
-    const numberField =
-        document.getElementById(
-            "no"
-        );
-
-
-    const dateField =
-        document.getElementById(
-            "date"
-        );
-
-
-    if (!numberField)
-        return;
-
-
-    numberField.value =
-        nextNo();
-
-
-    dateField.value =
-        todayISO();
-
-
-    document.getElementById(
-        "buyer"
-    ).value =
-        "Cash Sale (B2C)";
-
-
-    document.getElementById(
-        "pos"
-    ).value =
-        "Karnataka (29)";
-
-
-    document.getElementById(
-        "product"
-    ).value =
-        "18";
-
-
-    document.getElementById(
-        "gst"
-    ).value =
-        "18%";
-
-
-    document.getElementById(
-        "total"
-    ).value =
-        "";
-
-
-    document.getElementById(
-        "qty"
-    ).value =
-        "1";
-
-
-    preview();
+ importStatus.textContent=
+  importedCredits.length+
+  " credit transactions found. Invoice dates will use the actual PhonePe transaction dates.";
 
 }
 
+function selectCredits(value){
 
-/* =========================
-   HISTORY
-========================= */
+ importedCredits.forEach(
+  x=>{
+   x.selected=
+    value&&!!x.rule;
+  }
+ );
 
-function render() {
-
-    const search =
-        (
-            document.getElementById(
-                "searchBills"
-            )?.value || ""
-        )
-        .toLowerCase()
-        .trim();
-
-
-    const month =
-        document.getElementById(
-            "monthBills"
-        )?.value || "";
-
-
-    const filtered =
-        bills.filter(
-            function(bill) {
-
-                const product =
-                    bill.product === "5"
-
-                        ? "Baby Products"
-
-                        : "Cleaning & Housekeeping Products";
-
-
-                const searchMatch =
-                    !search ||
-
-                    String(bill.no)
-                        .toLowerCase()
-                        .includes(search) ||
-
-                    product
-                        .toLowerCase()
-                        .includes(search);
-
-
-                const monthMatch =
-                    !month ||
-
-                    String(bill.date)
-                        .startsWith(month);
-
-
-                return (
-                    searchMatch &&
-                    monthMatch
-                );
-
-            }
-        );
-
-
-    const history =
-        document.getElementById(
-            "history"
-        );
-
-
-    if (!filtered.length) {
-
-        history.innerHTML =
-            "<p>No matching invoices.</p>";
-
-        return;
-
-    }
-
-
-    let html = `
-
-<table>
-
-<tr>
-
-<th>Invoice</th>
-<th>Date</th>
-<th>Particulars</th>
-<th>GST</th>
-<th>Total</th>
-<th></th>
-
-</tr>
-
-`;
-
-
-    filtered
-        .slice()
-        .reverse()
-        .forEach(
-            function(bill) {
-
-                const product =
-                    bill.product === "5"
-
-                        ? "Baby Products"
-
-                        : "Cleaning & Housekeeping Products";
-
-
-                html += `
-
-<tr>
-
-<td>
-${escapeHTML(bill.no)}
-</td>
-
-<td>
-${dshow(bill.date)}
-</td>
-
-<td>
-${escapeHTML(product)}
-</td>
-
-<td>
-${bill.gst}%
-</td>
-
-<td>
-₹${fmt(bill.total)}
-</td>
-
-<td>
-
-<button
-onclick="load('${escapeAttribute(bill.no)}')">
-Edit
-</button>
-
-</td>
-
-</tr>
-
-`;
-
-            }
-        );
-
-
-    html += "</table>";
-
-
-    history.innerHTML =
-        html;
+ renderImportPreview();
 
 }
 
+/* =========================================================
+   CREATE BILLS FROM CREDITS
+========================================================= */
 
-/* =========================
-   SAFETY
-========================= */
+async function createBillsFromImport(){
 
-function escapeHTML(value) {
+ const selected=
+  importedCredits.filter(
+   x=>
+    x.selected&&
+    x.rule
+  );
 
-    return String(value)
+ if(!selected.length){
 
-        .replace(
-            /&/g,
-            "&amp;"
-        )
+  return alert(
+   "No valid credits selected."
+  );
 
-        .replace(
-            /</g,
-            "&lt;"
-        )
+ }
 
-        .replace(
-            />/g,
-            "&gt;"
-        )
+ let created=0;
 
-        .replace(
-            /"/g,
-            "&quot;"
-        )
+ for(
+  const x of selected
+ ){
 
-        .replace(
-            /'/g,
-            "&#039;"
-        );
+  /*
+   IMPORTANT:
+   Use actual statement date.
+  */
+
+  const date=
+   statementDate(
+    x.date
+   );
+
+  if(
+   !/^\d{4}-\d{2}-\d{2}$/
+    .test(date)
+  ){
+
+   continue;
+
+  }
+
+  /*
+   Invoice number is generated
+   from the transaction date.
+  */
+
+  const noValue=
+   nextInvoiceNo(
+    date
+   );
+
+  const bill={
+
+   no:noValue,
+
+   date,
+
+   buyer:
+    localStorage.imeBuyer||
+    "Cash Sale (B2C)",
+
+   pos:
+    localStorage.imePos||
+    "Karnataka (29)",
+
+   product:
+    x.rule.part,
+
+   gst:
+    +x.rule.gst,
+
+   total:
+    +x.amount,
+
+   qty:1,
+
+   source:
+    "Statement Import",
+
+   transactionDetails:
+    x.details,
+
+   transactionId:
+    x.id,
+
+   utr:
+    x.utr,
+
+   transactionTime:
+    x.time
+
+  };
+
+  await dbPut(bill);
+
+  bills.push(bill);
+
+  created++;
+
+ }
+
+ bills=
+  await dbAll();
+
+ renderRegister();
+
+ newBill();
+
+ alert(
+  created+
+  " bills created.\n\n"+
+  "Invoice dates and numbers use the actual PhonePe credit dates."
+ );
 
 }
 
-
-function escapeAttribute(value) {
-
-    return String(value)
-
-        .replace(
-            /\\/g,
-            "\\\\"
-        )
-
-        .replace(
-            /'/g,
-            "\\'"
-        );
-
-}
-
-
-/* =========================
-   FILTERS
-========================= */
-
-function clearFilters() {
-
-    const search =
-        document.getElementById(
-            "searchBills"
-        );
-
-
-    const month =
-        document.getElementById(
-            "monthBills"
-        );
-
-
-    if (search)
-        search.value = "";
-
-
-    if (month)
-        month.value = "";
-
-
-    render();
-
-}
-
-
-/* =========================
+/* =========================================================
    GSTR-1
-========================= */
+========================================================= */
 
-function showGSTR1() {
+function showGSTR1(){
 
-    const list =
-        bills
-            .slice()
-            .sort(
-                function(a,b) {
+ const by={};
 
-                    return (
+ bills.forEach(
+  x=>{
 
-                        a.date.localeCompare(
-                            b.date
-                        ) ||
+   const r=
+    +x.gst;
 
-                        a.no.localeCompare(
-                            b.no
-                        )
+   const t=
+    +x.total;
 
-                    );
+   const tx=
+    r
+     ? t/(1+r/100)
+     : t;
 
-                }
-            );
+   const tax=
+    t-tx;
 
+   const cg=
+    tax/2;
 
-    const byRate = {
+   const sg=
+    tax-cg;
 
-        5:{
-            count:0,
-            taxable:0,
-            cgst:0,
-            sgst:0,
-            total:0
-        },
+   by[r]??={
+    count:0,
+    taxable:0,
+    cgst:0,
+    sgst:0,
+    total:0
+   };
 
-        18:{
-            count:0,
-            taxable:0,
-            cgst:0,
-            sgst:0,
-            total:0
-        }
+   by[r].count++;
 
-    };
+   by[r].taxable+=tx;
 
+   by[r].cgst+=cg;
 
-    list.forEach(
-        function(bill) {
+   by[r].sgst+=sg;
 
-            const rate =
-                Number(bill.gst);
+   by[r].total+=t;
 
+  }
+ );
 
-            const total =
-                Number(bill.total);
+ let h=`
 
+ <table>
 
-            if (!byRate[rate])
-                return;
+ <tr>
 
+  <th>GST</th>
+  <th>Invoices</th>
+  <th>Taxable ₹</th>
+  <th>CGST ₹</th>
+  <th>SGST ₹</th>
+  <th>Total ₹</th>
 
-            const taxable =
-                total /
-                (1 + rate / 100);
+ </tr>
 
+ `;
 
-            const tax =
-                total - taxable;
+ Object.keys(by)
+ .sort(
+  (a,b)=>a-b
+ )
+ .forEach(
+  r=>{
 
+   const x=
+    by[r];
 
-            const cgst =
-                tax / 2;
+   h+=`
 
+   <tr>
 
-            const sgst =
-                tax - cgst;
+    <td>${r}%</td>
 
+    <td>${x.count}</td>
 
-            byRate[rate].count++;
+    <td>${money(x.taxable)}</td>
 
-            byRate[rate].taxable +=
-                taxable;
+    <td>${money(x.cgst)}</td>
 
-            byRate[rate].cgst +=
-                cgst;
+    <td>${money(x.sgst)}</td>
 
-            byRate[rate].sgst +=
-                sgst;
+    <td>${money(x.total)}</td>
 
-            byRate[rate].total +=
-                total;
+   </tr>
 
-        }
-    );
+   `;
 
+  }
+ );
 
-    const all = {
+ h+="</table>";
 
-        count:list.length,
+ gstrSummary.innerHTML=
+  h;
 
-        taxable:0,
-
-        cgst:0,
-
-        sgst:0,
-
-        total:0
-
-    };
-
-
-    [5,18].forEach(
-        function(rate) {
-
-            all.taxable +=
-                byRate[rate].taxable;
-
-            all.cgst +=
-                byRate[rate].cgst;
-
-            all.sgst +=
-                byRate[rate].sgst;
-
-            all.total +=
-                byRate[rate].total;
-
-        }
-    );
-
-
-    let html = `
-
-<table
-style="
-width:100%;
-border-collapse:collapse;
-font-size:11px;
-">
-
-<tr>
-
-<th>GST</th>
-<th>Invoices</th>
-<th>Taxable ₹</th>
-<th>CGST ₹</th>
-<th>SGST ₹</th>
-<th>Total ₹</th>
-
-</tr>
-
-`;
-
-
-    [5,18].forEach(
-        function(rate) {
-
-            const row =
-                byRate[rate];
-
-
-            html += `
-
-<tr>
-
-<td>${rate}%</td>
-
-<td>${row.count}</td>
-
-<td>${fmt(row.taxable)}</td>
-
-<td>${fmt(row.cgst)}</td>
-
-<td>${fmt(row.sgst)}</td>
-
-<td>${fmt(row.total)}</td>
-
-</tr>
-
-`;
-
-        }
-    );
-
-
-    html += `
-
-<tr>
-
-<td>
-<b>Total</b>
-</td>
-
-<td>
-<b>${all.count}</b>
-</td>
-
-<td>
-<b>${fmt(all.taxable)}</b>
-</td>
-
-<td>
-<b>${fmt(all.cgst)}</b>
-</td>
-
-<td>
-<b>${fmt(all.sgst)}</b>
-</td>
-
-<td>
-<b>${fmt(all.total)}</b>
-</td>
-
-</tr>
-
-</table>
-
-`;
-
-
-    html += `
-
-<div
-style="
-margin-top:12px;
-max-height:360px;
-overflow:auto;
-">
-
-<table
-style="
-width:100%;
-border-collapse:collapse;
-font-size:10px;
-">
-
-<tr>
-
-<th>Invoice</th>
-<th>Date</th>
-<th>Particulars</th>
-<th>GST</th>
-<th>Taxable</th>
-<th>CGST</th>
-<th>SGST</th>
-<th>Total</th>
-
-</tr>
-
-`;
-
-
-    list.forEach(
-        function(bill) {
-
-            const rate =
-                Number(bill.gst);
-
-
-            const total =
-                Number(bill.total);
-
-
-            const taxable =
-                total /
-                (1 + rate / 100);
-
-
-            const tax =
-                total - taxable;
-
-
-            const cgst =
-                tax / 2;
-
-
-            const sgst =
-                tax - cgst;
-
-
-            const product =
-                bill.product === "5"
-
-                    ? "Baby Products"
-
-                    : "Cleaning & Housekeeping Products";
-
-
-            html += `
-
-<tr>
-
-<td>
-${escapeHTML(bill.no)}
-</td>
-
-<td>
-${dshow(bill.date)}
-</td>
-
-<td>
-${escapeHTML(product)}
-</td>
-
-<td>
-${rate}%
-</td>
-
-<td>
-${fmt(taxable)}
-</td>
-
-<td>
-${fmt(cgst)}
-</td>
-
-<td>
-${fmt(sgst)}
-</td>
-
-<td>
-${fmt(total)}
-</td>
-
-</tr>
-
-`;
-
-        }
-    );
-
-
-    html += `
-
-</table>
-
-</div>
-
-`;
-
-
-    document.getElementById(
-        "gstrSummary"
-    ).innerHTML =
-        html;
-
-
-    document.getElementById(
-        "reportPanel"
-    ).style.display =
-        "block";
-
-
-    window.scrollTo({
-
-        top:
-            document.getElementById(
-                "reportPanel"
-            ).offsetTop - 10,
-
-        behavior:"smooth"
-
-    });
+ reportPanel.style.display=
+  "block";
 
 }
 
+function closeGSTR1(){
 
-function closeGSTR1() {
-
-    document.getElementById(
-        "reportPanel"
-    ).style.display =
-        "none";
+ reportPanel.style.display=
+  "none";
 
 }
 
-
-/* =========================
-   CSV
-========================= */
-
-function exportCSV() {
-
-    if (!bills.length) {
-
-        alert(
-            "No invoices saved."
-        );
-
-        return;
-
-    }
-
-
-    let csv =
-        "Invoice No,Date,Particulars,GST Rate,Taxable Value,CGST,SGST,Invoice Total\n";
-
-
-    bills.forEach(
-        function(bill) {
-
-            const rate =
-                Number(bill.gst);
-
-
-            const total =
-                Number(bill.total);
-
-
-            const taxable =
-                total /
-                (1 + rate / 100);
-
-
-            const tax =
-                total - taxable;
-
-
-            const cgst =
-                tax / 2;
-
-
-            const sgst =
-                tax - cgst;
-
-
-            const product =
-                bill.product === "5"
-
-                    ? "Baby Products"
-
-                    : "Cleaning & Housekeeping Products";
-
-
-            csv +=
-
-                `"${bill.no}",` +
-
-                `"${dshow(bill.date)}",` +
-
-                `"${product}",` +
-
-                `${rate},` +
-
-                `${taxable.toFixed(2)},` +
-
-                `${cgst.toFixed(2)},` +
-
-                `${sgst.toFixed(2)},` +
-
-                `${total.toFixed(2)}\n`;
-
-        }
-    );
-
-
-    downloadFile(
-        csv,
-        "IME_Invoice_Register.csv",
-        "text/csv"
-    );
-
-}
-
-
-/* =========================
+/* =========================================================
    BACKUP
-========================= */
-
-function backupJSON() {
-
-    const backup = {
-
-        app:
-            "I M ENTERPRISES Tally A5 Billing",
-
-        version:1,
-
-        exportedAt:
-            new Date().toISOString(),
-
-        invoices:bills
-
-    };
-
-
-    downloadFile(
-
-        JSON.stringify(
-            backup,
-            null,
-            2
-        ),
-
-        "IME_Bills_Backup.json",
-
-        "application/json"
-
-    );
-
-}
-
-
-/* =========================
-   DOWNLOAD
-========================= */
-
-function downloadFile(
-    content,
-    filename,
-    type
-) {
-
-    const blob =
-        new Blob(
-            [content],
-            {
-                type:type
-            }
-        );
-
-
-    const url =
-        URL.createObjectURL(blob);
-
-
-    const link =
-        document.createElement("a");
-
-
-    link.href =
-        url;
-
-
-    link.download =
-        filename;
-
-
-    document.body.appendChild(
-        link
-    );
-
-
-    link.click();
-
-
-    link.remove();
-
-
-    setTimeout(
-        function() {
-
-            URL.revokeObjectURL(
-                url
-            );
-
-        },
-        1000
-    );
-
-}
-
-
-/* =========================
-   RESTORE
-========================= */
-
-function restoreJSON() {
-
-    document.getElementById(
-        "restoreFile"
-    ).click();
-
-}
-
-
-async function importJSON(event) {
-
-    const file =
-        event.target.files[0];
-
-
-    if (!file)
-        return;
-
-
-    try {
-
-        const text =
-            await file.text();
-
-
-        const data =
-            JSON.parse(text);
-
-
-        const list =
-            Array.isArray(data)
-
-                ? data
-
-                : data.invoices;
-
-
-        if (!Array.isArray(list)) {
-
-            throw new Error(
-                "Invalid backup file."
-            );
-
-        }
-
-
-        for (
-            const invoice of list
-        ) {
-
-            if (invoice.no) {
-
-                await dbPut(
-                    invoice
-                );
-
-            }
-
-        }
-
-
-        bills =
-            await dbAll();
-
-
-        render();
-
-
-        alert(
-            list.length +
-            " bills restored successfully."
-        );
-
-
-    } catch(error) {
-
-        console.error(error);
-
-
-        alert(
-            "Could not restore backup:\n\n" +
-            error.message
-        );
-
+========================================================= */
+
+function backupJSON(){
+
+ const a=
+  document.createElement("a");
+
+ a.href=
+  URL.createObjectURL(
+   new Blob(
+    [
+     JSON.stringify(
+      {
+       app:
+        "I M ENTERPRISES Billing",
+
+       version:4,
+
+       rules,
+
+       invoices:bills
+
+      },
+      null,
+      2
+     )
+    ],
+    {
+     type:
+      "application/json"
     }
+   )
+  );
 
+ a.download=
+  "IME_Bills_Backup.json";
 
-    event.target.value = "";
-
-}
-
-
-/* =========================
-   CLEAR
-========================= */
-
-async function clearAll() {
-
-    const ok =
-        confirm(
-
-            "Delete ALL saved invoices from this browser?\n\n" +
-
-            "Make a backup first if needed."
-
-        );
-
-
-    if (!ok)
-        return;
-
-
-    try {
-
-        await dbClear();
-
-
-        bills = [];
-
-
-        render();
-
-
-        newBill();
-
-
-    } catch(error) {
-
-        alert(
-
-            "Could not clear invoices:\n\n" +
-
-            error.message
-
-        );
-
-    }
+ a.click();
 
 }
 
-
-/* =========================
-   INITIALIZE
-========================= */
-
-async function initializeApp() {
-
-    /*
-       Create a bill immediately.
-       This guarantees Invoice No.,
-       Date and GST Rate are visible.
-    */
-
-    try {
-
-        newBill();
-
-    } catch(error) {
-
-        console.error(
-            "Initial bill error:",
-            error
-        );
-
-    }
-
-
-    /*
-       Load saved invoices.
-    */
-
-    try {
-
-        bills =
-            await dbAll();
-
-
-        dbReady = true;
-
-
-        /*
-           Recalculate the invoice number
-           after saved invoices are loaded.
-        */
-
-        newBill();
-
-
-        render();
-
-    } catch(error) {
-
-        dbReady = false;
-
-
-        console.error(
-            "Database loading failed:",
-            error
-        );
-
-
-        /*
-           App still works even if
-           IndexedDB has a problem.
-        */
-
-        render();
-
-    }
-
-}
-
-
-/* =========================
+/* =========================================================
    START APP
-========================= */
+========================================================= */
 
-document.addEventListener(
-    "DOMContentLoaded",
-    function() {
+product.onchange=
+ ()=>previewBill();
 
+(async()=>{
 
-        const product =
-            document.getElementById(
-                "product"
-            );
+ loadRules();
 
+ bills=
+  await dbAll();
 
-        const total =
-            document.getElementById(
-                "total"
-            );
+ renderProductOptions();
 
+ newBill();
 
-        const qty =
-            document.getElementById(
-                "qty"
-            );
+ renderRegister();
 
-
-        if (product) {
-
-            product.addEventListener(
-                "change",
-                preview
-            );
-
-        }
-
-
-        if (total) {
-
-            total.addEventListener(
-                "input",
-                preview
-            );
-
-        }
-
-
-        if (qty) {
-
-            qty.addEventListener(
-                "input",
-                preview
-            );
-
-        }
-
-
-        /*
-           Start application.
-        */
-
-        initializeApp();
-
-
-        /*
-           Register PWA Service Worker.
-        */
-
-        if (
-            "serviceWorker"
-            in navigator
-        ) {
-
-            navigator.serviceWorker
-                .register("./sw.js")
-                .then(
-                    function() {
-
-                        console.log(
-                            "IME Billing Service Worker registered."
-                        );
-
-                    }
-                )
-                .catch(
-                    function(error) {
-
-                        console.error(
-                            "Service Worker registration failed:",
-                            error
-                        );
-
-                    }
-                );
-
-        }
-
-    }
-);
+})();
 
 </script>
 
