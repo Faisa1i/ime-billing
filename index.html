@@ -4,94 +4,291 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
 
+<title>I M ENTERPRISES — A5 Tally Billing</title>
+
 <link rel="manifest" href="./manifest.webmanifest">
-<meta name="theme-color" content="#222222">
 <link rel="icon" type="image/png" sizes="192x192" href="./icon-192.png">
 <link rel="apple-touch-icon" href="./icon-512.png">
+
+<meta name="theme-color" content="#222222">
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
 
-<title>I M ENTERPRISES — Billing</title>
-
 <style>
 *{box-sizing:border-box}
-body{margin:0;background:#eee;font-family:Arial,sans-serif;color:#111}
-.app{max-width:1100px;margin:auto;padding:12px}
-.panel{background:#fff;border:1px solid #aaa;padding:14px;margin-bottom:14px}
-h2{margin:0 0 10px}
-.grid{display:grid;grid-template-columns:repeat(4,1fr);gap:9px}
-label{font-size:12px;font-weight:bold}
-input,select{width:100%;padding:8px;margin-top:3px;border:1px solid #999}
-.actions{display:flex;gap:7px;flex-wrap:wrap;margin-top:10px}
-button{padding:8px 12px;border:1px solid #777;background:#f5f5f5;font-weight:bold;cursor:pointer}
-.primary{background:#222;color:#fff}
-.danger{background:#fee}
-.note{font-size:12px;line-height:1.45;background:#f7f7f7;border:1px solid #ddd;padding:9px}
-.status{font-size:12px;font-weight:bold;margin-top:8px}
-.tablewrap{overflow:auto}
-table{border-collapse:collapse;width:100%;font-size:11px}
-th,td{border:1px solid #aaa;padding:5px}
-.r{text-align:right}.c{text-align:center}
-.rule{display:grid;grid-template-columns:100px 100px 80px 1fr 60px 45px;gap:6px;margin:7px 0}
-.rule input{margin:0}
-.bill{width:148mm;min-height:210mm;background:#fff;margin:auto;padding:7mm 9mm;box-shadow:0 1px 8px #999}
+body{
+ margin:0;
+ background:#eee;
+ font-family:Arial,sans-serif;
+ color:#111
+}
+.app{
+ max-width:1100px;
+ margin:auto;
+ padding:12px
+}
+.panel{
+ background:#fff;
+ border:1px solid #aaa;
+ padding:14px;
+ margin-bottom:14px
+}
+h2{
+ margin:0 0 10px
+}
+.grid{
+ display:grid;
+ grid-template-columns:repeat(4,1fr);
+ gap:9px
+}
+label{
+ font-size:12px;
+ font-weight:bold
+}
+input,select{
+ width:100%;
+ padding:8px;
+ margin-top:3px;
+ border:1px solid #999;
+ font-size:14px
+}
+.actions{
+ display:flex;
+ gap:7px;
+ flex-wrap:wrap;
+ margin-top:10px
+}
+button{
+ padding:8px 12px;
+ border:1px solid #777;
+ background:#f5f5f5;
+ font-weight:bold;
+ cursor:pointer
+}
+.primary{
+ background:#222;
+ color:#fff
+}
+.danger{
+ background:#ffdede
+}
+.note{
+ font-size:12px;
+ line-height:1.45;
+ background:#f7f7f7;
+ border:1px solid #ddd;
+ padding:9px
+}
+.status{
+ font-size:12px;
+ font-weight:bold;
+ margin-top:8px;
+ line-height:1.5
+}
+.tablewrap{
+ overflow:auto
+}
+table{
+ border-collapse:collapse;
+ width:100%;
+ font-size:11px
+}
+th,td{
+ border:1px solid #aaa;
+ padding:5px
+}
+.r{text-align:right}
+.c{text-align:center}
+
+.rule{
+ display:grid;
+ grid-template-columns:100px 100px 80px 1fr 60px 45px;
+ gap:6px;
+ margin:7px 0
+}
+.rule input{
+ margin:0
+}
+
+.bill{
+ width:148mm;
+ min-height:210mm;
+ background:#fff;
+ margin:auto;
+ padding:7mm 9mm;
+ box-shadow:0 1px 8px #999
+}
 .center{text-align:center}
-.tax{font-size:12px;font-weight:bold}
-.company{font-size:16px;font-weight:bold}
-.addr{font-size:8px;line-height:1.35}
-.meta{margin-top:7px;font-size:8px}
-.meta td{border:1px solid #111;width:50%;vertical-align:top}
-.bt{margin-top:6px;font-size:8px;table-layout:fixed}
-.bt th,.bt td{border:1px solid #111;padding:4px;overflow-wrap:anywhere}
+.tax{
+ font-size:12px;
+ font-weight:bold
+}
+.company{
+ font-size:16px;
+ font-weight:bold
+}
+.addr{
+ font-size:8px;
+ line-height:1.35
+}
+.meta{
+ margin-top:7px;
+ font-size:8px
+}
+.meta td{
+ border:1px solid #111;
+ width:50%;
+ vertical-align:top
+}
+.bt{
+ margin-top:6px;
+ font-size:8px;
+ table-layout:fixed
+}
+.bt th,.bt td{
+ border:1px solid #111;
+ padding:4px;
+ overflow-wrap:anywhere
+}
 .bt th{text-align:center}
-.sl{width:7%}.part{width:40%}.hsn{width:10%}.qtyc{width:8%}.rate{width:17%}.amt{width:18%}
-.words,.decl{font-size:7.5px;margin-top:6px;line-height:1.35}
-.sign{display:grid;grid-template-columns:1fr 1fr;border:1px solid #111;margin-top:12mm;min-height:21mm;font-size:8px}
-.sign div{padding:5px}.sign div+div{border-left:1px solid #111;text-align:right}
-.saved{display:flex;gap:8px;align-items:center;flex-wrap:wrap;border-bottom:1px solid #ddd;padding:8px}
-.savedinfo{flex:1;min-width:230px}
-@media(max-width:750px){.grid{grid-template-columns:1fr 1fr}.rule{grid-template-columns:1fr 1fr}}
-@media(max-width:500px){.grid{grid-template-columns:1fr}.app{padding:6px}.bill{width:100%;padding:5mm}}
+.sl{width:7%}
+.part{width:40%}
+.hsn{width:10%}
+.qtyc{width:8%}
+.rate{width:17%}
+.amt{width:18%}
+
+.words,.decl{
+ font-size:7.5px;
+ margin-top:6px;
+ line-height:1.35
+}
+.sign{
+ display:grid;
+ grid-template-columns:1fr 1fr;
+ border:1px solid #111;
+ margin-top:12mm;
+ min-height:21mm;
+ font-size:8px
+}
+.sign div{
+ padding:5px
+}
+.sign div+div{
+ border-left:1px solid #111;
+ text-align:right
+}
+
+.saved{
+ display:flex;
+ gap:8px;
+ align-items:center;
+ flex-wrap:wrap;
+ border-bottom:1px solid #ddd;
+ padding:8px
+}
+.savedinfo{
+ flex:1;
+ min-width:230px
+}
+
+.small{
+ font-size:11px
+}
+
+@media(max-width:750px){
+ .grid{
+  grid-template-columns:1fr 1fr
+ }
+ .rule{
+  grid-template-columns:1fr 1fr
+ }
+}
+@media(max-width:500px){
+ .grid{
+  grid-template-columns:1fr
+ }
+ .app{
+  padding:6px
+ }
+ .bill{
+  width:100%;
+  padding:5mm
+ }
+}
+
 @media print{
-body{background:#fff}.noprint{display:none!important}.app{padding:0}
-.bill{box-shadow:none;width:148mm;min-height:210mm}
-@page{size:A5 portrait;margin:0}
+ body{
+  background:#fff
+ }
+ .noprint{
+  display:none!important
+ }
+ .app{
+  padding:0
+ }
+ .bill{
+  box-shadow:none;
+  width:148mm;
+  min-height:210mm
+ }
+ @page{
+  size:A5 portrait;
+  margin:0
+ }
 }
 </style>
 </head>
 
 <body>
+
 <div class="app">
 
-<!-- RULES -->
+<!-- =========================================================
+     GST RULES
+========================================================= -->
+
 <div class="panel noprint">
+
 <h2>⚙️ Credit → GST Rules</h2>
 
 <div class="note">
-Credits below the ignore limit are skipped. Default:
-₹10–₹300 = 18% Cleaning & Housekeeping Products;
-above ₹300 = 5% Baby Products.
-You can edit these rules.
+All CREDIT transactions are eligible for sale creation, including
+BULK POSTING credits. Only credits below the Ignore limit are skipped.
+<br><br>
+Default:
+₹10–₹300 = 18% Cleaning & Housekeeping Products
+<br>
+Above ₹300 = 5% Baby Products
 </div>
 
 <div class="grid" style="margin-top:9px">
+
 <div>
 <label>Ignore credits below ₹</label>
 <input id="ignoreBelow" type="number" step=".01">
 </div>
+
 <div>
 <label>Place of Supply</label>
 <input id="setPos" value="Karnataka (29)">
 </div>
+
 <div>
 <label>Buyer</label>
 <input id="setBuyer" value="Cash Sale (B2C)">
 </div>
+
 <div>
 <label>Invoice Prefix</label>
 <input id="setPrefix" value="IME">
 </div>
+
+</div>
+
+<div style="margin-top:10px;font-size:11px;font-weight:bold">
+Minimum | Maximum | GST % | Particulars | Active | Delete
 </div>
 
 <div id="rulesEditor"></div>
@@ -101,47 +298,85 @@ You can edit these rules.
 <button class="primary" onclick="saveRules()">Save Rules</button>
 <button onclick="resetRules()">Reset Defaults</button>
 </div>
+
 <div id="ruleStatus" class="status"></div>
+
 </div>
 
 
-<!-- SBI PDF -->
+<!-- =========================================================
+     PDF IMPORT
+========================================================= -->
+
 <div class="panel noprint">
+
 <h2>🔐 SBI Current Account Statement → Bills</h2>
 
 <div class="note">
-Upload the password-protected SBI Current Account Statement PDF.
-Enter its password and click Read Statement.
-Only CREDIT transactions are considered as sales.
-BULK POSTING credits are automatically excluded.
+
+Upload your password-protected SBI Current Account Statement PDF.
+
+Enter the PDF password and press <b>Read Statement</b>.
+
+The app will detect CREDIT transactions from the statement.
+
+<b>BULK POSTING IS NOT EXCLUDED.</b>
+
+Debit transactions are not converted into sales.
+
 </div>
 
 <div class="grid" style="margin-top:9px">
+
 <div>
 <label>Statement PDF</label>
-<input id="statementFile" type="file" accept=".pdf,application/pdf">
+<input id="statementFile"
+       type="file"
+       accept=".pdf,application/pdf">
 </div>
 
 <div>
 <label>PDF Password</label>
-<input id="pdfPassword" type="password" placeholder="Enter PDF password">
+<input id="pdfPassword"
+       type="password"
+       placeholder="Enter PDF password">
 </div>
+
 </div>
 
 <div class="actions">
-<button class="primary" onclick="readStatement()">🔐 Read Statement</button>
-<button onclick="clearStatement()">Clear</button>
-<button onclick="selectCredits(true)">Select All Valid</button>
-<button onclick="selectCredits(false)">Deselect All</button>
+
+<button class="primary" onclick="readStatement()">
+🔐 Read Statement
+</button>
+
+<button onclick="clearStatement()">
+Clear
+</button>
+
+<button onclick="selectCredits(true)">
+Select All Valid
+</button>
+
+<button onclick="selectCredits(false)">
+Deselect All
+</button>
+
 </div>
 
 <div id="importStatus" class="status"></div>
+
 <div id="importPreview" class="tablewrap"></div>
+
 </div>
 
 
-<!-- BILL FORM -->
+<!-- =========================================================
+     BILL FORM
+========================================================= -->
+
 <div class="panel noprint">
+
 <h2>I M ENTERPRISES — A5 Tally Billing</h2>
 
 <div class="grid">
@@ -178,59 +413,128 @@ BULK POSTING credits are automatically excluded.
 
 <div>
 <label>Invoice Total — Inclusive GST ₹</label>
-<input id="invoiceTotal" type="number" min="0" step=".01">
+<input id="invoiceTotal"
+       type="number"
+       min="0"
+       step=".01">
 </div>
 
 <div>
 <label>Quantity</label>
-<input id="qty" type="number" min="1" value="1">
+<input id="qty"
+       type="number"
+       min="1"
+       value="1">
 </div>
 
 </div>
 
 <div class="actions">
-<button class="primary" onclick="preview()">Preview / Calculate</button>
-<button onclick="saveBill()">Save / Update Invoice</button>
-<button onclick="printCurrent()">Print / Save PDF</button>
-<button onclick="newBill()">New Invoice</button>
-<button onclick="showGSTR1()">GSTR-1 Report</button>
-<button onclick="backupJSON()">Backup Bills</button>
-<button class="primary" onclick="excel()">📊 Download Sales + GSTR-1 Excel</button>
+
+<button class="primary" onclick="preview()">
+Preview / Calculate
+</button>
+
+<button onclick="saveBill()">
+Save / Update Invoice
+</button>
+
+<button onclick="printCurrent()">
+Print / Save PDF
+</button>
+
+<button onclick="newBill()">
+New Invoice
+</button>
+
+<button onclick="showGSTR1()">
+GSTR-1 Report
+</button>
+
+<button onclick="backupJSON()">
+Backup Bills
+</button>
+
+<button class="primary" onclick="downloadExcel()">
+📊 Download Complete Excel
+</button>
+
 </div>
+
 </div>
 
 
-<!-- PRINT BILL -->
+<!-- =========================================================
+     PRINTABLE BILL
+========================================================= -->
+
 <div class="bill">
 
 <div class="center">
-<div class="tax">TAX INVOICE</div>
-<div class="company">I M ENTERPRISES</div>
+
+<div class="tax">
+TAX INVOICE
+</div>
+
+<div class="company">
+I M ENTERPRISES
+</div>
+
 <div class="addr">
 CTS No. 67, CR 53, PID 23427, Jamiya Masjid Road,<br>
 Opp. Mahtar Mahal Masjid, Vijayapura, Karnataka - 586101<br>
 <b>GSTIN: 29BPZPJ1392D1ZE</b>
 </div>
+
 </div>
 
+
 <table class="meta">
+
 <tr>
-<td><b>Invoice No.</b><br><span id="pno"></span></td>
-<td><b>Dated</b><br><span id="pdate"></span></td>
+
+<td>
+<b>Invoice No.</b><br>
+<span id="pno"></span>
+</td>
+
+<td>
+<b>Dated</b><br>
+<span id="pdate"></span>
+</td>
+
 </tr>
+
 <tr>
-<td><b>Buyer</b><br><span id="pbuyer"></span></td>
-<td><b>Place of Supply</b><br><span id="ppos"></span></td>
+
+<td>
+<b>Buyer</b><br>
+<span id="pbuyer"></span>
+</td>
+
+<td>
+<b>Place of Supply</b><br>
+<span id="ppos"></span>
+</td>
+
 </tr>
+
 </table>
 
+
 <table class="bt">
+
 <colgroup>
-<col class="sl"><col class="part"><col class="hsn">
-<col class="qtyc"><col class="rate"><col class="amt">
+<col class="sl">
+<col class="part">
+<col class="hsn">
+<col class="qtyc">
+<col class="rate">
+<col class="amt">
 </colgroup>
 
 <thead>
+
 <tr>
 <th>Sl</th>
 <th>Particulars</th>
@@ -239,101 +543,202 @@ Opp. Mahtar Mahal Masjid, Vijayapura, Karnataka - 586101<br>
 <th>Rate</th>
 <th>Amount</th>
 </tr>
+
 </thead>
 
 <tbody>
+
 <tr>
+
 <td class="c">1</td>
+
 <td id="pproduct"></td>
+
 <td></td>
+
 <td class="c" id="pqty"></td>
+
 <td class="r" id="prate"></td>
+
 <td class="r" id="pamt"></td>
+
 </tr>
 
+
 <tr>
+
 <td colspan="4"></td>
-<td><b>Taxable Value</b></td>
+
+<td>
+<b>Taxable Value</b>
+</td>
+
 <td class="r" id="ptax"></td>
+
 </tr>
 
+
 <tr>
+
 <td colspan="4"></td>
-<td><b>CGST @ <span id="pcgr"></span>%</b></td>
+
+<td>
+<b>
+CGST @ <span id="pcgr"></span>%
+</b>
+</td>
+
 <td class="r" id="pcgst"></td>
+
 </tr>
 
+
 <tr>
+
 <td colspan="4"></td>
-<td><b>SGST @ <span id="psgr"></span>%</b></td>
+
+<td>
+<b>
+SGST @ <span id="psgr"></span>%
+</b>
+</td>
+
 <td class="r" id="psgst"></td>
+
 </tr>
 
+
 <tr>
+
 <td colspan="4"></td>
-<td><b>Grand Total</b></td>
-<td class="r"><b id="ptotal"></b></td>
+
+<td>
+<b>Grand Total</b>
+</td>
+
+<td class="r">
+<b id="ptotal"></b>
+</td>
+
 </tr>
+
 </tbody>
+
 </table>
 
+
 <div class="words">
-<b>Amount in Words:</b> <span id="pwords"></span>
+
+<b>Amount in Words:</b>
+<span id="pwords"></span>
+
 </div>
+
 
 <div class="decl">
+
 <b>Declaration:</b>
+
 This invoice is issued for B2C retail sales.
-HSN column is left blank as configured.
+The HSN column is left blank as configured.
+The applicable GST rate is based on the configured product category.
+
 </div>
+
 
 <div class="sign">
-<div>Customer Signature</div>
+
 <div>
-For <b>I M ENTERPRISES</b><br><br><br>
+Customer Signature
+</div>
+
+<div>
+For <b>I M ENTERPRISES</b>
+<br><br><br>
 Authorized Signatory
 </div>
-</div>
 
 </div>
 
+</div>
 
-<!-- GSTR1 -->
-<div class="panel noprint" id="reportPanel" style="display:none">
-<h2>GSTR-1 Working</h2>
+
+<!-- =========================================================
+     GSTR1
+========================================================= -->
+
+<div class="panel noprint"
+     id="reportPanel"
+     style="display:none">
+
+<h2>GSTR-1 Working Report</h2>
+
 <div id="gstrSummary"></div>
+
 <div class="actions">
-<button onclick="window.print()">Print / Save Report PDF</button>
-<button onclick="closeGSTR1()">Close</button>
+
+<button onclick="window.print()">
+Print / Save Report PDF
+</button>
+
+<button onclick="closeGSTR1()">
+Close
+</button>
+
 </div>
+
 </div>
 
 
-<!-- SAVED REGISTER -->
+<!-- =========================================================
+     SAVED INVOICES
+========================================================= -->
+
 <div class="panel noprint">
 
 <h2>Saved Invoice Register</h2>
 
 <div style="display:flex;gap:8px;flex-wrap:wrap;margin-bottom:9px">
+
 <input id="searchBills"
-placeholder="Search invoice / particulars"
-oninput="render()"
-style="max-width:260px">
+       placeholder="Search invoice / particulars"
+       oninput="render()"
+       style="max-width:260px">
 
 <input id="monthBills"
-type="month"
-onchange="render()"
-style="max-width:160px">
+       type="month"
+       onchange="render()"
+       style="max-width:160px">
 
-<button onclick="clearFilters()">Clear Filters</button>
+<button onclick="clearFilters()">
+Clear Filters
+</button>
+
 </div>
+
 
 <div class="actions">
-<button onclick="selectSaved(true)">☑ Select All</button>
-<button onclick="selectSaved(false)">☐ Deselect All</button>
-<button class="danger" onclick="deleteSelected()">🗑 Delete Selected</button>
-<button class="primary" onclick="excel()">📊 Download Complete Excel</button>
+
+<button onclick="selectSaved(true)">
+☑ Select All
+</button>
+
+<button onclick="selectSaved(false)">
+☐ Deselect All
+</button>
+
+<button class="danger"
+        onclick="deleteSelected()">
+🗑 Delete Selected
+</button>
+
+<button class="primary"
+        onclick="downloadExcel()">
+📊 Download Complete Excel
+</button>
+
 </div>
+
 
 <div id="savedRegister"></div>
 
@@ -344,1194 +749,2933 @@ style="max-width:160px">
 
 <script>
 
-/* ================= DATABASE ================= */
+/* =========================================================
+   DATABASE
+========================================================= */
 
-const DB="IME_TALLY_BILLS_DB";
-const STORE="invoices";
-const VER=4;
+const DB_NAME = "IME_TALLY_BILLS_DB";
+const STORE = "invoices";
+const DB_VERSION = 5;
 
-let bills=[];
-let imported=[];
-let rules=[];
+let bills = [];
+let imported = [];
+let rules = [];
 
-const DEFAULTS=[
-{min:10,max:300,gst:18,part:"Cleaning & Housekeeping Products",enabled:true},
-{min:300.01,max:"",gst:5,part:"Baby Products",enabled:true}
+
+const DEFAULT_RULES = [
+
+{
+ min:10,
+ max:300,
+ gst:18,
+ part:"Cleaning & Housekeeping Products",
+ enabled:true
+},
+
+{
+ min:300.01,
+ max:"",
+ gst:5,
+ part:"Baby Products",
+ enabled:true
+}
+
 ];
 
+
 function openDB(){
-return new Promise((resolve,reject)=>{
-const r=indexedDB.open(DB,VER);
 
-r.onupgradeneeded=e=>{
-const db=e.target.result;
-if(!db.objectStoreNames.contains(STORE))
-db.createObjectStore(STORE,{keyPath:"no"});
-};
+ return new Promise((resolve,reject)=>{
 
-r.onsuccess=e=>resolve(e.target.result);
-r.onerror=e=>reject(e.target.error);
-});
+  const request =
+  indexedDB.open(
+   DB_NAME,
+   DB_VERSION
+  );
+
+  request.onupgradeneeded = function(e){
+
+   const db = e.target.result;
+
+   if(!db.objectStoreNames.contains(STORE)){
+
+    db.createObjectStore(
+     STORE,
+     {keyPath:"no"}
+    );
+
+   }
+
+  };
+
+  request.onsuccess =
+  e => resolve(e.target.result);
+
+  request.onerror =
+  e => reject(e.target.error);
+
+ });
+
 }
+
 
 async function getBills(){
-const db=await openDB();
-return new Promise((resolve,reject)=>{
-const r=db.transaction(STORE,"readonly")
-.objectStore(STORE).getAll();
-r.onsuccess=()=>resolve(r.result||[]);
-r.onerror=()=>reject(r.error);
-});
+
+ const db = await openDB();
+
+ return new Promise((resolve,reject)=>{
+
+  const request =
+  db.transaction(STORE,"readonly")
+    .objectStore(STORE)
+    .getAll();
+
+  request.onsuccess =
+  () => resolve(request.result || []);
+
+  request.onerror =
+  () => reject(request.error);
+
+ });
+
 }
+
 
 async function putBill(x){
-const db=await openDB();
-return new Promise((resolve,reject)=>{
-const t=db.transaction(STORE,"readwrite");
-t.objectStore(STORE).put(x);
-t.oncomplete=resolve;
-t.onerror=()=>reject(t.error);
-});
+
+ const db = await openDB();
+
+ return new Promise((resolve,reject)=>{
+
+  const tx =
+  db.transaction(STORE,"readwrite");
+
+  tx.objectStore(STORE).put(x);
+
+  tx.oncomplete = resolve;
+
+  tx.onerror =
+  () => reject(tx.error);
+
+ });
+
 }
+
 
 async function deleteBill(no){
-const db=await openDB();
-return new Promise((resolve,reject)=>{
-const t=db.transaction(STORE,"readwrite");
-t.objectStore(STORE).delete(no);
-t.oncomplete=resolve;
-t.onerror=()=>reject(t.error);
-});
+
+ const db = await openDB();
+
+ return new Promise((resolve,reject)=>{
+
+  const tx =
+  db.transaction(STORE,"readwrite");
+
+  tx.objectStore(STORE).delete(no);
+
+  tx.oncomplete = resolve;
+
+  tx.onerror =
+  () => reject(tx.error);
+
+ });
+
 }
 
 
-/* ================= HELPERS ================= */
+/* =========================================================
+   HELPERS
+========================================================= */
 
 function esc(s){
-return String(s??"")
-.replace(/&/g,"&amp;")
-.replace(/</g,"&lt;")
-.replace(/>/g,"&gt;")
-.replace(/"/g,"&quot;");
+
+ return String(s ?? "")
+ .replace(/&/g,"&amp;")
+ .replace(/</g,"&lt;")
+ .replace(/>/g,"&gt;")
+ .replace(/"/g,"&quot;");
+
 }
+
 
 function money(n){
-return new Intl.NumberFormat("en-IN",{
-minimumFractionDigits:2,
-maximumFractionDigits:2
-}).format(+n||0);
+
+ return new Intl.NumberFormat(
+  "en-IN",
+  {
+   minimumFractionDigits:2,
+   maximumFractionDigits:2
+  }
+ ).format(+n || 0);
+
 }
+
 
 function today(){
-let d=new Date();
-d.setMinutes(d.getMinutes()-d.getTimezoneOffset());
-return d.toISOString().slice(0,10);
+
+ let d = new Date();
+
+ d.setMinutes(
+  d.getMinutes() -
+  d.getTimezoneOffset()
+ );
+
+ return d.toISOString().slice(0,10);
+
 }
+
 
 function showDate(v){
-if(!v)return "";
-let m=String(v).match(/^(\d{4})-(\d{2})-(\d{2})$/);
-return m?`${m[3]}-${m[2]}-${m[1]}`:v;
+
+ if(!v) return "";
+
+ let m =
+ String(v).match(
+  /^(\d{4})-(\d{2})-(\d{2})$/
+ );
+
+ if(m){
+
+  return `${m[3]}-${m[2]}-${m[1]}`;
+
+ }
+
+ return v;
+
 }
 
 
-/* ================= RULES ================= */
+function dateFromText(s){
+
+ s = String(s || "")
+ .trim()
+ .replace(/\./g,"/")
+ .replace(/-/g,"/");
+
+ let m;
+
+ m=s.match(
+  /^(\d{1,2})\/(\d{1,2})\/(\d{4})$/
+ );
+
+ if(m){
+
+  return `${m[3]}-${String(m[2]).padStart(2,"0")}-${String(m[1]).padStart(2,"0")}`;
+
+ }
+
+ m=s.match(
+  /^(\d{1,2})\s+([A-Za-z]{3})\s+(\d{4})$/
+ );
+
+ if(m){
+
+  const months={
+   jan:1,feb:2,mar:3,apr:4,
+   may:5,jun:6,jul:7,aug:8,
+   sep:9,oct:10,nov:11,dec:12
+  };
+
+  let mo=months[
+   m[2].toLowerCase()
+  ];
+
+  if(mo){
+
+   return `${m[3]}-${String(mo).padStart(2,"0")}-${String(m[1]).padStart(2,"0")}`;
+
+  }
+
+ }
+
+ return "";
+
+}
+
+
+/* =========================================================
+   RULES
+========================================================= */
 
 function loadRules(){
 
-rules=JSON.parse(localStorage.imeRules||"null")
-||DEFAULTS.map(x=>({...x}));
+ rules =
+ JSON.parse(
+  localStorage.getItem("imeRules") || "null"
+ ) ||
+ DEFAULT_RULES.map(
+  x => ({...x})
+ );
 
-ignoreBelow.value=localStorage.imeIgnore??10;
-setPos.value=localStorage.imePos||"Karnataka (29)";
-setBuyer.value=localStorage.imeBuyer||"Cash Sale (B2C)";
-setPrefix.value=localStorage.imePrefix||"IME";
+ ignoreBelow.value =
+ localStorage.getItem("imeIgnore") ?? "10";
 
-drawRules();
-drawProducts();
+ setPos.value =
+ localStorage.getItem("imePos") ||
+ "Karnataka (29)";
+
+ setBuyer.value =
+ localStorage.getItem("imeBuyer") ||
+ "Cash Sale (B2C)";
+
+ setPrefix.value =
+ localStorage.getItem("imePrefix") ||
+ "IME";
+
+ drawRules();
+ drawProducts();
+
 }
+
 
 function drawRules(){
 
-rulesEditor.innerHTML="";
+ rulesEditor.innerHTML="";
 
-rules.forEach((r,i)=>{
+ rules.forEach((r,i)=>{
 
-rulesEditor.innerHTML+=`
-<div class="rule">
+  rulesEditor.innerHTML += `
 
-<input type="number" step=".01" value="${r.min}"
-onchange="rules[${i}].min=this.value">
+  <div class="rule">
 
-<input type="number" step=".01" value="${r.max}"
-placeholder="No limit"
-onchange="rules[${i}].max=this.value">
+   <input
+    type="number"
+    step=".01"
+    value="${r.min}"
+    onchange="rules[${i}].min=this.value">
 
-<input type="number" step=".01" value="${r.gst}"
-onchange="rules[${i}].gst=this.value">
+   <input
+    type="number"
+    step=".01"
+    value="${r.max}"
+    placeholder="No limit"
+    onchange="rules[${i}].max=this.value">
 
-<input value="${esc(r.part)}"
-onchange="rules[${i}].part=this.value">
+   <input
+    type="number"
+    step=".01"
+    value="${r.gst}"
+    onchange="rules[${i}].gst=this.value">
 
-<input type="checkbox"
-${r.enabled!==false?"checked":""}
-onchange="rules[${i}].enabled=this.checked">
+   <input
+    value="${esc(r.part)}"
+    onchange="rules[${i}].part=this.value">
 
-<button onclick="rules.splice(${i},1);drawRules();drawProducts()">×</button>
+   <input
+    type="checkbox"
+    ${r.enabled!==false ? "checked" : ""}
+    onchange="rules[${i}].enabled=this.checked">
 
-</div>`;
-});
+   <button
+    onclick="rules.splice(${i},1);drawRules();drawProducts()">
+    ×
+   </button>
+
+  </div>
+
+  `;
+
+ });
+
 }
+
 
 function addRule(){
-rules.push({
-min:0,max:"",gst:18,
-part:"New Category",enabled:true
-});
-drawRules();
-drawProducts();
+
+ rules.push({
+  min:0,
+  max:"",
+  gst:18,
+  part:"New Category",
+  enabled:true
+ });
+
+ drawRules();
+ drawProducts();
+
 }
+
 
 function saveRules(){
 
-rules=rules.map(r=>({
-min:+r.min||0,
-max:r.max===""?"":+r.max,
-gst:+r.gst||0,
-part:String(r.part||""),
-enabled:r.enabled!==false
-})).sort((a,b)=>a.min-b.min);
+ rules =
+ rules.map(r=>({
 
-localStorage.imeRules=JSON.stringify(rules);
-localStorage.imeIgnore=+ignoreBelow.value||0;
-localStorage.imePos=setPos.value;
-localStorage.imeBuyer=setBuyer.value;
-localStorage.imePrefix=setPrefix.value||"IME";
+  min:+r.min || 0,
 
-drawRules();
-drawProducts();
+  max:
+   r.max === ""
+   ? ""
+   : +r.max,
 
-ruleStatus.textContent="Rules saved successfully.";
+  gst:+r.gst || 0,
 
-newBill();
+  part:String(r.part || ""),
+
+  enabled:r.enabled !== false
+
+ }))
+ .sort(
+  (a,b)=>a.min-b.min
+ );
+
+ localStorage.setItem(
+  "imeRules",
+  JSON.stringify(rules)
+ );
+
+ localStorage.setItem(
+  "imeIgnore",
+  +ignoreBelow.value || 0
+ );
+
+ localStorage.setItem(
+  "imePos",
+  setPos.value
+ );
+
+ localStorage.setItem(
+  "imeBuyer",
+  setBuyer.value
+ );
+
+ localStorage.setItem(
+  "imePrefix",
+  setPrefix.value || "IME"
+ );
+
+ drawRules();
+ drawProducts();
+
+ ruleStatus.textContent =
+ "Rules saved successfully.";
+
+ newBill();
+
 }
+
 
 function resetRules(){
-if(confirm("Reset to ₹10–₹300 at 18% and above ₹300 at 5%?")){
-localStorage.removeItem("imeRules");
-loadRules();
+
+ if(
+  confirm(
+   "Reset GST rules to ₹10–₹300 at 18% and above ₹300 at 5%?"
+  )
+ ){
+
+  localStorage.removeItem("imeRules");
+
+  localStorage.setItem(
+   "imeIgnore",
+   "10"
+  );
+
+  loadRules();
+
+ }
+
 }
-}
+
 
 function findRule(amount){
 
-let ignore=+(localStorage.imeIgnore??10);
+ const ignore =
+ +(localStorage.getItem("imeIgnore") ?? 10);
 
-if(amount<ignore)return null;
+ if(amount < ignore)
+  return null;
 
-return rules.find(r=>
-r.enabled!==false &&
-amount>=+r.min &&
-(r.max===""||amount<=+r.max)
-)||null;
+ return rules.find(r=>
+  r.enabled !== false &&
+  amount >= +r.min &&
+  (
+   r.max === "" ||
+   amount <= +r.max
+  )
+ ) || null;
+
 }
+
 
 function drawProducts(){
 
-product.innerHTML="";
+ product.innerHTML="";
 
-rules.filter(r=>r.enabled!==false)
-.forEach((r,i)=>{
-let o=document.createElement("option");
-o.value=i;
-o.textContent=`${r.part} — ${r.gst}%`;
-product.appendChild(o);
-});
+ rules
+ .filter(r=>r.enabled !== false)
+ .forEach((r,i)=>{
 
-gst.value=product.options.length
-?rules[+product.value].gst+"%"
-:"";
+  let option =
+  document.createElement("option");
+
+  option.value=i;
+
+  option.textContent =
+  `${r.part} — ${r.gst}%`;
+
+  product.appendChild(option);
+
+ });
+
+ if(product.options.length){
+
+  gst.value =
+  rules[+product.value].gst + "%";
+
+ }
+
 }
 
 
-/* ================= INVOICE NUMBER ================= */
+/* =========================================================
+   INVOICE NUMBER
+========================================================= */
 
-function prefixFor(date){
+function invoicePrefix(date){
 
-let d=new Date(date+"T12:00:00");
+ let d =
+ new Date(
+  (date || today()) + "T12:00:00"
+ );
 
-if(isNaN(d))d=new Date();
+ const months=[
+  "JAN","FEB","MAR","APR","MAY","JUN",
+  "JUL","AUG","SEP","OCT","NOV","DEC"
+ ];
 
-const m=[
-"JAN","FEB","MAR","APR","MAY","JUN",
-"JUL","AUG","SEP","OCT","NOV","DEC"
-];
+ return (
+  localStorage.getItem("imePrefix") || "IME"
+ )
+ + "/"
+ + months[d.getMonth()]
+ + String(d.getFullYear()).slice(-2)
+ + "/";
 
-return(
-localStorage.imePrefix||"IME"
-)+"/"+
-m[d.getMonth()]+
-String(d.getFullYear()).slice(-2)+"/";
-}
-
-function nextNo(date){
-
-let p=prefixFor(date);
-let max=0;
-
-bills.forEach(x=>{
-if(x.no?.startsWith(p))
-max=Math.max(max,+x.no.split("/").pop()||0);
-});
-
-return p+String(max+1).padStart(3,"0");
 }
 
 
-/* ================= CALCULATION ================= */
+function nextInvoiceNumber(date){
+
+ let prefix =
+ invoicePrefix(date);
+
+ let max=0;
+
+ bills.forEach(x=>{
+
+  if(
+   x.no &&
+   x.no.startsWith(prefix)
+  ){
+
+   max =
+   Math.max(
+    max,
+    +(x.no.split("/").pop()) || 0
+   );
+
+  }
+
+ });
+
+ return (
+  prefix +
+  String(max+1).padStart(3,"0")
+ );
+
+}
+
+
+/* =========================================================
+   CALCULATION
+========================================================= */
 
 function calc(){
 
-let total=+invoiceTotal.value||0;
-let r=rules[+product.value]||{gst:0,part:""};
+ let total =
+ +invoiceTotal.value || 0;
 
-let taxable=r.gst
-?total/(1+r.gst/100)
-:total;
+ let r =
+ rules[+product.value] ||
+ {
+  gst:0,
+  part:""
+ };
 
-let tax=total-taxable;
+ let taxable =
+ r.gst
+ ? total/(1+r.gst/100)
+ : total;
 
-return{
-total,
-r,
-taxable,
-cgst:tax/2,
-sgst:tax/2
-};
+ let tax =
+ total-taxable;
+
+ return {
+
+  total,
+
+  r,
+
+  taxable,
+
+  cgst:tax/2,
+
+  sgst:tax/2
+
+ };
+
 }
 
 
-/* ================= WORDS ================= */
+/* =========================================================
+   WORDS
+========================================================= */
 
 function words(n){
 
-n=Math.round(n);
+ n=Math.round(n);
 
-if(!n)return"Rupees Zero Only";
+ if(!n)
+  return "Rupees Zero Only";
 
-const o=[
-"","One","Two","Three","Four","Five","Six",
-"Seven","Eight","Nine","Ten","Eleven","Twelve",
-"Thirteen","Fourteen","Fifteen","Sixteen",
-"Seventeen","Eighteen","Nineteen"
-];
+ const ones=[
+  "",
+  "One",
+  "Two",
+  "Three",
+  "Four",
+  "Five",
+  "Six",
+  "Seven",
+  "Eight",
+  "Nine",
+  "Ten",
+  "Eleven",
+  "Twelve",
+  "Thirteen",
+  "Fourteen",
+  "Fifteen",
+  "Sixteen",
+  "Seventeen",
+  "Eighteen",
+  "Nineteen"
+ ];
 
-const t=[
-"","","Twenty","Thirty","Forty","Fifty",
-"Sixty","Seventy","Eighty","Ninety"
-];
+ const tens=[
+  "",
+  "",
+  "Twenty",
+  "Thirty",
+  "Forty",
+  "Fifty",
+  "Sixty",
+  "Seventy",
+  "Eighty",
+  "Ninety"
+ ];
 
-function two(x){
-return x<20?o[x]:
-t[Math.floor(x/10)]+
-(x%10?" "+o[x%10]:"");
+ function two(x){
+
+  return x<20
+   ? ones[x]
+   : tens[Math.floor(x/10)] +
+     (x%10 ? " "+ones[x%10] : "");
+
+ }
+
+ function three(x){
+
+  if(x>=100){
+
+   return (
+    ones[Math.floor(x/100)] +
+    " Hundred" +
+    (
+     x%100
+     ? " "+two(x%100)
+     : ""
+    )
+   );
+
+  }
+
+  return two(x);
+
+ }
+
+ let parts=[];
+
+ let crore=Math.floor(n/10000000);
+ n%=10000000;
+
+ let lakh=Math.floor(n/100000);
+ n%=100000;
+
+ let thousand=Math.floor(n/1000);
+ n%=1000;
+
+ if(crore)
+  parts.push(three(crore)+" Crore");
+
+ if(lakh)
+  parts.push(three(lakh)+" Lakh");
+
+ if(thousand)
+  parts.push(three(thousand)+" Thousand");
+
+ if(n)
+  parts.push(three(n));
+
+ return "Rupees "+parts.join(" ")+" Only";
+
 }
 
-function three(x){
-return x>=100
-?o[Math.floor(x/100)]+" Hundred"+
-(x%100?" "+two(x%100):"")
-:two(x);
-}
 
-let a=[];
-let c=Math.floor(n/1e7);n%=1e7;
-let l=Math.floor(n/1e5);n%=1e5;
-let k=Math.floor(n/1e3);n%=1e3;
-
-if(c)a.push(three(c)+" Crore");
-if(l)a.push(three(l)+" Lakh");
-if(k)a.push(three(k)+" Thousand");
-if(n)a.push(three(n));
-
-return"Rupees "+a.join(" ")+" Only";
-}
-
-
-/* ================= BILL PREVIEW ================= */
+/* =========================================================
+   PREVIEW
+========================================================= */
 
 function preview(){
 
-let x=calc();
+ let x=calc();
 
-gst.value=x.r.gst+"%";
+ gst.value=x.r.gst+"%";
 
-pno.textContent=invoiceNo.value;
-pdate.textContent=showDate(invoiceDate.value);
-pbuyer.textContent=buyer.value;
-ppos.textContent=pos.value;
-pproduct.textContent=x.r.part;
-pqty.textContent=qty.value;
-prate.textContent=money(x.taxable);
-pamt.textContent=money(x.taxable);
-ptax.textContent=money(x.taxable);
-pcgr.textContent=x.r.gst/2;
-psgr.textContent=x.r.gst/2;
-pcgst.textContent=money(x.cgst);
-psgst.textContent=money(x.sgst);
-ptotal.textContent=money(x.total);
-pwords.textContent=words(x.total);
+ pno.textContent=
+ invoiceNo.value;
+
+ pdate.textContent=
+ showDate(invoiceDate.value);
+
+ pbuyer.textContent=
+ buyer.value;
+
+ ppos.textContent=
+ pos.value;
+
+ pproduct.textContent=
+ x.r.part;
+
+ pqty.textContent=
+ qty.value;
+
+ prate.textContent=
+ money(x.taxable);
+
+ pamt.textContent=
+ money(x.taxable);
+
+ ptax.textContent=
+ money(x.taxable);
+
+ pcgr.textContent=
+ x.r.gst/2;
+
+ psgr.textContent=
+ x.r.gst/2;
+
+ pcgst.textContent=
+ money(x.cgst);
+
+ psgst.textContent=
+ money(x.sgst);
+
+ ptotal.textContent=
+ money(x.total);
+
+ pwords.textContent=
+ words(x.total);
+
 }
 
 
-/* ================= SAVE BILL ================= */
+/* =========================================================
+   SAVE
+========================================================= */
 
 async function saveBill(){
 
-let x=calc();
+ let x=calc();
 
-if(!invoiceNo.value||!invoiceDate.value||x.total<=0)
-return alert("Enter invoice number, date and total.");
+ if(
+  !invoiceNo.value ||
+  !invoiceDate.value ||
+  x.total<=0
+ ){
 
-let old=bills.find(b=>b.no===invoiceNo.value);
+  alert(
+   "Enter invoice number, date and total."
+  );
 
-await putBill({
-...(old||{}),
-no:invoiceNo.value,
-date:invoiceDate.value,
-buyer:buyer.value,
-pos:pos.value,
-product:x.r.part,
-gst:x.r.gst,
-total:x.total,
-qty:+qty.value||1
-});
+  return;
 
-bills=await getBills();
-render();
+ }
 
-alert(old?"Invoice updated.":"Invoice saved.");
+ let old =
+ bills.find(
+  b=>b.no===invoiceNo.value
+ );
+
+ let bill={
+
+  ...(old || {}),
+
+  no:invoiceNo.value,
+
+  date:invoiceDate.value,
+
+  buyer:buyer.value,
+
+  pos:pos.value,
+
+  product:x.r.part,
+
+  gst:+x.r.gst,
+
+  total:+x.total,
+
+  qty:+qty.value || 1
+
+ };
+
+ await putBill(bill);
+
+ bills=await getBills();
+
+ render();
+
+ alert(
+  old
+  ? "Invoice updated."
+  : "Invoice saved."
+ );
+
 }
 
 
-/* ================= NEW / EDIT ================= */
+/* =========================================================
+   NEW BILL
+========================================================= */
 
 function newBill(){
 
-invoiceDate.value=today();
-invoiceNo.value=nextNo(invoiceDate.value);
-buyer.value=localStorage.imeBuyer||"Cash Sale (B2C)";
-pos.value=localStorage.imePos||"Karnataka (29)";
-invoiceTotal.value="";
-qty.value=1;
+ invoiceDate.value=today();
 
-if(product.options.length)
-product.selectedIndex=0;
+ invoiceNo.value=
+ nextInvoiceNumber(
+  invoiceDate.value
+ );
 
-preview();
+ buyer.value=
+ localStorage.getItem("imeBuyer") ||
+ "Cash Sale (B2C)";
+
+ pos.value=
+ localStorage.getItem("imePos") ||
+ "Karnataka (29)";
+
+ invoiceTotal.value="";
+
+ qty.value=1;
+
+ if(product.options.length)
+  product.selectedIndex=0;
+
+ preview();
+
 }
+
+
+/* =========================================================
+   EDIT
+========================================================= */
 
 function editBill(no){
 
-let x=bills.find(b=>b.no===no);
+ let x=
+ bills.find(
+  b=>b.no===no
+ );
 
-if(!x)return alert("Invoice not found.");
+ if(!x)
+  return alert("Invoice not found.");
 
-invoiceNo.value=x.no;
-invoiceDate.value=x.date;
-buyer.value=x.buyer||"Cash Sale (B2C)";
-pos.value=x.pos||"Karnataka (29)";
-invoiceTotal.value=x.total;
-qty.value=x.qty||1;
+ invoiceNo.value=x.no;
 
-let i=rules.findIndex(r=>
-r.part===x.product&&+r.gst===+x.gst
-);
+ invoiceDate.value=x.date;
 
-if(i>=0)product.value=i;
+ buyer.value=
+ x.buyer || "Cash Sale (B2C)";
 
-preview();
+ pos.value=
+ x.pos || "Karnataka (29)";
 
-scrollTo({top:0,behavior:"smooth"});
+ invoiceTotal.value=
+ x.total;
+
+ qty.value=
+ x.qty || 1;
+
+ let index=
+ rules.findIndex(
+  r=>
+   r.part===x.product &&
+   +r.gst===+x.gst
+ );
+
+ if(index>=0)
+  product.value=index;
+
+ preview();
+
+ window.scrollTo({
+  top:0,
+  behavior:"smooth"
+ });
+
 }
+
+
+/* =========================================================
+   PRINT
+========================================================= */
 
 function printBill(no){
-editBill(no);
-setTimeout(()=>window.print(),200);
+
+ editBill(no);
+
+ setTimeout(
+  ()=>window.print(),
+  250
+ );
+
 }
+
 
 function printCurrent(){
-preview();
-window.print();
+
+ preview();
+
+ window.print();
+
 }
 
 
-/* ================= REGISTER ================= */
+/* =========================================================
+   SAVED REGISTER
+========================================================= */
 
 function render(){
 
-let q=(searchBills.value||"").toLowerCase().trim();
-let mon=monthBills.value||"";
+ let q=
+ (
+  document.getElementById("searchBills")?.value ||
+  ""
+ )
+ .toLowerCase()
+ .trim();
 
-let list=bills.filter(x=>
-(!q||
-x.no.toLowerCase().includes(q)||
-String(x.product).toLowerCase().includes(q))
-&&
-(!mon||x.date.startsWith(mon))
-);
+ let mon=
+ document.getElementById("monthBills")?.value ||
+ "";
 
-if(!list.length){
-savedRegister.innerHTML="<p>No matching invoices.</p>";
-return;
+ let list=
+ bills.filter(x=>
+  (
+   !q ||
+   x.no.toLowerCase().includes(q) ||
+   String(x.product)
+   .toLowerCase()
+   .includes(q) ||
+   String(x.transactionDetails||"")
+   .toLowerCase()
+   .includes(q)
+  )
+  &&
+  (
+   !mon ||
+   String(x.date).startsWith(mon)
+  )
+ );
+
+ if(!list.length){
+
+  savedRegister.innerHTML=
+  "<p>No matching invoices.</p>";
+
+  return;
+
+ }
+
+ savedRegister.innerHTML=
+ list
+ .slice()
+ .reverse()
+ .map(x=>`
+
+  <div class="saved">
+
+   <input
+    type="checkbox"
+    ${x.selected?"checked":""}
+    onchange="markSaved('${esc(x.no)}',this.checked)">
+
+   <div class="savedinfo">
+
+    <b>${esc(x.no)}</b>
+
+    — ${showDate(x.date)}
+
+    — ${esc(x.product)}
+
+    — ${x.gst}%
+
+    — ₹${money(x.total)}
+
+    ${
+     x.transactionDetails
+     ? `<br><span class="small">
+     🏦 ${esc(x.transactionDetails)}
+     </span>`
+     : ""
+    }
+
+   </div>
+
+   <button
+    onclick="editBill('${esc(x.no)}')">
+    Edit
+   </button>
+
+   <button
+    onclick="printBill('${esc(x.no)}')">
+    Print / PDF
+   </button>
+
+  </div>
+
+ `)
+ .join("");
+
 }
 
-savedRegister.innerHTML=list.slice().reverse().map(x=>`
 
-<div class="saved">
+function markSaved(no,value){
 
-<input type="checkbox"
-${x.selected?"checked":""}
-onchange="mark('${esc(x.no)}',this.checked)">
+ let x=
+ bills.find(
+  b=>b.no===no
+ );
 
-<div class="savedinfo">
-<b>${esc(x.no)}</b>
-— ${showDate(x.date)}
-— ${esc(x.product)}
-— ${x.gst}%
-— ₹${money(x.total)}
-${x.source?" — <small>${esc(x.source)}</small>":""}
-</div>
+ if(x)
+  x.selected=value;
 
-<button onclick="editBill('${esc(x.no)}')">Edit</button>
-
-<button onclick="printBill('${esc(x.no)}')">
-Print / PDF
-</button>
-
-</div>
-
-`).join("");
 }
 
-function mark(no,v){
 
-let x=bills.find(b=>b.no===no);
-if(x)x.selected=v;
+function selectSaved(value){
+
+ bills.forEach(
+  x=>x.selected=value
+ );
+
+ render();
+
 }
 
-function selectSaved(v){
-bills.forEach(x=>x.selected=v);
-render();
-}
 
 async function deleteSelected(){
 
-let list=bills.filter(x=>x.selected);
+ let selected=
+ bills.filter(
+  x=>x.selected
+ );
 
-if(!list.length)
-return alert("Select at least one invoice.");
+ if(!selected.length){
 
-if(!confirm(`Delete ${list.length} selected invoice(s)?`))
-return;
+  alert(
+   "Select at least one invoice."
+  );
 
-for(let x of list)
-await deleteBill(x.no);
+  return;
 
-bills=await getBills();
-render();
-newBill();
+ }
 
-alert(`${list.length} invoice(s) deleted.`);
+ if(
+  !confirm(
+   `Delete ${selected.length} selected invoice(s)?`
+  )
+ )
+ return;
+
+ for(
+  let x of selected
+ )
+ await deleteBill(x.no);
+
+ bills=
+ await getBills();
+
+ render();
+
+ newBill();
+
+ alert(
+  `${selected.length} invoice(s) deleted.`
+ );
+
 }
+
 
 function clearFilters(){
-searchBills.value="";
-monthBills.value="";
-render();
+
+ searchBills.value="";
+ monthBills.value="";
+
+ render();
+
 }
 
 
-/* ================= SBI PDF ================= */
+/* =========================================================
+   PDF TEXT EXTRACTION
+========================================================= */
 
-pdfjsLib.GlobalWorkerOptions.workerSrc=
-"https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.worker.min.js";
+if(window.pdfjsLib){
 
+ pdfjsLib.GlobalWorkerOptions.workerSrc =
+ "https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.worker.min.js";
 
-function clean(s){
-return String(s||"").replace(/\s+/g," ").trim();
 }
 
 
-function rowsFromPage(content){
+/*
+  The important improvement here is that the importer does
+  NOT search only for words such as "BY TRANSFER".
 
-let rows=[];
+  Instead it:
+  1. Reads every PDF text item.
+  2. Groups text by Y coordinate.
+  3. Detects date rows.
+  4. Builds complete transaction rows.
+  5. Finds the numeric columns.
+  6. Detects CREDIT / DEBIT from column position and/or text.
+  7. Includes BULK POSTING credits.
+*/
 
-(content.items||[]).forEach(it=>{
 
-let text=clean(it.str);
-if(!text)return;
+function normalizeText(s){
 
-let x=it.transform?it.transform[4]:0;
-let y=it.transform?it.transform[5]:0;
+ return String(s || "")
+ .replace(/\u00a0/g," ")
+ .replace(/\s+/g," ")
+ .trim();
 
-let row=rows.find(r=>Math.abs(r.y-y)<3);
-
-if(!row){
-row={y,items:[]};
-rows.push(row);
-}
-
-row.items.push({x,text});
-});
-
-return rows
-.sort((a,b)=>b.y-a.y)
-.map(r=>
-r.items.sort((a,b)=>a.x-b.x)
-.map(x=>x.text)
-.join(" ")
-.replace(/\s+/g," ")
-.trim()
-)
-.filter(Boolean);
 }
 
 
-function parseMoney(s){
+function moneyNumber(s){
 
-let m=String(s||"")
-.replace(/,/g,"")
-.match(/\d+\.\d{2}/g);
+ if(
+  s===null ||
+  s===undefined
+ )
+ return null;
 
-return m?m.map(Number):[];
+ let t=
+ String(s)
+ .replace(/[₹,\s]/g,"")
+ .trim();
+
+ if(!/^-?\d+(?:\.\d{1,2})?$/.test(t))
+  return null;
+
+ let n=parseFloat(t);
+
+ return Number.isFinite(n)
+  ? n
+  : null;
+
 }
 
 
-function sbiDate(s){
+function isDateText(s){
 
-s=String(s||"").trim();
+ s=normalizeText(s);
 
-let m=s.match(
-/^(\d{1,2})\s+([A-Za-z]{3})\s+(\d{4})$/
-);
+ return (
 
-if(!m)return"";
+  /^\d{1,2}\/\d{1,2}\/\d{4}$/.test(s) ||
 
-let months={
-jan:1,feb:2,mar:3,apr:4,
-may:5,jun:6,jul:7,aug:8,
-sep:9,oct:10,nov:11,dec:12
-};
+  /^\d{1,2}-\d{1,2}-\d{4}$/.test(s) ||
 
-let mo=months[m[2].toLowerCase()];
+  /^\d{1,2}\s+[A-Za-z]{3}\s+\d{4}$/.test(s) ||
 
-if(!mo)return"";
+  /^\d{1,2}\s+[A-Za-z]{3}$/.test(s)
 
-return`${m[3]}-${String(mo).padStart(2,"0")}-${String(m[1]).padStart(2,"0")}`;
+ );
+
 }
 
 
-function parseSBI(lines){
+function groupPDFRows(items){
 
-let tx=[];
+ let rows=[];
 
-for(let i=0;i<lines.length-4;i++){
+ for(
+  let item of items
+ ){
 
-if(!/^\d{1,2}\s+[A-Za-z]{3}$/.test(lines[i]))
-continue;
+  let text=
+  normalizeText(item.str);
 
-if(!/^\d{4}$/.test(lines[i+1]))
-continue;
+  if(!text)
+   continue;
 
-let date=sbiDate(lines[i]+" "+lines[i+1]);
+  let x=
+  item.transform
+  ? item.transform[4]
+  : 0;
 
-let valueDate="";
+  let y=
+  item.transform
+  ? item.transform[5]
+  : 0;
 
-if(
-/^\d{1,2}\s+[A-Za-z]{3}$/.test(lines[i+2])&&
-/^\d{4}$/.test(lines[i+3])
-)
-valueDate=sbiDate(lines[i+2]+" "+lines[i+3]);
+  let row=
+  rows.find(
+   r=>Math.abs(r.y-y)<3
+  );
 
-let j=i+4;
-let body=[];
+  if(!row){
 
-while(
-j<lines.length &&
-!/^\d{1,2}\s+[A-Za-z]{3}$/.test(lines[j])
-){
-body.push(lines[j]);
-j++;
+   row={
+    y,
+    items:[]
+   };
+
+   rows.push(row);
+
+  }
+
+  row.items.push({
+   x,
+   text
+  });
+
+ }
+
+ rows.sort(
+  (a,b)=>b.y-a.y
+ );
+
+ return rows.map(
+  r=>{
+
+   r.items.sort(
+    (a,b)=>a.x-b.x
+   );
+
+   return {
+
+    y:r.y,
+
+    items:r.items,
+
+    text:r.items
+    .map(x=>x.text)
+    .join(" ")
+    .replace(/\s+/g," ")
+    .trim()
+
+   };
+
+  }
+ );
+
 }
 
-let text=body.join(" ");
-let nums=parseMoney(text);
 
-if(nums.length<2){
-i=j-1;
-continue;
+/* Detect date beginning a transaction. */
+
+function transactionDateFromRow(row){
+
+ let text=row.text;
+
+ let m=text.match(
+  /\b(\d{1,2}\/\d{1,2}\/\d{4})\b/
+ );
+
+ if(m)
+  return dateFromText(m[1]);
+
+ m=text.match(
+  /\b(\d{1,2}-\d{1,2}-\d{4})\b/
+ );
+
+ if(m)
+  return dateFromText(m[1]);
+
+ m=text.match(
+  /\b(\d{1,2}\s+[A-Za-z]{3}\s+\d{4})\b/
+ );
+
+ if(m)
+  return dateFromText(m[1]);
+
+ return "";
+
 }
 
-let amount=nums[nums.length-2];
-let balance=nums[nums.length-1];
 
-let desc=text;
+/*
+  Some SBI PDFs have date and year in separate text cells.
+*/
 
-let matches=[
-...text.matchAll(/\d[\d,]*\.\d{2}/g)
-];
+function transactionDateFromRows(rows,i){
 
-if(matches.length>=2)
-desc=text.slice(
-0,
-matches[matches.length-2].index
-).trim();
+ let d=
+ transactionDateFromRow(rows[i]);
 
-let up=desc.toUpperCase();
+ if(d)
+  return d;
 
-let bulk=up.includes("BULK POSTING");
+ if(
+  i+1<rows.length
+ ){
 
-let credit=
-!bulk&&(
-up.includes("BY TRANSFER")||
-up.includes("CREDIT")||
-up.includes("BY CASH")||
-up.includes("CASH DEPOSIT")||
-up.includes("BY CLEARING")
-);
+  let combined=
+  rows[i].text+" "+rows[i+1].text;
 
-let debit=
-up.includes("TO TRANSFER")||
-up.includes("DEBIT")||
-up.includes("TO CASH")||
-up.includes("BY CHARGES")||
-up.includes("TO CLEARING");
+  let m=
+  combined.match(
+   /\b(\d{1,2}\s+[A-Za-z]{3}\s+\d{4})\b/
+  );
 
-tx.push({
-date,
-valueDate,
-description:desc,
-amount,
-balance,
-bulk,
-type:bulk
-?"BULK POSTING"
-:(credit?"CREDIT":(debit?"DEBIT":"OTHER"))
-});
+  if(m)
+   return dateFromText(m[1]);
 
-i=j-1;
+ }
+
+ return "";
+
 }
 
-return tx;
+
+/* =========================================================
+   SBI ROW PARSER
+========================================================= */
+
+function parseTransactionRows(allRows){
+
+ let result=[];
+
+ for(
+  let i=0;
+  i<allRows.length;
+  i++
+ ){
+
+  let date=
+  transactionDateFromRows(
+   allRows,
+   i
+  );
+
+  if(!date)
+   continue;
+
+  /*
+    Collect the current row and continuation rows until
+    the next transaction date.
+  */
+
+  let block=[
+   allRows[i]
+  ];
+
+  let j=i+1;
+
+  while(
+   j<allRows.length
+  ){
+
+   if(
+    transactionDateFromRows(
+     allRows,
+     j
+    )
+   )
+   break;
+
+   /*
+     Header/footer rows are ignored only if they are obviously
+     page headers. Otherwise continuation text is retained.
+   */
+
+   let t=
+   allRows[j].text;
+
+   if(
+    /^(page|statement period|account number|branch|customer name)/i.test(t)
+   ){
+
+    j++;
+    continue;
+
+   }
+
+   block.push(
+    allRows[j]
+   );
+
+   /*
+     Prevent a transaction from absorbing an entire page.
+   */
+
+   if(block.length>20)
+    break;
+
+   j++;
+
+  }
+
+
+  /*
+    Flatten all text items while retaining X positions.
+  */
+
+  let cells=[];
+
+  block.forEach(row=>{
+
+   row.items.forEach(item=>{
+
+    cells.push({
+     x:item.x,
+     y:row.y,
+     text:item.text
+    });
+
+   });
+
+  });
+
+
+  let text=
+  cells.map(x=>x.text).join(" ");
+
+  let upper=
+  text.toUpperCase();
+
+
+  /*
+    Collect numeric values and their X positions.
+  */
+
+  let numbers=[];
+
+  cells.forEach(cell=>{
+
+   let value=
+   moneyNumber(cell.text);
+
+   if(value!==null){
+
+    numbers.push({
+     value,
+     x:cell.x,
+     text:cell.text
+    });
+
+   }
+
+  });
+
+
+  if(!numbers.length){
+
+   i=j-1;
+   continue;
+
+  }
+
+
+  /*
+    Balance is normally the right-most amount.
+  */
+
+  numbers.sort(
+   (a,b)=>a.x-b.x
+  );
+
+  let balance=
+  numbers[numbers.length-1];
+
+
+  /*
+    Remaining amounts may represent Debit and Credit.
+  */
+
+  let amountCandidates=
+  numbers.slice(
+   0,
+   -1
+  );
+
+
+  /*
+    Detect transaction direction from explicit text.
+  */
+
+  let hasCreditText=
+  /\bCREDIT\b|\bBY\s+TRANSFER\b|\bBY\s+CASH\b|\bCR\b|\bBULK\s+POSTING\b/i.test(upper);
+
+  let hasDebitText=
+  /\bDEBIT\b|\bTO\s+TRANSFER\b|\bTO\s+CASH\b|\bDR\b/i.test(upper);
+
+
+  /*
+    If explicit wording says debit and not credit, classify debit.
+  */
+
+  let type="OTHER";
+
+  if(
+   hasDebitText &&
+   !hasCreditText
+  ){
+
+   type="DEBIT";
+
+  }
+  else if(
+   hasCreditText
+  ){
+
+   type="CREDIT";
+
+  }
+
+
+  /*
+    If no explicit text is available, use column layout.
+
+    SBI statements normally have:
+    Debit | Credit | Balance
+
+    Therefore, with two amount candidates:
+    - first amount can be Debit
+    - second amount can be Credit
+    - right-most amount is Balance
+
+    We use the existence of a value in the likely credit position.
+  */
+
+  let amount=null;
+
+  if(
+   type==="CREDIT"
+  ){
+
+   if(amountCandidates.length)
+    amount=
+    amountCandidates[
+     amountCandidates.length-1
+    ].value;
+
+  }
+  else if(
+   type==="DEBIT"
+  ){
+
+   if(amountCandidates.length)
+    amount=
+    amountCandidates[0].value;
+
+  }
+
+
+  /*
+    Generic fallback:
+    if the row has exactly one amount before balance,
+    use it as the transaction amount.
+  */
+
+  if(
+   amount===null &&
+   amountCandidates.length===1
+  ){
+
+   amount=
+   amountCandidates[0].value;
+
+  }
+
+
+  /*
+    If the row contains a credit-column marker such as CR,
+    treat the last transaction amount as credit.
+  */
+
+  if(
+   amount===null &&
+   /\bCR\b/i.test(upper)
+  ){
+
+   if(amountCandidates.length)
+    amount=
+    amountCandidates[
+     amountCandidates.length-1
+    ].value;
+
+   type="CREDIT";
+
+  }
+
+
+  /*
+    BULK POSTING MUST BE INCLUDED.
+  */
+
+  if(
+   /BULK\s+POSTING/i.test(upper)
+  ){
+
+   type="CREDIT";
+
+   if(amount===null && amountCandidates.length)
+    amount=
+    amountCandidates[
+     amountCandidates.length-1
+    ].value;
+
+  }
+
+
+  /*
+    Description = all text except obvious date and amounts.
+  */
+
+  let description=
+  text
+  .replace(
+   /\b\d{1,2}\/\d{1,2}\/\d{4}\b/g,
+   ""
+  )
+  .replace(
+   /\b\d{1,2}-\d{1,2}-\d{4}\b/g,
+   ""
+  )
+  .replace(
+   /\b\d{1,2}\s+[A-Za-z]{3}\s+\d{4}\b/g,
+   ""
+  )
+  .replace(
+   /\b\d[\d,]*\.\d{2}\b/g,
+   ""
+  )
+  .replace(
+   /\s+/g,
+   " "
+  )
+  .trim();
+
+
+  /*
+    Ignore obvious page headings.
+  */
+
+  if(
+   /^(date|value date|transaction remarks|debit|credit|balance)$/i.test(description)
+  ){
+
+   i=j-1;
+   continue;
+
+  }
+
+
+  if(
+   amount!==null &&
+   amount>0
+  ){
+
+   result.push({
+
+    date,
+
+    description,
+
+    amount:+amount,
+
+    balance:
+    balance
+    ? +balance.value
+    : 0,
+
+    type,
+
+    bulk:
+/BULK\s+POSTING/i.test(upper)
+
+   });
+
+  }
+
+  i=j-1;
+
+ }
+
+ return result;
+
 }
 
+
+/* =========================================================
+   PDF READER
+========================================================= */
 
 async function readStatement(){
 
-let file=statementFile.files[0];
+ let file=
+ statementFile.files[0];
 
-if(!file)
-return alert("Choose the SBI statement PDF.");
+ if(!file){
 
-let password=pdfPassword.value;
+  alert(
+   "Choose the SBI Current Account Statement PDF."
+  );
 
-if(!password)
-return alert("Enter the PDF password.");
+  return;
 
-try{
+ }
 
-importStatus.textContent="Opening PDF...";
+ let password=
+ pdfPassword.value;
 
-let buffer=await file.arrayBuffer();
+ if(!password){
 
-let loading=pdfjsLib.getDocument({
-data:buffer,
-password:password
-});
+  alert(
+   "Enter the PDF password."
+  );
 
-let pdf=await loading.promise;
+  return;
 
-let lines=[];
+ }
 
-for(let p=1;p<=pdf.numPages;p++){
 
-let page=await pdf.getPage(p);
-let content=await page.getTextContent();
+ if(!window.pdfjsLib){
 
-lines.push(...rowsFromPage(content));
+  alert(
+   "PDF reader library did not load. Open the website online once and try again."
+  );
+
+  return;
+
+ }
+
+
+ importStatus.textContent=
+ "Opening PDF with password...";
+
+ importPreview.innerHTML="";
+
+ try{
+
+  let buffer=
+  await file.arrayBuffer();
+
+  let loadingTask=
+  pdfjsLib.getDocument({
+
+   data:buffer,
+
+   password:function(){
+
+    return password;
+
+   }
+
+  });
+
+
+  let pdf=
+  await loadingTask.promise;
+
+  importStatus.textContent=
+  `PDF opened successfully — ${pdf.numPages} page(s). Reading transactions...`;
+
+
+  let allRows=[];
+
+
+  for(
+   let pageNo=1;
+   pageNo<=pdf.numPages;
+   pageNo++
+  ){
+
+   importStatus.textContent=
+   `Reading page ${pageNo} of ${pdf.numPages}...`;
+
+   let page=
+   await pdf.getPage(pageNo);
+
+   let content=
+   await page.getTextContent();
+
+
+   let rows=
+   groupPDFRows(
+    content.items || []
+   );
+
+   allRows.push(
+    ...rows
+   );
+
+  }
+
+
+  if(!allRows.length){
+
+   throw new Error(
+    "The PDF contains no readable text. It may be a scanned/image PDF."
+   );
+
+  }
+
+
+  let transactions=
+  parseTransactionRows(
+   allRows
+  );
+
+
+  if(!transactions.length){
+
+   throw new Error(
+    "The PDF opened, but no transaction rows could be detected."
+   );
+
+  }
+
+
+  /*
+    IMPORTANT:
+    Do NOT exclude BULK POSTING.
+  */
+
+  imported=
+  transactions.map(
+   (x,i)=>{
+
+    let rule=
+    x.type==="CREDIT"
+    ? findRule(x.amount)
+    : null;
+
+    return{
+
+     ...x,
+
+     key:i,
+
+     rule,
+
+     selected:
+     x.type==="CREDIT" &&
+     !!rule
+
+    };
+
+   }
+  );
+
+
+  let credits=
+  imported.filter(
+   x=>x.type==="CREDIT"
+  );
+
+  let debits=
+  imported.filter(
+   x=>x.type==="DEBIT"
+  );
+
+  let bulkCredits=
+  credits.filter(
+   x=>x.bulk
+  );
+
+  let ignored=
+  credits.filter(
+   x=>!x.rule
+  );
+
+
+  importStatus.innerHTML=
+  `
+  PDF read successfully.<br>
+  Total detected transactions:
+  <b>${imported.length}</b><br>
+  Credits:
+  <b>${credits.length}</b><br>
+  BULK POSTING credits:
+  <b>${bulkCredits.length}</b>
+  — included<br>
+  Debits:
+  <b>${debits.length}</b><br>
+  Credits below configured limit:
+  <b>${ignored.length}</b>
+  — not selected
+  `;
+
+
+  showImported();
+
+ }
+ catch(error){
+
+  console.error(error);
+
+  importStatus.textContent=
+  "PDF reading failed.";
+
+  alert(
+   "Could not read the SBI PDF.\n\n"+
+   error.message+
+   "\n\n"+
+   "If the password is correct but no transactions are detected, the PDF may use a different text/column layout."
+  );
+
+ }
+
 }
 
-let tx=parseSBI(lines);
 
-if(!tx.length)
-throw Error("No SBI transactions detected.");
-
-imported=tx.map((x,i)=>{
-
-let rule=
-x.type==="CREDIT"&&!x.bulk
-?findRule(x.amount)
-:null;
-
-return{
-...x,
-key:i,
-rule,
-selected:!!rule
-};
-});
-
-let credits=imported.filter(x=>x.type==="CREDIT"&&!x.bulk).length;
-let bulk=imported.filter(x=>x.bulk).length;
-let debit=imported.filter(x=>x.type==="DEBIT").length;
-
-importStatus.textContent=
-`Read successfully: ${tx.length} transactions | ${credits} credit sales | ${bulk} bulk credits excluded | ${debit} debits`;
-
-showImported();
-
-}catch(e){
-
-console.error(e);
-
-importStatus.textContent=
-"PDF reading failed: "+e.message;
-
-alert(
-"Could not read the PDF.\n\n"+
-e.message+
-"\n\nCheck the password and statement format."
-);
-}
-}
-
+/* =========================================================
+   IMPORT PREVIEW
+========================================================= */
 
 function showImported(){
 
-let list=imported.filter(x=>x.type==="CREDIT");
+ let list=
+ imported.filter(
+  x=>x.type==="CREDIT"
+ );
 
-if(!list.length){
-importPreview.innerHTML="<p>No credit transactions found.</p>";
-return;
+ if(!list.length){
+
+  importPreview.innerHTML=
+  "<p>No credit transactions detected.</p>";
+
+  return;
+
+ }
+
+
+ importPreview.innerHTML=`
+
+ <table>
+
+ <tr>
+
+ <th>Select</th>
+ <th>Txn Date</th>
+ <th>Type</th>
+ <th>Description</th>
+ <th>Amount</th>
+ <th>GST</th>
+ <th>Particulars</th>
+
+ </tr>
+
+
+ ${list.map(x=>{
+
+  let index=
+  imported.indexOf(x);
+
+  return`
+
+  <tr>
+
+  <td class="c">
+
+  ${
+   x.rule
+
+   ? `
+   <input
+    type="checkbox"
+    ${x.selected?"checked":""}
+    onchange="
+     imported[${index}].selected=this.checked
+    ">
+   `
+
+   : "—"
+  }
+
+  </td>
+
+
+  <td>
+  ${showDate(x.date)}
+  </td>
+
+
+  <td>
+  ${x.bulk
+   ? "<b>BULK POSTING</b>"
+   : esc(x.type)}
+  </td>
+
+
+  <td>
+  ${esc(x.description)}
+  </td>
+
+
+  <td class="r">
+  ₹${money(x.amount)}
+  </td>
+
+
+  <td>
+  ${x.rule
+   ? x.rule.gst+"%"
+   : "Ignored"}
+  </td>
+
+
+  <td>
+  ${x.rule
+   ? esc(x.rule.part)
+   : "Below limit / no rule"}
+  </td>
+
+
+  </tr>
+
+  `;
+
+ }).join("")}
+
+ </table>
+
+
+ <div class="actions">
+
+ <button
+  class="primary"
+  onclick="createBills()">
+  Create Bills from Selected Credits
+ </button>
+
+ </div>
+
+ `;
+
 }
 
-importPreview.innerHTML=`
 
-<table>
-<tr>
-<th>Select</th>
-<th>Date</th>
-<th>Description</th>
-<th>Amount</th>
-<th>GST</th>
-<th>Particulars</th>
-</tr>
+function selectCredits(value){
 
-${list.map(x=>{
+ imported.forEach(
+  x=>{
 
-let i=imported.indexOf(x);
+   if(
+    x.type==="CREDIT" &&
+    x.rule
+   ){
 
-return`
-<tr>
+    x.selected=value;
 
-<td class="c">
+   }
 
-${x.rule?`
-<input type="checkbox"
-${x.selected?"checked":""}
-onchange="imported[${i}].selected=this.checked">
-`:"—"}
+  }
+ );
 
-</td>
+ showImported();
 
-<td>${showDate(x.date)}</td>
-
-<td>${esc(x.description)}</td>
-
-<td class="r">₹${money(x.amount)}</td>
-
-<td>${x.rule?x.rule.gst+"%":"Ignored"}</td>
-
-<td>${x.rule?esc(x.rule.part):"—"}</td>
-
-</tr>
-`;
-
-}).join("")}
-
-</table>
-
-<div class="actions">
-<button class="primary" onclick="createBills()">
-Create Bills from Selected Credits
-</button>
-</div>
-`;
-}
-
-
-function selectCredits(v){
-
-imported.forEach(x=>{
-if(x.type==="CREDIT"&&x.rule)
-x.selected=v;
-});
-
-showImported();
 }
 
 
 function clearStatement(){
 
-statementFile.value="";
-pdfPassword.value="";
-imported=[];
-importPreview.innerHTML="";
-importStatus.textContent="";
+ statementFile.value="";
+
+ pdfPassword.value="";
+
+ imported=[];
+
+ importPreview.innerHTML="";
+
+ importStatus.textContent="";
+
 }
 
+
+/* =========================================================
+   CREATE BILLS
+========================================================= */
 
 async function createBills(){
 
-let selected=imported.filter(x=>
-x.type==="CREDIT"&&x.rule&&x.selected
-);
+ let selected=
+ imported.filter(
+  x=>
+   x.type==="CREDIT" &&
+   x.rule &&
+   x.selected
+ );
 
-if(!selected.length)
-return alert("No valid credits selected.");
 
-bills=await getBills();
+ if(!selected.length){
 
-let count=0;
+  alert(
+   "No valid credit transactions selected."
+  );
 
-for(let x of selected){
+  return;
 
-if(!x.date)continue;
+ }
 
-let no=nextNo(x.date);
 
-let bill={
-no,
-date:x.date,
-valueDate:x.valueDate,
-buyer:localStorage.imeBuyer||"Cash Sale (B2C)",
-pos:localStorage.imePos||"Karnataka (29)",
-product:x.rule.part,
-gst:+x.rule.gst,
-total:+x.amount,
-qty:1,
-source:"SBI Statement Import",
-transactionDetails:x.description,
-bankBalance:x.balance,
-statementType:"CREDIT"
-};
+ bills=
+ await getBills();
 
-await putBill(bill);
-bills.push(bill);
-count++;
+
+ /*
+   Process in statement order/date order.
+ */
+
+ selected.sort(
+  (a,b)=>
+   String(a.date)
+   .localeCompare(
+    String(b.date)
+   )
+ );
+
+
+ let created=0;
+
+
+ for(
+  let x of selected
+ ){
+
+  if(!x.date)
+   continue;
+
+
+  /*
+    Avoid duplicate creation if the same transaction
+    has already been imported.
+
+    Transaction key consists of:
+    date + amount + description.
+  */
+
+  let duplicate=
+  bills.find(
+   b=>
+    b.source==="SBI Statement Import" &&
+    b.date===x.date &&
+    Math.abs(
+     +b.total -
+     +x.amount
+    )<0.01 &&
+    String(b.transactionDetails||"")
+    ===
+    String(x.description||"")
+  );
+
+
+  if(duplicate)
+   continue;
+
+
+  let no=
+  nextInvoiceNumber(
+   x.date
+  );
+
+
+  let bill={
+
+   no,
+
+   date:x.date,
+
+   buyer:
+   localStorage.getItem("imeBuyer") ||
+   "Cash Sale (B2C)",
+
+   pos:
+   localStorage.getItem("imePos") ||
+   "Karnataka (29)",
+
+   product:
+   x.rule.part,
+
+   gst:
+   +x.rule.gst,
+
+   total:
+   +x.amount,
+
+   qty:1,
+
+   source:
+   "SBI Statement Import",
+
+   transactionDetails:
+   x.description,
+
+   bankBalance:
+   +x.balance || 0,
+
+   transactionType:
+   x.bulk
+   ? "BULK POSTING CREDIT"
+   : "CREDIT",
+
+   valueDate:
+   x.valueDate || "",
+
+   selected:false
+
+  };
+
+
+  await putBill(bill);
+
+  bills.push(bill);
+
+  created++;
+
+ }
+
+
+ bills=
+ await getBills();
+
+ render();
+
+ newBill();
+
+
+ alert(
+  `${created} bill(s) created successfully.\n\n`+
+  "Invoice dates are taken from the SBI transaction dates."
+ );
+
 }
 
-bills=await getBills();
 
-render();
-newBill();
+/* =========================================================
+   GSTR-1
+========================================================= */
 
-alert(
-count+
-" bills created.\nInvoice dates use the actual bank transaction dates."
-);
+function getGSTRRows(){
+
+ return bills
+ .slice()
+ .sort(
+  (a,b)=>
+   String(a.date)
+   .localeCompare(
+    String(b.date)
+   )
+ );
+
 }
 
-
-/* ================= GSTR-1 ================= */
 
 function gstrData(){
 
-return bills.slice()
-.sort((a,b)=>
-String(a.date).localeCompare(String(b.date))
-)
-.map(x=>{
+ return getGSTRRows()
+ .map(x=>{
 
-let r=+x.gst||0;
-let total=+x.total||0;
-let taxable=r?total/(1+r/100):total;
-let tax=total-taxable;
+  let r=
+  +x.gst || 0;
 
-return{
-"Invoice No.":x.no,
-"Invoice Date":showDate(x.date),
-"Buyer":x.buyer,
-"Particulars":x.product,
-"GST %":r,
-"Taxable Value":+taxable.toFixed(2),
-"CGST":+(tax/2).toFixed(2),
-"SGST":+(tax-tax/2).toFixed(2),
-"Invoice Total":+total.toFixed(2),
-"Transaction Details":x.transactionDetails||""
-};
-});
+  let total=
+  +x.total || 0;
+
+  let taxable=
+  r
+  ? total/(1+r/100)
+  : total;
+
+  let tax=
+  total-taxable;
+
+  return{
+
+   "Invoice No.":x.no,
+
+   "Invoice Date":
+   showDate(x.date),
+
+   "Buyer":
+   x.buyer || "",
+
+   "Place of Supply":
+   x.pos || "",
+
+   "Particulars":
+   x.product || "",
+
+   "GST %":
+   r,
+
+   "Taxable Value":
+   +taxable.toFixed(2),
+
+   "CGST":
+   +(tax/2).toFixed(2),
+
+   "SGST":
+   +(tax-tax/2).toFixed(2),
+
+   "Invoice Total":
+   +total.toFixed(2),
+
+   "Transaction Details":
+   x.transactionDetails || ""
+
+  };
+
+ });
+
 }
 
 
 function showGSTR1(){
 
-let rows=gstrData();
+ let rows=
+ gstrData();
 
-if(!rows.length){
-gstrSummary.innerHTML="<p>No bills available.</p>";
-reportPanel.style.display="block";
-return;
+
+ if(!rows.length){
+
+  gstrSummary.innerHTML=
+  "<p>No bills available.</p>";
+
+  reportPanel.style.display="block";
+
+  return;
+
+ }
+
+
+ let by={};
+
+
+ rows.forEach(x=>{
+
+  let r=
+  +x["GST %"];
+
+
+  if(!by[r]){
+
+   by[r]={
+    count:0,
+    taxable:0,
+    cgst:0,
+    sgst:0,
+    total:0
+   };
+
+  }
+
+
+  by[r].count++;
+
+  by[r].taxable+=
+  x["Taxable Value"];
+
+  by[r].cgst+=
+  x.CGST;
+
+  by[r].sgst+=
+  x.SGST;
+
+  by[r].total+=
+  x["Invoice Total"];
+
+ });
+
+
+ let html=`
+
+ <table>
+
+ <tr>
+
+ <th>GST</th>
+ <th>Invoices</th>
+ <th>Taxable ₹</th>
+ <th>CGST ₹</th>
+ <th>SGST ₹</th>
+ <th>Total ₹</th>
+
+ </tr>
+
+ `;
+
+
+ Object.keys(by)
+ .sort(
+  (a,b)=>a-b
+ )
+ .forEach(r=>{
+
+  let x=by[r];
+
+  html+=`
+
+  <tr>
+
+  <td>${r}%</td>
+
+  <td>${x.count}</td>
+
+  <td>${money(x.taxable)}</td>
+
+  <td>${money(x.cgst)}</td>
+
+  <td>${money(x.sgst)}</td>
+
+  <td>${money(x.total)}</td>
+
+  </tr>
+
+  `;
+
+ });
+
+
+ html+="</table>";
+
+
+ html+=`
+
+ <h3>Invoice-wise GSTR-1 Data</h3>
+
+ <div class="tablewrap">
+
+ <table>
+
+ <tr>
+
+ <th>Invoice</th>
+ <th>Date</th>
+ <th>Particulars</th>
+ <th>GST</th>
+ <th>Taxable</th>
+ <th>CGST</th>
+ <th>SGST</th>
+ <th>Total</th>
+
+ </tr>
+
+ ${rows.map(x=>`
+
+ <tr>
+
+ <td>${esc(x["Invoice No."])}</td>
+
+ <td>${esc(x["Invoice Date"])}</td>
+
+ <td>${esc(x.Particulars)}</td>
+
+ <td>${x["GST %"]}%</td>
+
+ <td>${money(x["Taxable Value"])}</td>
+
+ <td>${money(x.CGST)}</td>
+
+ <td>${money(x.SGST)}</td>
+
+ <td>${money(x["Invoice Total"])}</td>
+
+ </tr>
+
+ `).join("")}
+
+ </table>
+
+ </div>
+
+ `;
+
+
+ gstrSummary.innerHTML=
+ html;
+
+ reportPanel.style.display=
+ "block";
+
 }
 
-let by={};
-
-rows.forEach(x=>{
-
-let r=x["GST %"];
-
-by[r]??={
-count:0,taxable:0,cgst:0,sgst:0,total:0
-};
-
-by[r].count++;
-by[r].taxable+=x["Taxable Value"];
-by[r].cgst+=x.CGST;
-by[r].sgst+=x.SGST;
-by[r].total+=x["Invoice Total"];
-});
-
-let html=`
-<table>
-<tr>
-<th>GST</th>
-<th>Invoices</th>
-<th>Taxable ₹</th>
-<th>CGST ₹</th>
-<th>SGST ₹</th>
-<th>Total ₹</th>
-</tr>
-`;
-
-Object.keys(by).sort((a,b)=>a-b).forEach(r=>{
-
-let x=by[r];
-
-html+=`
-<tr>
-<td>${r}%</td>
-<td>${x.count}</td>
-<td>${money(x.taxable)}</td>
-<td>${money(x.cgst)}</td>
-<td>${money(x.sgst)}</td>
-<td>${money(x.total)}</td>
-</tr>
-`;
-});
-
-html+="</table>";
-
-gstrSummary.innerHTML=html;
-reportPanel.style.display="block";
-}
 
 function closeGSTR1(){
-reportPanel.style.display="none";
+
+ reportPanel.style.display=
+ "none";
+
 }
 
 
-/* ================= EXCEL ================= */
+/* =========================================================
+   EXCEL
+========================================================= */
 
-function excel(){
+function downloadExcel(){
 
-if(!window.XLSX)
-return alert("Excel library is not loaded. Open the app online once and try again.");
+ if(!window.XLSX){
 
-if(!bills.length)
-return alert("No saved bills available.");
+  alert(
+   "Excel library is not loaded. Open the website online once and try again."
+  );
 
-let sales=gstrData();
+  return;
 
-let wb=XLSX.utils.book_new();
-
-
-/* SALE BILL REPORT */
-
-let ws1=XLSX.utils.json_to_sheet(sales);
-
-XLSX.utils.book_append_sheet(
-wb,ws1,"Sale Bill Report"
-);
+ }
 
 
-/* GSTR-1 */
+ if(!bills.length){
 
-let ws2=XLSX.utils.json_to_sheet(
-sales.map(x=>({
-"Invoice No.":x["Invoice No."],
-"Invoice Date":x["Invoice Date"],
-"Buyer":x.Buyer,
-"Particulars":x.Particulars,
-"GST %":x["GST %"],
-"Taxable Value":x["Taxable Value"],
-"CGST":x.CGST,
-"SGST":x.SGST,
-"Invoice Total":x["Invoice Total"]
-}))
-);
+  alert(
+   "No saved invoices available."
+  );
 
-XLSX.utils.book_append_sheet(
-wb,ws2,"GSTR-1"
-);
+  return;
+
+ }
 
 
-/* GST SUMMARY */
-
-let by={};
-
-sales.forEach(x=>{
-
-let r=+x["GST %"];
-
-by[r]??={
-Invoices:0,
-Taxable:0,
-CGST:0,
-SGST:0,
-Total:0
-};
-
-by[r].Invoices++;
-by[r].Taxable+=x["Taxable Value"];
-by[r].CGST+=x.CGST;
-by[r].SGST+=x.SGST;
-by[r].Total+=x["Invoice Total"];
-});
-
-let summary=Object.keys(by)
-.sort((a,b)=>a-b)
-.map(r=>({
-"GST %":+r,
-"Invoices":by[r].Invoices,
-"Taxable Value":+by[r].Taxable.toFixed(2),
-"CGST":+by[r].CGST.toFixed(2),
-"SGST":+by[r].SGST.toFixed(2),
-"Total Sales":+by[r].Total.toFixed(2)
-}));
-
-XLSX.utils.book_append_sheet(
-wb,
-XLSX.utils.json_to_sheet(summary),
-"GST Summary"
-);
+ let wb=
+ XLSX.utils.book_new();
 
 
-/* BANK TRANSACTIONS */
+ /* SALE BILL REPORT */
 
-if(imported.length){
+ let sales=
+ gstrData();
 
-let bank=imported.map(x=>({
 
-"Txn Date":showDate(x.date),
-"Value Date":showDate(x.valueDate),
-"Transaction Type":x.type,
-"Amount":+x.amount.toFixed(2),
-"Description":x.description,
-"Balance":+x.balance.toFixed(2),
-"Bulk Posting":x.bulk?"YES":"NO",
-"Category":x.rule?x.rule.part:"",
-"GST %":x.rule?x.rule.gst:""
+ let ws1=
+ XLSX.utils.json_to_sheet(
+  sales
+ );
 
-}));
 
-XLSX.utils.book_append_sheet(
-wb,
-XLSX.utils.json_to_sheet(bank),
-"Bank Transactions"
-);
+ XLSX.utils.book_append_sheet(
+  wb,
+  ws1,
+  "Sale Bill Report"
+ );
+
+
+ /* GSTR-1 */
+
+ let gstr=
+ sales.map(x=>({
+
+  "Invoice No.":
+  x["Invoice No."],
+
+  "Invoice Date":
+  x["Invoice Date"],
+
+  "Buyer":
+  x.Buyer,
+
+  "Place of Supply":
+  x["Place of Supply"],
+
+  "Particulars":
+  x.Particulars,
+
+  "GST %":
+  x["GST %"],
+
+  "Taxable Value":
+  x["Taxable Value"],
+
+  "CGST":
+  x.CGST,
+
+  "SGST":
+  x.SGST,
+
+  "Invoice Total":
+  x["Invoice Total"]
+
+ }));
+
+
+ let ws2=
+ XLSX.utils.json_to_sheet(
+  gstr
+ );
+
+
+ XLSX.utils.book_append_sheet(
+  wb,
+  ws2,
+  "GSTR-1"
+ );
+
+
+ /* GST SUMMARY */
+
+ let by={};
+
+
+ sales.forEach(x=>{
+
+  let r=
+  +x["GST %"];
+
+
+  if(!by[r]){
+
+   by[r]={
+    Invoices:0,
+    Taxable:0,
+    CGST:0,
+    SGST:0,
+    Total:0
+   };
+
+  }
+
+
+  by[r].Invoices++;
+
+  by[r].Taxable+=
+  x["Taxable Value"];
+
+  by[r].CGST+=
+  x.CGST;
+
+  by[r].SGST+=
+  x.SGST;
+
+  by[r].Total+=
+  x["Invoice Total"];
+
+ });
+
+
+ let summary=
+ Object.keys(by)
+ .sort(
+  (a,b)=>a-b
+ )
+ .map(r=>({
+
+  "GST %":+r,
+
+  "Invoices":
+  by[r].Invoices,
+
+  "Taxable Value":
+  +by[r].Taxable.toFixed(2),
+
+  "CGST":
+  +by[r].CGST.toFixed(2),
+
+  "SGST":
+  +by[r].SGST.toFixed(2),
+
+  "Total Sales":
+  +by[r].Total.toFixed(2)
+
+ }));
+
+
+ XLSX.utils.book_append_sheet(
+  wb,
+  XLSX.utils.json_to_sheet(summary),
+  "GST Summary"
+ );
+
+
+ /* BANK TRANSACTIONS */
+
+ if(imported.length){
+
+  let bank=
+  imported.map(x=>({
+
+   "Txn Date":
+   showDate(x.date),
+
+   "Value Date":
+   showDate(x.valueDate),
+
+   "Transaction Type":
+   x.bulk
+   ? "BULK POSTING CREDIT"
+   : x.type,
+
+   "Amount":
+   +(+x.amount||0).toFixed(2),
+
+   "Description":
+   x.description,
+
+   "Balance":
+   +(+x.balance||0).toFixed(2),
+
+   "Category":
+   x.rule
+   ? x.rule.part
+   : "",
+
+   "GST %":
+   x.rule
+   ? x.rule.gst
+   : "",
+
+   "Selected":
+   x.selected
+   ? "YES"
+   : "NO"
+
+  }));
+
+
+  XLSX.utils.book_append_sheet(
+   wb,
+   XLSX.utils.json_to_sheet(bank),
+   "Bank Transactions"
+  );
+
+ }
+
+
+ /* TRANSACTION-TO-INVOICE */
+
+ let mapping=
+ bills.map(x=>({
+
+  "Invoice No.":
+  x.no,
+
+  "Invoice Date":
+  showDate(x.date),
+
+  "Sale Amount":
+  +(+x.total||0).toFixed(2),
+
+  "GST %":
+  x.gst,
+
+  "Particulars":
+  x.product,
+
+  "Transaction Type":
+  x.transactionType || "",
+
+  "Transaction Details":
+  x.transactionDetails || "",
+
+  "Bank Balance":
+  +(+x.bankBalance||0).toFixed(2)
+
+ }));
+
+
+ XLSX.utils.book_append_sheet(
+  wb,
+  XLSX.utils.json_to_sheet(mapping),
+  "Bill Transaction Details"
+ );
+
+
+ /* COLUMN WIDTHS */
+
+ if(wb.Sheets["Sale Bill Report"])
+ wb.Sheets["Sale Bill Report"]["!cols"]=[
+  {wch:18},
+  {wch:14},
+  {wch:22},
+  {wch:18},
+  {wch:34},
+  {wch:10},
+  {wch:16},
+  {wch:14},
+  {wch:14},
+  {wch:18},
+  {wch:55}
+ ];
+
+
+ if(wb.Sheets["GSTR-1"])
+ wb.Sheets["GSTR-1"]["!cols"]=[
+  {wch:18},
+  {wch:14},
+  {wch:22},
+  {wch:18},
+  {wch:34},
+  {wch:10},
+  {wch:16},
+  {wch:14},
+  {wch:14},
+  {wch:18}
+ ];
+
+
+ XLSX.writeFile(
+  wb,
+  "IME_Sale_Bill_Report_GSTR1.xlsx"
+ );
+
 }
 
 
-/* COLUMN WIDTHS */
-
-wb.Sheets["Sale Bill Report"]["!cols"]=[
-{wch:18},{wch:14},{wch:22},{wch:34},
-{wch:10},{wch:16},{wch:14},{wch:14},
-{wch:18},{wch:55}
-];
-
-wb.Sheets["GSTR-1"]["!cols"]=[
-{wch:18},{wch:14},{wch:22},{wch:34},
-{wch:10},{wch:16},{wch:14},{wch:14},{wch:18}
-];
-
-wb.Sheets["GST Summary"]["!cols"]=[
-{wch:10},{wch:12},{wch:18},{wch:16},
-{wch:16},{wch:18}
-];
-
-XLSX.writeFile(
-wb,
-"IME_Sale_Bill_Report_GSTR1.xlsx"
-);
-}
-
-
-/* ================= BACKUP ================= */
+/* =========================================================
+   BACKUP
+========================================================= */
 
 function backupJSON(){
 
-let data={
-app:"I M ENTERPRISES Billing",
-version:4,
-rules,
-invoices:bills
-};
+ let data={
 
-let blob=new Blob(
-[JSON.stringify(data,null,2)],
-{type:"application/json"}
-);
+  app:
+  "I M ENTERPRISES Billing",
 
-let a=document.createElement("a");
+  version:5,
 
-a.href=URL.createObjectURL(blob);
-a.download="IME_Bills_Backup.json";
-a.click();
+  exportedAt:
+  new Date().toISOString(),
+
+  rules,
+
+  invoices:bills
+
+ };
+
+
+ let blob=
+ new Blob(
+  [
+   JSON.stringify(
+    data,
+    null,
+    2
+   )
+  ],
+  {
+   type:"application/json"
+  }
+ );
+
+
+ let a=
+ document.createElement("a");
+
+
+ a.href=
+ URL.createObjectURL(blob);
+
+
+ a.download=
+ "IME_Bills_Backup.json";
+
+
+ a.click();
+
+
+ setTimeout(
+  ()=>{
+   URL.revokeObjectURL(a.href);
+  },
+  1000
+ );
+
 }
 
 
-/* ================= INIT ================= */
+/* =========================================================
+   INITIALIZE
+========================================================= */
 
-product.onchange=preview;
+product.onchange=
+ function(){
+  preview();
+};
 
-(async()=>{
 
-loadRules();
+(async function(){
 
-bills=await getBills();
+ try{
 
-drawProducts();
+  loadRules();
 
-newBill();
+  bills=
+  await getBills();
 
-render();
+  drawProducts();
+
+  newBill();
+
+  render();
+
+ }
+ catch(error){
+
+  console.error(error);
+
+  alert(
+   "Could not initialize billing database."
+  );
+
+ }
 
 })();
 
 
-/* ================= SERVICE WORKER ================= */
+/* =========================================================
+   SERVICE WORKER
+========================================================= */
 
-if("serviceWorker" in navigator){
+if(
+ "serviceWorker" in navigator
+){
 
-window.addEventListener("load",()=>{
+ window.addEventListener(
+  "load",
+  function(){
 
-navigator.serviceWorker.register("./sw.js")
-.then(()=>console.log("IME Billing service worker registered"))
-.catch(e=>console.error("Service worker error:",e));
+   navigator.serviceWorker
+   .register("./sw.js")
+   .then(
+    ()=>console.log(
+     "IME Billing Service Worker registered"
+    )
+   )
+   .catch(
+    e=>console.error(
+     "Service Worker error:",
+     e
+    )
+   );
 
-});
+  }
+ );
 
 }
 
