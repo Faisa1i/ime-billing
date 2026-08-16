@@ -3488,52 +3488,57 @@ function printInvoiceObject(
    DOWNLOAD PDF
 ====================================================== */
 
-function downloadInvoicePDF(
-  inv
-){
+function downloadInvoicePDF(inv){
 
   if(
-    !window.jspdf||
+    !window.jspdf ||
     !window.jspdf.jsPDF
   ){
 
     alert(
-      "PDF library is not loaded. "+
-      "Please check your internet connection."
+      "PDF library is not loaded. Please check your internet connection."
     );
 
     return;
-
   }
 
 
+  /* Always recalculate from the invoice total */
   calculateInvoiceValues(inv);
 
 
-  const {jsPDF}=
-  window.jspdf;
+  const { jsPDF } = window.jspdf;
 
 
-  const doc=
-  new jsPDF({
+  const doc = new jsPDF({
 
-    orientation:"portrait",
+    orientation: "portrait",
 
-    unit:"mm",
+    unit: "mm",
 
-    format:"a5"
+    format: "a5",
+
+    compress: true
 
   });
 
 
-  const pageWidth=
-  doc.internal.pageSize.getWidth();
+  const pageWidth =
+    doc.internal.pageSize.getWidth();
 
 
-  const margin=10;
+  const pageHeight =
+    doc.internal.pageSize.getHeight();
 
-  let y=14;
 
+  const margin = 10;
+
+  let y = 14;
+
+
+  /* =====================================================
+     HEADER
+  ====================================================== */
 
   doc.setFont(
     "helvetica",
@@ -3542,51 +3547,57 @@ function downloadInvoicePDF(
 
   doc.setFontSize(18);
 
-
   doc.text(
     "I M ENTERPRISES",
-    pageWidth/2,
+    pageWidth / 2,
     y,
     {
-      align:"center"
+      align: "center"
     }
   );
 
 
-  y+=8;
+  y += 8;
 
 
   doc.setFontSize(12);
 
-
   doc.text(
     "TAX INVOICE",
-    pageWidth/2,
+    pageWidth / 2,
     y,
     {
-      align:"center"
+      align: "center"
     }
   );
 
 
-  y+=10;
+  y += 10;
 
+
+  /* =====================================================
+     INVOICE NUMBER / DATE
+  ====================================================== */
 
   doc.setFontSize(9);
+
+
+  const halfWidth =
+    pageWidth / 2;
 
 
   doc.rect(
     margin,
     y,
-    pageWidth/2-margin-3,
+    halfWidth - margin - 3,
     14
   );
 
 
   doc.rect(
-    pageWidth/2+3,
+    halfWidth + 3,
     y,
-    pageWidth/2-margin-3,
+    halfWidth - margin - 3,
     14
   );
 
@@ -3596,11 +3607,10 @@ function downloadInvoicePDF(
     "bold"
   );
 
-
   doc.text(
     "Invoice No.",
-    margin+3,
-    y+5
+    margin + 3,
+    y + 5
   );
 
 
@@ -3609,11 +3619,10 @@ function downloadInvoicePDF(
     "normal"
   );
 
-
   doc.text(
-    String(inv.invoiceNo),
-    margin+3,
-    y+10
+    String(inv.invoiceNo || ""),
+    margin + 3,
+    y + 10
   );
 
 
@@ -3621,12 +3630,11 @@ function downloadInvoicePDF(
     "helvetica",
     "bold"
   );
-
 
   doc.text(
     "Invoice Date",
-    pageWidth/2+6,
-    y+5
+    halfWidth + 6,
+    y + 5
   );
 
 
@@ -3635,24 +3643,24 @@ function downloadInvoicePDF(
     "normal"
   );
 
-
   doc.text(
-    displayDate(
-      inv.invoiceDate
-    ),
-    pageWidth/2+6,
-    y+10
+    displayDate(inv.invoiceDate),
+    halfWidth + 6,
+    y + 10
   );
 
 
-  y+=20;
+  y += 20;
 
+
+  /* =====================================================
+     BUYER
+  ====================================================== */
 
   doc.setFont(
     "helvetica",
     "bold"
   );
-
 
   doc.text(
     "Buyer:",
@@ -3666,24 +3674,20 @@ function downloadInvoicePDF(
     "normal"
   );
 
-
   doc.text(
-    String(
-      inv.buyer||""
-    ),
-    margin+20,
+    String(inv.buyer || ""),
+    margin + 20,
     y
   );
 
 
-  y+=6;
+  y += 6;
 
 
   doc.setFont(
     "helvetica",
     "bold"
   );
-
 
   doc.text(
     "Place of Supply:",
@@ -3697,39 +3701,43 @@ function downloadInvoicePDF(
     "normal"
   );
 
-
   doc.text(
-    String(
-      inv.placeOfSupply||""
-    ),
-    margin+32,
+    String(inv.placeOfSupply || ""),
+    margin + 32,
     y
   );
 
 
-  y+=10;
+  y += 10;
 
 
-  const x=margin;
+  /* =====================================================
+     ITEM TABLE
+  ====================================================== */
 
-  const tableWidth=
-  pageWidth-margin*2;
+  const x = margin;
 
-  const col1=52;
-  const col2=12;
-  const col3=25;
-  const col4=15;
-  const col5=
-  tableWidth-
-  col1-
-  col2-
-  col3-
-  col4;
-
-  const rowH=10;
+  const tableWidth =
+    pageWidth - margin * 2;
 
 
-  const headers=[
+  const col1 = 52;
+  const col2 = 12;
+  const col3 = 25;
+  const col4 = 15;
+
+  const col5 =
+    tableWidth -
+    col1 -
+    col2 -
+    col3 -
+    col4;
+
+
+  const rowH = 10;
+
+
+  const headers = [
     "Particulars",
     "Qty",
     "Taxable",
@@ -3738,16 +3746,16 @@ function downloadInvoicePDF(
   ];
 
 
-  const xs=[
+  const xs = [
     x,
-    x+col1,
-    x+col1+col2,
-    x+col1+col2+col3,
-    x+col1+col2+col3+col4
+    x + col1,
+    x + col1 + col2,
+    x + col1 + col2 + col3,
+    x + col1 + col2 + col3 + col4
   ];
 
 
-  const widths=[
+  const widths = [
     col1,
     col2,
     col3,
@@ -3761,13 +3769,12 @@ function downloadInvoicePDF(
     "bold"
   );
 
-
   doc.setFontSize(8);
 
 
   for(
-    let i=0;
-    i<headers.length;
+    let i = 0;
+    i < headers.length;
     i++
   ){
 
@@ -3781,15 +3788,20 @@ function downloadInvoicePDF(
 
     doc.text(
       headers[i],
-      xs[i]+2,
-      y+6
+      xs[i] + 2,
+      y + 6
     );
 
   }
 
 
-  y+=rowH;
+  y += rowH;
 
+
+  /* =====================================================
+     IMPORTANT:
+     NO ₹ OR Rs. SYMBOL IN PDF
+  ====================================================== */
 
   doc.setFont(
     "helvetica",
@@ -3797,37 +3809,46 @@ function downloadInvoicePDF(
   );
 
 
-  const values=[
+  const taxableText =
+    Number(inv.taxableValue || 0)
+      .toFixed(2);
 
-    String(
-      inv.particulars||""
-    ),
 
-    String(
-      inv.quantity||1
-    ),
+  const gstText =
+    Number(inv.gstAmount || 0)
+      .toFixed(2);
 
-    "₹"+
-    formatMoney(
-      inv.taxableValue
-    ),
 
-    "₹"+
-    formatMoney(
-      inv.gstAmount
-    ),
+  const totalText =
+    Number(inv.total || 0)
+      .toFixed(2);
 
-    "₹"+
-    formatMoney(
-      inv.total
-    )
+
+  const qtyText =
+    String(inv.quantity || 1);
+
+
+  const values = [
+
+    String(inv.particulars || ""),
+
+    qtyText,
+
+    taxableText,
+
+    gstText,
+
+    totalText
 
   ];
 
 
+  const valueRowHeight = 18;
+
+
   for(
-    let i=0;
-    i<values.length;
+    let i = 0;
+    i < values.length;
     i++
   ){
 
@@ -3835,30 +3856,31 @@ function downloadInvoicePDF(
       xs[i],
       y,
       widths[i],
-      rowH+8
+      valueRowHeight
     );
 
 
-    if(i===0){
+    if(i === 0){
 
       doc.text(
         values[i],
-        xs[i]+2,
-        y+6,
+        xs[i] + 2,
+        y + 7,
         {
           maxWidth:
-          widths[i]-4
+            widths[i] - 4
         }
       );
 
-    }else{
+    }
+    else{
 
       doc.text(
         values[i],
-        xs[i]+widths[i]-2,
-        y+6,
+        xs[i] + widths[i] - 2,
+        y + 7,
         {
-          align:"right"
+          align: "right"
         }
       );
 
@@ -3867,18 +3889,24 @@ function downloadInvoicePDF(
   }
 
 
-  y+=rowH+13;
+  y += valueRowHeight + 13;
 
 
-  const boxX=margin;
+  /* =====================================================
+     TOTAL BOX
+  ====================================================== */
 
-  const boxW=tableWidth;
+  const boxX = margin;
+
+  const boxW = tableWidth;
 
 
   doc.setFont(
     "helvetica",
     "bold"
   );
+
+  doc.setFontSize(9);
 
 
   doc.rect(
@@ -3889,13 +3917,12 @@ function downloadInvoicePDF(
   );
 
 
-  doc.setFontSize(9);
-
+  /* Taxable */
 
   doc.text(
     "Taxable Value:",
-    boxX+4,
-    y+7
+    boxX + 4,
+    y + 7
   );
 
 
@@ -3906,17 +3933,17 @@ function downloadInvoicePDF(
 
 
   doc.text(
-    "₹"+
-    formatMoney(
-      inv.taxableValue
-    ),
-    boxX+boxW-4,
-    y+7,
+    Number(inv.taxableValue || 0)
+      .toFixed(2),
+    boxX + boxW - 4,
+    y + 7,
     {
-      align:"right"
+      align: "right"
     }
   );
 
+
+  /* CGST */
 
   doc.setFont(
     "helvetica",
@@ -3925,11 +3952,11 @@ function downloadInvoicePDF(
 
 
   doc.text(
-    "CGST @ "+
-    (Number(inv.gstRate)/2)+
+    "CGST @ " +
+    (Number(inv.gstRate || 0) / 2) +
     "%:",
-    boxX+4,
-    y+15
+    boxX + 4,
+    y + 15
   );
 
 
@@ -3940,17 +3967,17 @@ function downloadInvoicePDF(
 
 
   doc.text(
-    "₹"+
-    formatMoney(
-      inv.cgst
-    ),
-    boxX+boxW-4,
-    y+15,
+    Number(inv.cgst || 0)
+      .toFixed(2),
+    boxX + boxW - 4,
+    y + 15,
     {
-      align:"right"
+      align: "right"
     }
   );
 
+
+  /* SGST */
 
   doc.setFont(
     "helvetica",
@@ -3959,11 +3986,11 @@ function downloadInvoicePDF(
 
 
   doc.text(
-    "SGST @ "+
-    (Number(inv.gstRate)/2)+
+    "SGST @ " +
+    (Number(inv.gstRate || 0) / 2) +
     "%:",
-    boxX+4,
-    y+23
+    boxX + 4,
+    y + 23
   );
 
 
@@ -3974,17 +4001,17 @@ function downloadInvoicePDF(
 
 
   doc.text(
-    "₹"+
-    formatMoney(
-      inv.sgst
-    ),
-    boxX+boxW-4,
-    y+23,
+    Number(inv.sgst || 0)
+      .toFixed(2),
+    boxX + boxW - 4,
+    y + 23,
     {
-      align:"right"
+      align: "right"
     }
   );
 
+
+  /* Invoice Total */
 
   doc.setFont(
     "helvetica",
@@ -3994,26 +4021,28 @@ function downloadInvoicePDF(
 
   doc.text(
     "Invoice Total:",
-    boxX+4,
-    y+32
+    boxX + 4,
+    y + 32
   );
 
 
   doc.text(
-    "₹"+
-    formatMoney(
-      inv.total
-    ),
-    boxX+boxW-4,
-    y+32,
+    Number(inv.total || 0)
+      .toFixed(2),
+    boxX + boxW - 4,
+    y + 32,
     {
-      align:"right"
+      align: "right"
     }
   );
 
 
-  y+=45;
+  y += 45;
 
+
+  /* =====================================================
+     TRANSACTION DETAILS
+  ====================================================== */
 
   doc.setFontSize(8);
 
@@ -4031,7 +4060,7 @@ function downloadInvoicePDF(
   );
 
 
-  y+=6;
+  y += 6;
 
 
   doc.setFont(
@@ -4041,81 +4070,85 @@ function downloadInvoicePDF(
 
 
   doc.text(
-    "Transaction Date: "+
-    displayDate(
-      inv.transactionDate
-    ),
+    "Transaction Date: " +
+    displayDate(inv.transactionDate),
     margin,
     y
   );
 
 
-  y+=5;
+  y += 5;
 
 
   doc.text(
-    "Statement Credit: ₹"+
-    formatMoney(
-      inv.statementCredit
-    ),
+    "Statement Credit: " +
+    Number(inv.statementCredit || 0)
+      .toFixed(2),
     margin,
     y
   );
 
 
-  y+=5;
+  y += 5;
 
 
-  const desc=
-  String(
-    inv.transactionDescription||"-"
-  );
+  /* Description */
 
-
-  const descLines=
-  doc.splitTextToSize(
-    "Description: "+desc,
-    tableWidth
-  );
-
-
-  doc.text(
-    descLines,
-    margin,
-    y
-  );
-
-
-  y+=
-  5*descLines.length;
-
-
-  doc.text(
-    "Reference: "+
+  const description =
     String(
-      inv.transactionReference||"-"
+      inv.transactionDescription || "-"
+    );
+
+
+  const descriptionLines =
+    doc.splitTextToSize(
+      "Description: " + description,
+      tableWidth
+    );
+
+
+  doc.text(
+    descriptionLines,
+    margin,
+    y
+  );
+
+
+  y +=
+    5 * descriptionLines.length;
+
+
+  /* Reference */
+
+  doc.text(
+    "Reference: " +
+    String(
+      inv.transactionReference || "-"
     ),
     margin,
     y
   );
 
 
-  const filename=
-  String(
-    inv.invoiceNo||"Invoice"
-  )
-  .replace(
-    /[\/\\:*?"<>|]/g,
-    "_"
-  )+
-  ".pdf";
+  /* =====================================================
+     FILE NAME
+  ====================================================== */
+
+  const filename =
+    String(
+      inv.invoiceNo || "Invoice"
+    )
+    .replace(
+      /[\/\\:*?"<>|]/g,
+      "_"
+    ) +
+    ".pdf";
 
 
-  doc.save(
-    filename
-  );
+  doc.save(filename);
 
-}
+    }
+
 
 
 /* =====================================================
